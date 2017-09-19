@@ -36,9 +36,9 @@ namespace Edge_detection
 
         private void useCannyMethod_button_Click(object sender, EventArgs e)
         {
-            Canny CannyForm = new Canny(filePath,Convert.ToDouble(sigma_textBox.Text),Convert.ToInt16(k_textBox.Text), Convert.ToDouble(bottomThreshold_textBox.Text),Convert.ToDouble(upperThreshold_textBox.Text)); //создаем окно для вывода результатов метода Канни, передавая путь к выбранному файлу
+            Canny CannyForm = new Canny(filePath, Convert.ToDouble(sigma_textBox.Text), Convert.ToInt16(k_textBox.Text), Convert.ToDouble(bottomThreshold_textBox.Text), Convert.ToDouble(upperThreshold_textBox.Text)); //создаем окно для вывода результатов метода Канни, передавая путь к выбранному файлу
             CannyForm.Show();
-            
+
         }
 
         public static Bitmap GrayScale(Bitmap bmp)
@@ -47,7 +47,7 @@ namespace Edge_detection
             for (int i = 0; i < bmp.Width; i++)//тестирую (можно удалить)
                 for (int j = 0; j < bmp.Height; j++)//тестирую (можно удалить)
                     incomeImage[j, i] = bmp.GetPixel(i, j).R;//тестирую (можно удалить)
-        
+
             for (int x = 0; x < bmp.Width; x++)
             {
                 for (int y = 0; y < bmp.Height; y++)
@@ -86,8 +86,8 @@ namespace Edge_detection
                 for (int y = 0; y <= kk; y++)
                 {
                     //p = -((x - k - 1) * (x - k - 1) + (y - k - 1) * (y - k - 1));
-                    p = -((k-x) * (k-x) + (k-y) * (k-y));
-                    gaussKernel[x, y] = (1.0 / (2.0 * Math.PI * sigma))* Math.Exp(p / (2.0 * sigma));
+                    p = -((k - x) * (k - x) + (k - y) * (k - y));
+                    gaussKernel[x, y] = (1.0 / (2.0 * Math.PI * sigma)) * Math.Exp(p / (2.0 * sigma));
                 }
 
             //H = new double[kk + 1, kk + 1];
@@ -126,17 +126,17 @@ namespace Edge_detection
 
             double blurredPix;
             //свертка
-            for (int x = 0; x < bigPic.GetLength(0)-kk; x++)
-                for (int y = 0; y < bigPic.GetLength(1)-kk; y++)
+            for (int x = 0; x < bigPic.GetLength(0) - kk; x++)
+                for (int y = 0; y < bigPic.GetLength(1) - kk; y++)
                 {
                     blurredPix = 0.0;
                     for (int u = 0; u <= kk; u++)
                         for (int v = 0; v <= kk; v++)
-                            blurredPix+= gaussKernel[u, v] * bigPic[u + x, v + y];
+                            blurredPix += gaussKernel[u, v] * bigPic[u + x, v + y];
                     bmp.SetPixel(y, x, Color.FromArgb((int)blurredPix, (int)blurredPix, (int)blurredPix));//разве тут не надо у-1,х-1?
                 }
             return bmp;
-        } 
+        }
 
         public static int[,] FormBigPic(Bitmap bmp, int k) //сформировать увеличенное (на k пикселей с каждой стороны) изображение
         {
@@ -182,7 +182,7 @@ namespace Edge_detection
         {
             double respondX;
             double respondY;
-            respond = new double[bmp.Height,bmp.Width];
+            respond = new double[bmp.Height, bmp.Width];
             atan = new double[bmp.Height, bmp.Width];
 
             double[] pw = new double[30];
@@ -190,7 +190,7 @@ namespace Edge_detection
                 pw[i] = i;
             double ssq = sigma * sigma;
             double gaussianDieOff = 0.0001;
-            double [] pwSqure = new double[30];
+            double[] pwSqure = new double[30];
             for (int i = 0; i < 30; i++)
                 pwSqure[i] = pw[i] * pw[i];
             double[] exps = new double[30];
@@ -202,7 +202,7 @@ namespace Edge_detection
                     width = i;
             }
             if (width == -1)
-                width= 1;
+                width = 1;
             int[,] X = new int[(width * 2) + 1, (width * 2) + 1];
             int[,] Y = new int[(width * 2) + 1, (width * 2) + 1];
             int fillXY = -width;
@@ -224,11 +224,11 @@ namespace Edge_detection
                 for (int j = 0; j < (width * 2) + 1; j++)
                 {
                     dgau2D[i, j] = -X[i, j] * Math.Exp(-(X[i, j] * X[i, j] + Y[i, j] * Y[i, j]) / (2 * ssq)) / (Math.PI * ssq);
-                    dgao2Dtransp[j,i]= -X[i, j] * Math.Exp(-(X[i, j] * X[i, j] + Y[i, j] * Y[i, j]) / (2 * ssq)) / (Math.PI * ssq);
+                    dgao2Dtransp[j, i] = -X[i, j] * Math.Exp(-(X[i, j] * X[i, j] + Y[i, j] * Y[i, j]) / (2 * ssq)) / (Math.PI * ssq);
                 }
 
             int[,] BigPic;
-            BigPic = new int[bmp.Height+2*width, bmp.Width + 2*width];// здесь будет храниться увеличенное изображение для избежания краевого эффекта
+            BigPic = new int[bmp.Height + 2 * width, bmp.Width + 2 * width];// здесь будет храниться увеличенное изображение для избежания краевого эффекта
             BigPic = Form1.FormBigPic(bmp, width);
 
 
@@ -266,7 +266,7 @@ namespace Edge_detection
                     respond[x, y] = Math.Sqrt(respondX * respondX + respondY * respondY);
                     bmp.SetPixel(y, x, Color.FromArgb((int)respond[x, y], (int)respond[x, y], (int)respond[x, y]));
                 }
-                    return bmp;
+            return bmp;
         }
 
         public static Bitmap Sobel(Bitmap bmp)
@@ -311,8 +311,8 @@ namespace Edge_detection
                             respondX += Gx[u, v] * bigPic[u + x, v + y];
                             respondY += Gy[u, v] * bigPic[u + x, v + y];
                         }
-                    atan[x, y] = (Math.Atan2(respondY, respondX)) * (180 / Math.PI);
-                    if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
+                    atan[x, y] = (Math.Atan2(Math.Abs(respondY), Math.Abs(respondX))) * (180 / Math.PI);
+                    //if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
                     if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
                     {
                         atan[x, y] = 0;
@@ -334,13 +334,13 @@ namespace Edge_detection
 
             double maxRespond = Max(respond);
 
-            for (int i = 0; i <respond.GetLength(0); i++)
+            for (int i = 0; i < respond.GetLength(0); i++)
                 for (int j = 0; j < respond.GetLength(1); j++)
                     respond[i, j] = (respond[i, j] / maxRespond) * 255;//нормируем значение градиента от 0 до 255
 
             for (int i = 0; i < bmp.Height; i++)
                 for (int j = 0; j < bmp.Width; j++)
-                    bmp.SetPixel(j, i, Color.FromArgb((int)respond[i+2, j+2], (int)respond[i+2, j+2], (int)respond[i+2, j+2]));
+                    bmp.SetPixel(j, i, Color.FromArgb((int)respond[i + 2, j + 2], (int)respond[i + 2, j + 2], (int)respond[i + 2, j + 2]));
 
             return bmp;
         }
@@ -355,32 +355,47 @@ namespace Edge_detection
 
 
             suppressed = new double[bmp.Height + 2, bmp.Width + 2];
-            for (int x = 1; x < respond.GetLength(0)-1; x++)
+            for (int x = 1; x < respond.GetLength(0) - 1; x++)
                 for (int y = 1; y < respond.GetLength(1) - 1; y++)/*цикл от 1 и до предпосл.элемента, т.к. respond - это увеличенное на 2 пикселя с каждой стороны изображение 
                                                             и при этом заполняется suppressed,кот. с каждой стороны на 1 пиксель меньше,чем respond. 
                                                             Избегается краевой эффект. */
                 {
                     if (atan[x, y] == 0)
-                        if (respond[x, y - 1] < respond[x, y] && respond[x, y + 1] <= respond[x, y])
-                            suppressed[x-1, y-1] = respond[x, y];
-                        else suppressed[x-1, y-1] = 0;
+                        if (respond[x, y - 1] < respond[x, y] && respond[x, y + 1] < respond[x, y])
+                            suppressed[x - 1, y - 1] = respond[x, y];
+                        else
+                        {
+                            suppressed[x - 1, y - 1] = 0;
+                            respond[x, y] = 0;
+                        }
                     if (atan[x, y] == 45)
-                        if (respond[x - 1, y - 1] < respond[x, y] && respond[x + 1, y + 1] < respond[x, y])
-                            suppressed[x-1, y-1] = respond[x, y];
-                        else suppressed[x-1, y-1] = 0;
+                        if (respond[x - 1, y + 1] < respond[x, y] && respond[x + 1, y - 1] < respond[x, y])
+                            suppressed[x - 1, y - 1] = respond[x, y];
+                        else
+                        {
+                            suppressed[x - 1, y - 1] = 0;
+                            respond[x, y] = 0;
+                        }
                     if (atan[x, y] == 90)
                         if (respond[x - 1, y] < respond[x, y] && respond[x + 1, y] < respond[x, y])
-                            suppressed[x-1, y-1] = respond[x, y];
-                        else suppressed[x-1, y-1] = 0;
+                            suppressed[x - 1, y - 1] = respond[x, y];
+                        else
+                        {
+                            suppressed[x - 1, y - 1] = 0;
+                            respond[x, y] = 0;
+                        }
                     if (atan[x, y] == 135)
                         if (respond[x - 1, y - 1] < respond[x, y] && respond[x + 1, y + 1] < respond[x, y])
-                            suppressed[x-1, y-1] = respond[x, y];
-                        else suppressed[x-1, y-1] = 0;
-                    //bmp.SetPixel(y-1, x-1, Color.FromArgb((int)suppressed[x-1, y-1], (int)suppressed[x-1, y-1], (int)suppressed[x-1, y-1]));
-                }
-            for (int x = 0; x < bmp.Height; x++)
+                            suppressed[x - 1, y - 1] = respond[x, y];
+                        else {
+                            suppressed[x - 1, y - 1] = 0;
+                            respond[x, y] = 0;
+                        }
+                            //bmp.SetPixel(y-1, x-1, Color.FromArgb((int)suppressed[x-1, y-1], (int)suppressed[x-1, y-1], (int)suppressed[x-1, y-1]));
+                        }
+                    for (int x = 0; x < bmp.Height; x++)
                 for (int y = 0; y < bmp.Width; y++)
-                    bmp.SetPixel(y, x, Color.FromArgb((int)suppressed[x + 1, y + 1], (int)suppressed[x + 1, y + 1],(int)suppressed[x + 1, y + 1]));
+                    bmp.SetPixel(y, x, Color.FromArgb((int)suppressed[x + 1, y + 1], (int)suppressed[x + 1, y + 1], (int)suppressed[x + 1, y + 1]));
 
 
             //for (int x = 0; x < bmp.Height; x += bmp.Height - 1)
@@ -416,8 +431,8 @@ namespace Edge_detection
                 for (int j = 0; j < bmp.Height; j++)//тестирую (можно удалить)
                     incomeImage[j, i] = bmp.GetPixel(i, j).R;//тестирую (можно удалить)
 
-            for (int x = 1; x < suppressed.GetLength(0)-1; x++)
-                for (int y = 1; y < suppressed.GetLength(1)-1; y++)/*Цикл от 1 и до предпосл.элемента, т.к. suppressed - это увеличенное на 1 пиксель с каждой стороны
+            for (int x = 1; x < suppressed.GetLength(0) - 1; x++)
+                for (int y = 1; y < suppressed.GetLength(1) - 1; y++)/*Цикл от 1 и до предпосл.элемента, т.к. suppressed - это увеличенное на 1 пиксель с каждой стороны
                                                                      изображение и подавление немаксимумов для крайних пикселей не нужно (но при этом наличие этих крайних
                                                                      пикселей является обязательным для работоспособности метода Hysteresis_Thresholding)*/
                 {
@@ -441,7 +456,7 @@ namespace Edge_detection
             return bmp;
         }
 
-        public static Bitmap Hysteresis_Thresholding(Bitmap bmp,string whoCalles)
+        public static Bitmap Hysteresis_Thresholding(Bitmap bmp, string whoCalles)
         {
 
             int[,] incomeImage = new int[bmp.Height, bmp.Width];//тестирую (можно удалить)
@@ -450,8 +465,8 @@ namespace Edge_detection
                     incomeImage[j, i] = bmp.GetPixel(i, j).R;//тестирую (можно удалить)
 
             methodResult = new double[bmp.Height, bmp.Width];
-            for (int x = 1; x < suppressed.GetLength(0)-1; x++)
-                for (int y = 1; y < suppressed.GetLength(1)-1; y++) /*Цикл от 1 и до предпосл.элемента, т.к.suppressed - это увеличенное на 1 пиксель с каждой стороны
+            for (int x = 1; x < suppressed.GetLength(0) - 1; x++)
+                for (int y = 1; y < suppressed.GetLength(1) - 1; y++) /*Цикл от 1 и до предпосл.элемента, т.к.suppressed - это увеличенное на 1 пиксель с каждой стороны
                                                                       изображение, что позволяет корректно работать нижеприведенному условию if без краевого эффекта*/
                     if (suppressed[x, y] == 128)
                         if (suppressed[x, y + 1] == 255 || suppressed[x - 1, y + 1] == 255 || suppressed[x - 1, y] == 255 || suppressed[x - 1, y - 1] == 255 || suppressed[x, y - 1] == 255 || suppressed[x + 1, y - 1] == 255 || suppressed[x + 1, y] == 255 || suppressed[x + 1, y + 1] == 255)
@@ -470,6 +485,7 @@ namespace Edge_detection
                 methodResult = suppressed;// = suppressed но уменьшенное с каждой стороны на 1 пиксель (создать тут массив methodResult, скопировав в него suppressed за искл.крайних пикселей)
             if (whoCalles == "Haar")
                 methodResult = suppressed;
+            bmp.Save("E:\\CannyResult.png", System.Drawing.Imaging.ImageFormat.Png);
             return bmp;
         }
 
@@ -479,6 +495,7 @@ namespace Edge_detection
             HaarForm.Show();
         }
 
+
         public static Bitmap HaarWavelet(Bitmap bmp, int filterLength)
         {
             int[] haarMatrix = new int[filterLength];
@@ -486,8 +503,8 @@ namespace Edge_detection
                 haarMatrix[i] = 1;
             for (int i = filterLength / 2; i < filterLength; i++)
                 haarMatrix[i] = -1;
-           
-           
+
+
             double resX = 0;//будет сканировать значения в пределах строки, т.е. реагировать на вертикальные контуры
             double resY = 0;//будет сканировать значения в пределах столбца, т.е. реагировать на горизонтальные контуры
             respond = new double[bmp.Height + 4, bmp.Width + 4];
@@ -505,15 +522,15 @@ namespace Edge_detection
                     resY = 0;
                     for (int u = 0; u < filterLength; u++)
                     {
-                        resX += haarMatrix[u] * bigPic[x + addToBmp, y + u];//было resX += haarMatrix[u] * bigPic[x, y + u]; 22.11.2016
-                        resY += haarMatrix[u] * bigPic[x + u, y + addToBmp];
+                        resX += haarMatrix[u] * bigPic[x + filterLength / 2, y + u];//было resX += haarMatrix[u] * bigPic[x, y + u]; 22.11.2016
+                        resY += haarMatrix[u] * bigPic[x + u, y + filterLength / 2];
                     }
                     //resX = Math.Abs(resX / filterLength);//усреднили
                     //resY = Math.Abs(resY / filterLength);//усреднили
 
 
 
-                    atan[x, y] = (Math.Atan2(resY, resX)) * (180 / Math.PI);
+                    atan[x, y] = (Math.Atan2(Math.Abs(resY), Math.Abs(resX))) * (180 / Math.PI);
                     //atan[x, y] = 0;
                     if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
                     if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
@@ -533,12 +550,12 @@ namespace Edge_detection
                         atan[x, y] = 135;
                     }
                     respond[x, y] = Math.Sqrt(resX * resX + resY * resY);
-                    
-                   // respond[x, y] = resX;
-                   
-                //if (y < (bmp.Width-1))
-                //    y++;
-            }
+
+                    // respond[x, y] = resX;
+
+                    //if (y < (bmp.Width-1))
+                    //    y++;
+                }
             double maxResp = Max(respond);
             for (int i = 0; i < respond.GetLength(0); i++)
                 for (int j = 0; j < respond.GetLength(1); j++)
@@ -557,6 +574,22 @@ namespace Edge_detection
                     if (arr[i, j] > maxValue)
                         maxValue = arr[i, j];
             return maxValue;
+        }
+
+private void analyze_button_Click(object sender, EventArgs e)
+        {
+            AnalysisOfMethods analyzeForm = new AnalysisOfMethods(Convert.ToDouble(analyze_sigma_textBox.Text), Convert.ToInt16(k_analyze_textBox.Text),
+            Convert.ToDouble(bottomThresholdCanny_analyze_textBox.Text), Convert.ToDouble(upperThresholdCanny_analyze_textBox.Text), 
+            Int32.Parse(waveletLength_analyze_textBox.Text), Convert.ToDouble(bottomThresholdHaar_analyze_textBox.Text), 
+            Convert.ToDouble(upperThresholdHaar_analyze_textBox.Text), Int32.Parse(widthOfBrigtnessDiffer_textBox.Text), Convert.ToDouble(SNR_textBox.Text));
+
+
+            analyzeForm.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

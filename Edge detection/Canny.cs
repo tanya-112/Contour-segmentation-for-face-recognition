@@ -17,6 +17,7 @@ namespace Edge_detection
         short k;
         double bottomThreshold;
         double upperThreshold;
+        Bitmap bmp;
 
         public Canny(string filePath, double sigma,short k, double bottomThreshold, double upperThreshold)// получаем из основной формы путь к выбранному файлу
         {
@@ -26,12 +27,22 @@ namespace Edge_detection
             this.k = k;
             this.bottomThreshold = bottomThreshold;
             this.upperThreshold = upperThreshold;
+            pictureBox1.Image = Image.FromFile(filePath);
         }
-        
 
+        public Canny(Bitmap bmp, double sigma, short k, double bottomThreshold, double upperThreshold)// перегружаем метод Canny, чтобы принять на вход изображение, а не ссылку на него
+        {
+            InitializeComponent();
+            this.bmp = bmp;
+            this.sigma = sigma;
+            this.k = k;
+            this.bottomThreshold = bottomThreshold;
+            this.upperThreshold = upperThreshold;
+            pictureBox1.Image = bmp;
+
+        }
         private void Canny_Load(object sender, EventArgs e)
         {
-            pictureBox1.Image = Image.FromFile(filePath);
             Bitmap a = new Bitmap(pictureBox1.Image);
 
             Form1.GrayScale(a);
