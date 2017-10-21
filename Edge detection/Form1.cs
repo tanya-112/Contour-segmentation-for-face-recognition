@@ -315,6 +315,7 @@ namespace Edge_detection
                     //atan[x, y] = Math.Abs(Math.Atan2((respondY), (respondX))) * (180.00 / Math.PI);
                     atan[x, y] = Math.Atan2((respondY), (respondX)) * (180.00 / Math.PI);
                     if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
+
                     if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
                     {
                         atan[x, y] = 0;
@@ -371,7 +372,7 @@ namespace Edge_detection
                             respond[x, y] = 0;
                         }
                     if (atan[x, y] == 45)
-                        if (respond[x - 1, y + 1] < respond[x, y] && respond[x + 1, y - 1] < respond[x, y])
+                        if (respond[x - 1, y - 1] < respond[x, y] && respond[x + 1, y + 1] < respond[x, y])
                             suppressed[x - 1, y - 1] = respond[x, y];
                         else
                         {
@@ -387,7 +388,7 @@ namespace Edge_detection
                             respond[x, y] = 0;
                         }
                     if (atan[x, y] == 135)
-                        if (respond[x - 1, y - 1] < respond[x, y] && respond[x + 1, y + 1] < respond[x, y])
+                        if (respond[x - 1, y + 1] < respond[x, y] && respond[x + 1, y - 1] < respond[x, y])
                             suppressed[x - 1, y - 1] = respond[x, y];
                         else {
                             suppressed[x - 1, y - 1] = 0;
