@@ -53,7 +53,7 @@ namespace Edge_detection
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     Color bmpColor = bmp.GetPixel(x, y);
-                    int colorGray = (int)(bmpColor.R * 0.299 + bmpColor.G * 0.587 + bmpColor.B * 0.114);
+                    int colorGray = Convert.ToInt32(bmpColor.R * 0.299 + bmpColor.G * 0.587 + bmpColor.B * 0.114);
                     bmp.SetPixel(x, y, Color.FromArgb(colorGray, colorGray, colorGray));
                 }
             }
@@ -63,82 +63,84 @@ namespace Edge_detection
 
         public static Bitmap Gaussian_Blur(Bitmap bmp, double sigma, short k)
         {
-            int kk;
-            int[,] bigPic;
-            double[,] gaussKernel;
-            Color cl;
+                int kk;
+                double[,] bigPic;
+                double[,] gaussKernel;
+                Color cl;
 
-            kk = 2 * k;
-            sigma *= sigma;//т.к. в формуле Гаусса необходимо исп-ть сигму в квадрате
+                kk = 2 * k;
+                sigma *= sigma;//т.к. в формуле Гаусса необходимо исп-ть сигму в квадрате
 
-            int[,] incomeImage = new int[bmp.Height, bmp.Width];//тестирую (можно удалить)
-            for (int i = 0; i < bmp.Width; i++)//тестирую (можно удалить)
-                for (int j = 0; j < bmp.Height; j++)//тестирую (можно удалить)
-                    incomeImage[j, i] = bmp.GetPixel(i, j).R;//тестирую (можно удалить)
+                int[,] incomeImage = new int[bmp.Height, bmp.Width];//тестирую (можно удалить)
+                for (int i = 0; i < bmp.Width; i++)//тестирую (можно удалить)
+                    for (int j = 0; j < bmp.Height; j++)//тестирую (можно удалить)
+                        incomeImage[j, i] = bmp.GetPixel(i, j).R;//тестирую (можно удалить)
+            if (k > 0) //если размер маски для размытия положительный, размываем, иначе - пропускаем весь этап размытия
+            {
+                gaussKernel = new double[kk + 1, kk + 1];
+                bigPic = new double[bmp.Height + kk, bmp.Width + kk];
+                // resultingImage = new double[bmp.Height + 6,bmp.Width + 6];/*resultingImage с каждой стороны больше исходного изображения на 3 пикселя
+                //(это сделано для избежания краевого эффекта при обработке изображений в последующих методах)*/
+                //формирование ядра
+                double p;
+                for (int x = 0; x <= kk; x++) //"=" - захватить саму точку, размер матрицы (2k+1)x(2k+1)
+                    for (int y = 0; y <= kk; y++)
+                    {
+                        //p = -((x - k - 1) * (x - k - 1) + (y - k - 1) * (y - k - 1));
+                        p = -((k - x) * (k - x) + (k - y) * (k - y));
+                        gaussKernel[x, y] = (1.0 / (2.0 * Math.PI * sigma)) * Math.Exp(p / (2.0 * sigma));
+                    }
 
-            gaussKernel = new double[kk + 1, kk + 1];
-            bigPic = new int[bmp.Height + kk, bmp.Width + kk];
-            // resultingImage = new double[bmp.Height + 6,bmp.Width + 6];/*resultingImage с каждой стороны больше исходного изображения на 3 пикселя
-            //(это сделано для избежания краевого эффекта при обработке изображений в последующих методах)*/
-            //формирование ядра
-            double p;
-            for (int x = 0; x <= kk; x++) //"=" - захватить саму точку, размер матрицы (2k+1)x(2k+1)
-                for (int y = 0; y <= kk; y++)
-                {
-                    //p = -((x - k - 1) * (x - k - 1) + (y - k - 1) * (y - k - 1));
-                    p = -((k - x) * (k - x) + (k - y) * (k - y));
-                    gaussKernel[x, y] = (1.0 / (2.0 * Math.PI * sigma)) * Math.Exp(p / (2.0 * sigma));
-                }
+                //H = new double[kk + 1, kk + 1];
+                //H[0,0] = 0.000789;
+                //H[0,1] = 0.006581;
+                //H[0,2] = 0.013347;
+                //H[0,3] = 0.006581;
+                //H[0,4] = 0.000789;
 
-            //H = new double[kk + 1, kk + 1];
-            //H[0,0] = 0.000789;
-            //H[0,1] = 0.006581;
-            //H[0,2] = 0.013347;
-            //H[0,3] = 0.006581;
-            //H[0,4] = 0.000789;
+                //H[1,0] = 0.006581;
+                //H[1,1] = 0.054901;
+                //H[1,2] = 0.111345;
+                //H[1,3] = 0.054901;
+                //H[1,4] = 0.006581;
 
-            //H[1,0] = 0.006581;
-            //H[1,1] = 0.054901;
-            //H[1,2] = 0.111345;
-            //H[1,3] = 0.054901;
-            //H[1,4] = 0.006581;
+                //H[2,0] = 0.013347;
+                //H[2,1] = 0.111345;
+                //H[2,2] = 0.225821;
+                //H[2,3] = 0.111345;
+                //H[2,4] = 0.013347;
 
-            //H[2,0] = 0.013347;
-            //H[2,1] = 0.111345;
-            //H[2,2] = 0.225821;
-            //H[2,3] = 0.111345;
-            //H[2,4] = 0.013347;
+                //H[3,0] = 0.006581;
+                //H[3,1] = 0.054901;
+                //H[3,2] = 0.111345;
+                //H[3,3] = 0.054901;
+                //H[3,4] = 0.006581;
 
-            //H[3,0] = 0.006581;
-            //H[3,1] = 0.054901;
-            //H[3,2] = 0.111345;
-            //H[3,3] = 0.054901;
-            //H[3,4] = 0.006581;
+                //H[4,0] = 0.000789;
+                //H[4,1] = 0.006581;
+                //H[4,2] = 0.013347;
+                //H[4,3] = 0.006581;
+                //H[4,4] = 0.000789;
 
-            //H[4,0] = 0.000789;
-            //H[4,1] = 0.006581;
-            //H[4,2] = 0.013347;
-            //H[4,3] = 0.006581;
-            //H[4,4] = 0.000789;
+                bigPic = FormBigPic(bmp, k);
+                //int diffInPixelAmount=M.L
 
-            bigPic = FormBigPic(bmp, k);
-            //int diffInPixelAmount=M.L
-
-            double blurredPix;
-            //свертка
-            for (int x = 0; x < bigPic.GetLength(0) - kk; x++)
-                for (int y = 0; y < bigPic.GetLength(1) - kk; y++)
-                {
-                    blurredPix = 0.0;
-                    for (int u = 0; u <= kk; u++)
-                        for (int v = 0; v <= kk; v++)
-                            blurredPix += gaussKernel[u, v] * bigPic[u + x, v + y];
-                    bmp.SetPixel(y, x, Color.FromArgb((int)blurredPix, (int)blurredPix, (int)blurredPix));//разве тут не надо у-1,х-1?
-                }
+                double blurredPix;
+                //свертка
+                for (int x = 0; x < bigPic.GetLength(0) - kk; x++)
+                    for (int y = 0; y < bigPic.GetLength(1) - kk; y++)
+                    {
+                        blurredPix = 0.0;
+                        for (int u = 0; u <= kk; u++)
+                            for (int v = 0; v <= kk; v++)
+                                blurredPix += gaussKernel[u, v] * Convert.ToDouble(bigPic[u + x, v + y]);
+                        bmp.SetPixel(y, x, Color.FromArgb(Convert.ToInt32(blurredPix), Convert.ToInt32(blurredPix), Convert.ToInt32(blurredPix)));//разве тут не надо у-1,х-1?
+                    }
+            }
             return bmp;
         }
 
-        public static int[,] FormBigPic(Bitmap bmp, int k) //сформировать увеличенное (на k пикселей с каждой стороны) изображение
+        public static double[,] FormBigPic(Bitmap bmp, int k) //сформировать увеличенное (на k пикселей с каждой стороны) изображение
         {
             /*формирование вспомогательной матрицы Для правильного расчёта краевых точек.
               Поверхность увеличивается по ширине и высоте на 2k(исходя из того, что размер маски равен (2k+1)х(2k+1)).
@@ -146,7 +148,7 @@ namespace Edge_detection
              */
             Color cl;
             int kk = 2 * k;
-            int[,] bigPic = new int[bmp.Height + kk, bmp.Width + kk];// здесь будет храниться увеличенное изображение для избежания краевого эффекта
+            double[,] bigPic = new double[bmp.Height + kk, bmp.Width + kk];// здесь будет храниться увеличенное изображение для избежания краевого эффекта
 
             for (int x = 0; x < bmp.Width + kk; x++)
                 for (int y = 0; y < bmp.Height + kk; y++)
@@ -227,8 +229,7 @@ namespace Edge_detection
                     dgao2Dtransp[j, i] = -X[i, j] * Math.Exp(-(X[i, j] * X[i, j] + Y[i, j] * Y[i, j]) / (2 * ssq)) / (Math.PI * ssq);
                 }
 
-            int[,] BigPic;
-            BigPic = new int[bmp.Height + 2 * width, bmp.Width + 2 * width];// здесь будет храниться увеличенное изображение для избежания краевого эффекта
+            double[,] BigPic = new double[bmp.Height + 2 * width, bmp.Width + 2 * width];// здесь будет храниться увеличенное изображение для избежания краевого эффекта
             BigPic = Form1.FormBigPic(bmp, width);
 
 
@@ -264,7 +265,7 @@ namespace Edge_detection
                     }
 
                     respond[x, y] = Math.Sqrt(respondX * respondX + respondY * respondY);
-                    bmp.SetPixel(y, x, Color.FromArgb((int)respond[x, y], (int)respond[x, y], (int)respond[x, y]));
+                    bmp.SetPixel(y, x, Color.FromArgb(Convert.ToInt32(respond[x, y]), Convert.ToInt32(respond[x, y]), Convert.ToInt32(respond[x, y])));
                 }
             return bmp;
         }
@@ -279,7 +280,7 @@ namespace Edge_detection
 
             int[,] Gx;
             int[,] Gy;
-            int[,] bigPic;
+            double[,] bigPic;
             double respondX;
             double respondY;
             //int k = 1;-
@@ -289,7 +290,7 @@ namespace Edge_detection
 
             Gx = new int[3, 3] { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
             Gy = new int[3, 3] { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
-            bigPic = new int[bmp.Height + kk, bmp.Width + kk];// здесь будет храниться увеличенное изображение для избежания краевого эффекта
+            bigPic = new double[bmp.Height + kk, bmp.Width + kk];// здесь будет храниться увеличенное изображение для избежания краевого эффекта
             respond = new double[bmp.Height + kk - 2, bmp.Width + kk - 2]; /*массив respond с каждой стороны изображения будет больше исходного изображения на 2 пикселя
                                                                  (эти пиксели в сформированные для показа Bitmap не войдут, но они нужны дальше в методе Non_Maximum_Suppression,
                                                                  чтобы, если есть, сохранить перепады на самых крайних пикселях изображения)*/
@@ -311,8 +312,9 @@ namespace Edge_detection
                             respondX += Gx[u, v] * bigPic[u + x, v + y];
                             respondY += Gy[u, v] * bigPic[u + x, v + y];
                         }
-                    atan[x, y] = (Math.Atan2(Math.Abs(respondY), Math.Abs(respondX))) * (180 / Math.PI);
-                    //if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
+                    //atan[x, y] = Math.Abs(Math.Atan2((respondY), (respondX))) * (180.00 / Math.PI);
+                    atan[x, y] = Math.Atan2((respondY), (respondX)) * (180.00 / Math.PI);
+                    if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
                     if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
                     {
                         atan[x, y] = 0;
@@ -340,7 +342,7 @@ namespace Edge_detection
 
             for (int i = 0; i < bmp.Height; i++)
                 for (int j = 0; j < bmp.Width; j++)
-                    bmp.SetPixel(j, i, Color.FromArgb((int)respond[i + 2, j + 2], (int)respond[i + 2, j + 2], (int)respond[i + 2, j + 2]));
+                    bmp.SetPixel(j, i, Color.FromArgb(Convert.ToInt32(respond[i + 2, j + 2]), Convert.ToInt32(respond[i + 2, j + 2]), Convert.ToInt32(respond[i + 2, j + 2])));
 
             return bmp;
         }
@@ -395,7 +397,7 @@ namespace Edge_detection
                         }
                     for (int x = 0; x < bmp.Height; x++)
                 for (int y = 0; y < bmp.Width; y++)
-                    bmp.SetPixel(y, x, Color.FromArgb((int)suppressed[x + 1, y + 1], (int)suppressed[x + 1, y + 1], (int)suppressed[x + 1, y + 1]));
+                    bmp.SetPixel(y, x, Color.FromArgb(Convert.ToInt32(suppressed[x + 1, y + 1]), Convert.ToInt32(suppressed[x + 1, y + 1]), Convert.ToInt32(suppressed[x + 1, y + 1])));
 
 
             //for (int x = 0; x < bmp.Height; x += bmp.Height - 1)
@@ -511,7 +513,7 @@ namespace Edge_detection
             atan = new double[bmp.Height + 4, bmp.Width + 4];
 
 
-            int[,] bigPic = new int[respond.GetLength(0) + filterLength, respond.GetLength(1) + filterLength];
+            double[,] bigPic = new double[respond.GetLength(0) + filterLength, respond.GetLength(1) + filterLength];
             int addToBmp = (bigPic.GetLength(1) - bmp.Width) / 2;
             bigPic = FormBigPic(bmp, addToBmp);
             //int y = 0;
@@ -562,7 +564,7 @@ namespace Edge_detection
                     respond[i, j] = (respond[i, j] / maxResp) * 255; //нормируем значение отклика от 0 до 255
             for (int x = 0; x < bmp.Height; x++)
                 for (int y = 0; y < bmp.Width; y++)
-                    bmp.SetPixel(y, x, Color.FromArgb((int)respond[x + 2, y + 2], (int)respond[x + 2, y + 2], (int)respond[x + 2, y + 2]));
+                    bmp.SetPixel(y, x, Color.FromArgb(Convert.ToInt32(respond[x + 2, y + 2]), Convert.ToInt32(respond[x + 2, y + 2]), Convert.ToInt32(respond[x + 2, y + 2])));
             return bmp;
         }
 

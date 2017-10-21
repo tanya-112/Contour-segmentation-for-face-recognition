@@ -54,7 +54,7 @@ namespace Edge_detection
             Bitmap bmp = new Bitmap(origImage.GetLength(0), origImage.GetLength(1));
             for (int i = 0; i < origImage.GetLength(0); i++)
                 for (int j = 0; j < origImage.GetLength(1); j++)
-                    bmp.SetPixel(j, i, Color.FromArgb((int)origImage[i, j], (int)origImage[i, j], (int)origImage[i, j]));
+                    bmp.SetPixel(j, i, Color.FromArgb(Convert.ToInt32(origImage[i, j]), Convert.ToInt32(origImage[i, j]), Convert.ToInt32(origImage[i, j])));
 
             bmp = AddGausNoise(bmp, snr);// зашумляем изображение
             Canny CannyForm = new Canny(bmp, sigma, k, bottomThresholdCanny, upperThresholdCanny); //создаем окно для вывода результатов метода Канни, передавая путь к выбранному файлу
@@ -467,12 +467,12 @@ namespace Edge_detection
                     //double y1 = Math.Sqrt(-2.0 * Math.Log(x1)) * Math.Cos(2.0 * Math.PI * x2);
                     //double value =  y1 * 1.00/Math.Sqrt(10.00)*255;
                     //if (q <= 40)
-                    int color = bmp.GetPixel(j, i).R + (int)value;
+                    int color = bmp.GetPixel(j, i).R + Convert.ToInt32(value);
                     if (color > 255)
                         color = 255;
                     if (color < 0)
                         color = 0;
-                    bmp.SetPixel(j, i, Color.FromArgb((int)color,(int) color,(int) color));
+                    bmp.SetPixel(j, i, Color.FromArgb(Convert.ToInt32(color), Convert.ToInt32(color), Convert.ToInt32(color)));
                 }
 
             return bmp;
