@@ -288,7 +288,7 @@ namespace Edge_detection
             for(int i = 50; i <150; i++)
             {
                 imageArr[i, 50] = 255;
-                imageArr[i, 150] = 255;
+                imageArr[i, 151] = 255;
             }
 
             for (int j = 75; j < 125; j++)
@@ -300,7 +300,7 @@ namespace Edge_detection
             for (int i = 75; i < 125; i++)
             {
                 imageArr[i, 75] = 255;
-                imageArr[i, 125] = 255;
+                imageArr[i, 126] = 255;
             }
 
 
@@ -323,7 +323,7 @@ namespace Edge_detection
             return imageArr;
         }
 
-        public static double CountPrettCriteria(double [,] perfectResult, double[,] methodResult)
+        public static double CountPrettCriteria(double[,] perfectResult, double[,] methodResult)
         {
             List<int>[] perfectEdgeIndecesPerRow = FindPerfectEdgeIndices(perfectResult);
             int[][] methodEdgeIndecesPerRow = FindMethodEdgeIndices(methodResult, perfectEdgeIndecesPerRow);
@@ -331,14 +331,19 @@ namespace Edge_detection
             int iI = 0; //число точек перепада в идеальном контурном препарате
             int iA = 0; //число точек перепада в реальном контурном препарате
 
+            for (int i = 0; i < perfectResult.GetLength(0); i++)
+                for (int j = 0; j < perfectResult.GetLength(1); j++)
+                {
+                    if (perfectResult[i, j] == 255)
+                    iI++;
+                }
             for (int i = 0; i < methodResult.GetLength(0); i++)
                 for(int j = 0; j < methodResult.GetLength(1); j++)
                 {
-                    if (perfectResult[i, j] == 255)
-                        iI++;
                     if (methodResult[i, j] == 255)
                         iA++;
                 }
+
             //вычисляем массив расстояний реального и идеального контуров для каждой строки
             double distanse = 0;
             //for (int i = 0; i < perfectEdgeIndecesPerRow.Count; i++)//двигаемся от одного списка к другому
@@ -349,14 +354,20 @@ namespace Edge_detection
             int minCount = 0;
             int In = Math.Max(iI, iA);
             //for (int i = 0; i < iA; i++)
-            for (int i = 0; i < methodEdgeIndecesPerRow.GetLength(0); i++)
+            for (int i = 0; i < perfectEdgeIndecesPerRow.GetLength(0); i++)//было for (int i = 0; i < methodEdgeIndecesPerRow.GetLength(0); i++)
             {
                 //if (methodEdgeIndecesPerRow[i].Length < perfectEdgeIndecesPerRow[i].Count)
                 //    minCount = methodEdgeIndecesPerRow[i].Length;
                 //else minCount = perfectEdgeIndecesPerRow[i].Count;
                 //for (int j = 0; j < minCount; j++)
-                for (int j = 0; j < perfectEdgeIndecesPerRow[i].Count; j++)
-                    R += 1.0 / (1 + (1.0 / 9.0) * Math.Pow(methodEdgeIndecesPerRow[i][j] - perfectEdgeIndecesPerRow[i][j], 2));
+                // for (int i = 0; i < methodResult.GetLength(0); i++)
+                    for (int j = 0; j < methodResult.GetLength(1); j++)
+                    {
+                        if (methodResult[i, j] == 255)
+                            iA++;
+                    }
+                for (int j = 0; j < methodEdgeIndecesPerRow[i].Length; j++)// было for (int j = 0; j < perfectEdgeIndecesPerRow[i].Count; j++)
+                    R += 1.0 / (1.0 + (1.0 / 9.0) * Convert.ToDouble(Math.Pow(methodEdgeIndecesPerRow[i][j] - perfectEdgeIndecesPerRow[i][j], 2)));
             }
             R = R / In;
             return R;

@@ -76,6 +76,35 @@
             this.waveletLength_analyze_textBox = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.label25 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.label35 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -88,6 +117,12 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -98,6 +133,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -558,6 +594,291 @@
             this.label18.TabIndex = 1;
             this.label18.Text = "Длина носителя для вейвлет-преобразования";
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.splitContainer3);
+            this.tabPage3.Controls.Add(this.panel2);
+            this.tabPage3.Controls.Add(this.button1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(798, 305);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Анализ с графиками";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label35);
+            this.panel2.Controls.Add(this.radioButton2);
+            this.panel2.Controls.Add(this.radioButton1);
+            this.panel2.Controls.Add(this.label34);
+            this.panel2.Controls.Add(this.textBox1);
+            this.panel2.Controls.Add(this.label22);
+            this.panel2.Controls.Add(this.textBox2);
+            this.panel2.Controls.Add(this.label23);
+            this.panel2.Controls.Add(this.label24);
+            this.panel2.Location = new System.Drawing.Point(624, 31);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(168, 271);
+            this.panel2.TabIndex = 11;
+            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(60, 201);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(40, 20);
+            this.textBox1.TabIndex = 4;
+            this.textBox1.Text = "100";
+            // 
+            // label22
+            // 
+            this.label22.Location = new System.Drawing.Point(21, 204);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(29, 34);
+            this.label22.TabIndex = 3;
+            this.label22.Text = "До";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(60, 172);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(40, 20);
+            this.textBox2.TabIndex = 2;
+            this.textBox2.Text = "1";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(21, 175);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(20, 13);
+            this.label23.TabIndex = 1;
+            this.label23.Text = "От";
+            // 
+            // label24
+            // 
+            this.label24.Location = new System.Drawing.Point(14, 10);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(148, 40);
+            this.label24.TabIndex = 0;
+            this.label24.Text = "Дополнительные параметры для анализа";
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.Location = new System.Drawing.Point(355, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Анализ";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.splitContainer3.IsSplitterFixed = true;
+            this.splitContainer3.Location = new System.Drawing.Point(7, 31);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.label25);
+            this.splitContainer3.Panel1.Controls.Add(this.textBox3);
+            this.splitContainer3.Panel1.Controls.Add(this.textBox4);
+            this.splitContainer3.Panel1.Controls.Add(this.label26);
+            this.splitContainer3.Panel1.Controls.Add(this.label27);
+            this.splitContainer3.Panel1.Controls.Add(this.textBox5);
+            this.splitContainer3.Panel1.Controls.Add(this.textBox6);
+            this.splitContainer3.Panel1.Controls.Add(this.label28);
+            this.splitContainer3.Panel1.Controls.Add(this.label29);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.label30);
+            this.splitContainer3.Panel2.Controls.Add(this.textBox7);
+            this.splitContainer3.Panel2.Controls.Add(this.label31);
+            this.splitContainer3.Panel2.Controls.Add(this.textBox8);
+            this.splitContainer3.Panel2.Controls.Add(this.textBox9);
+            this.splitContainer3.Panel2.Controls.Add(this.label32);
+            this.splitContainer3.Panel2.Controls.Add(this.label33);
+            this.splitContainer3.Size = new System.Drawing.Size(611, 271);
+            this.splitContainer3.SplitterDistance = 300;
+            this.splitContainer3.TabIndex = 10;
+            // 
+            // label25
+            // 
+            this.label25.Location = new System.Drawing.Point(3, 10);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(329, 40);
+            this.label25.TabIndex = 9;
+            this.label25.Text = "Стандартный метод Канни (используется маска Собеля)";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(139, 175);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(56, 20);
+            this.textBox3.TabIndex = 8;
+            this.textBox3.Text = "160";
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(139, 143);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(56, 20);
+            this.textBox4.TabIndex = 7;
+            this.textBox4.Text = "140";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(43, 183);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(81, 13);
+            this.label26.TabIndex = 6;
+            this.label26.Text = "Верхний порог";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(43, 151);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(79, 13);
+            this.label27.TabIndex = 5;
+            this.label27.Text = "Нижний порог";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(139, 62);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(56, 20);
+            this.textBox5.TabIndex = 4;
+            this.textBox5.Text = "1";
+            // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(139, 98);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(56, 20);
+            this.textBox6.TabIndex = 3;
+            this.textBox6.Text = "0";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(43, 69);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(36, 13);
+            this.label28.TabIndex = 2;
+            this.label28.Text = "Sigma";
+            // 
+            // label29
+            // 
+            this.label29.Location = new System.Drawing.Point(43, 98);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(110, 42);
+            this.label29.TabIndex = 1;
+            this.label29.Text = "k для размытия Гауссовским фильтром ";
+            // 
+            // label30
+            // 
+            this.label30.Location = new System.Drawing.Point(40, 10);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(255, 40);
+            this.label30.TabIndex = 7;
+            this.label30.Text = "Модифицированный метод Канни (используется вейвлет-преобразование Хаара)";
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(192, 179);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(52, 20);
+            this.textBox7.TabIndex = 6;
+            this.textBox7.Text = "150";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(43, 179);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(81, 13);
+            this.label31.TabIndex = 5;
+            this.label31.Text = "Верхний порог";
+            // 
+            // textBox8
+            // 
+            this.textBox8.Location = new System.Drawing.Point(192, 137);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(52, 20);
+            this.textBox8.TabIndex = 4;
+            this.textBox8.Text = "140";
+            // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(192, 95);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(52, 20);
+            this.textBox9.TabIndex = 3;
+            this.textBox9.Text = "8";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(40, 140);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(79, 13);
+            this.label32.TabIndex = 2;
+            this.label32.Text = "Нижний порог";
+            // 
+            // label33
+            // 
+            this.label33.Location = new System.Drawing.Point(40, 95);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(146, 45);
+            this.label33.TabIndex = 1;
+            this.label33.Text = "Длина носителя для вейвлет-преобразования";
+            // 
+            // label34
+            // 
+            this.label34.Location = new System.Drawing.Point(3, 50);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(148, 40);
+            this.label34.TabIndex = 5;
+            this.label34.Text = "Зависимость значения критерия Прэтта от параметра:";
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(8, 93);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(153, 17);
+            this.radioButton1.TabIndex = 6;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "отношение сигнал/шум q";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(8, 116);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(154, 17);
+            this.radioButton2.TabIndex = 7;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "протяженность перепада";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(5, 146);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(82, 13);
+            this.label35.TabIndex = 8;
+            this.label35.Text = "Варьировать q";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -583,6 +904,15 @@
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel1.PerformLayout();
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            this.splitContainer3.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -636,6 +966,35 @@
         private System.Windows.Forms.TextBox widthOfBrigtnessDiffer_textBox;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.TextBox SNR_textBox;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label35;
     }
 }
 
