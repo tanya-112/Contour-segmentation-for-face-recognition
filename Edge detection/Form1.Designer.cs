@@ -77,34 +77,34 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.label25 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.upperThresholdCanny_analyzeWithPlots_textBox = new System.Windows.Forms.TextBox();
+            this.bottomThresholdCanny_analyzeWithPlots_textBox = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.analyzeWithPlots_sigma_textBox = new System.Windows.Forms.TextBox();
+            this.k_analyzeWithPlots_textBox = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.upperThresholdHaar_analyzeWithPlots_textBox = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.bottomThresholdHaar_analyzeWithPlots_textBox = new System.Windows.Forms.TextBox();
+            this.waveletLength_analyzeWithPlots_textBox = new System.Windows.Forms.TextBox();
             this.label32 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.varyParameter_label = new System.Windows.Forms.Label();
+            this.varyWidthOfDiffer_radioButton = new System.Windows.Forms.RadioButton();
+            this.varyQ_radioButton = new System.Windows.Forms.RadioButton();
             this.label34 = new System.Windows.Forms.Label();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.label35 = new System.Windows.Forms.Label();
+            this.to_textBox = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.from_textBox = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.analyzeWithPlots_button = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -118,11 +118,11 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -598,82 +598,13 @@
             // 
             this.tabPage3.Controls.Add(this.splitContainer3);
             this.tabPage3.Controls.Add(this.panel2);
-            this.tabPage3.Controls.Add(this.button1);
+            this.tabPage3.Controls.Add(this.analyzeWithPlots_button);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(798, 305);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Анализ с графиками";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // panel2
-            // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.label35);
-            this.panel2.Controls.Add(this.radioButton2);
-            this.panel2.Controls.Add(this.radioButton1);
-            this.panel2.Controls.Add(this.label34);
-            this.panel2.Controls.Add(this.textBox1);
-            this.panel2.Controls.Add(this.label22);
-            this.panel2.Controls.Add(this.textBox2);
-            this.panel2.Controls.Add(this.label23);
-            this.panel2.Controls.Add(this.label24);
-            this.panel2.Location = new System.Drawing.Point(624, 31);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(168, 271);
-            this.panel2.TabIndex = 11;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(60, 201);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(40, 20);
-            this.textBox1.TabIndex = 4;
-            this.textBox1.Text = "100";
-            // 
-            // label22
-            // 
-            this.label22.Location = new System.Drawing.Point(21, 204);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(29, 34);
-            this.label22.TabIndex = 3;
-            this.label22.Text = "До";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(60, 172);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(40, 20);
-            this.textBox2.TabIndex = 2;
-            this.textBox2.Text = "1";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(21, 175);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(20, 13);
-            this.label23.TabIndex = 1;
-            this.label23.Text = "От";
-            // 
-            // label24
-            // 
-            this.label24.Location = new System.Drawing.Point(14, 10);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(148, 40);
-            this.label24.TabIndex = 0;
-            this.label24.Text = "Дополнительные параметры для анализа";
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.Location = new System.Drawing.Point(355, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Анализ";
-            this.button1.UseVisualStyleBackColor = false;
             // 
             // splitContainer3
             // 
@@ -685,22 +616,22 @@
             // splitContainer3.Panel1
             // 
             this.splitContainer3.Panel1.Controls.Add(this.label25);
-            this.splitContainer3.Panel1.Controls.Add(this.textBox3);
-            this.splitContainer3.Panel1.Controls.Add(this.textBox4);
+            this.splitContainer3.Panel1.Controls.Add(this.upperThresholdCanny_analyzeWithPlots_textBox);
+            this.splitContainer3.Panel1.Controls.Add(this.bottomThresholdCanny_analyzeWithPlots_textBox);
             this.splitContainer3.Panel1.Controls.Add(this.label26);
             this.splitContainer3.Panel1.Controls.Add(this.label27);
-            this.splitContainer3.Panel1.Controls.Add(this.textBox5);
-            this.splitContainer3.Panel1.Controls.Add(this.textBox6);
+            this.splitContainer3.Panel1.Controls.Add(this.analyzeWithPlots_sigma_textBox);
+            this.splitContainer3.Panel1.Controls.Add(this.k_analyzeWithPlots_textBox);
             this.splitContainer3.Panel1.Controls.Add(this.label28);
             this.splitContainer3.Panel1.Controls.Add(this.label29);
             // 
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.label30);
-            this.splitContainer3.Panel2.Controls.Add(this.textBox7);
+            this.splitContainer3.Panel2.Controls.Add(this.upperThresholdHaar_analyzeWithPlots_textBox);
             this.splitContainer3.Panel2.Controls.Add(this.label31);
-            this.splitContainer3.Panel2.Controls.Add(this.textBox8);
-            this.splitContainer3.Panel2.Controls.Add(this.textBox9);
+            this.splitContainer3.Panel2.Controls.Add(this.bottomThresholdHaar_analyzeWithPlots_textBox);
+            this.splitContainer3.Panel2.Controls.Add(this.waveletLength_analyzeWithPlots_textBox);
             this.splitContainer3.Panel2.Controls.Add(this.label32);
             this.splitContainer3.Panel2.Controls.Add(this.label33);
             this.splitContainer3.Size = new System.Drawing.Size(611, 271);
@@ -715,21 +646,21 @@
             this.label25.TabIndex = 9;
             this.label25.Text = "Стандартный метод Канни (используется маска Собеля)";
             // 
-            // textBox3
+            // upperThresholdCanny_analyzeWithPlots_textBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(139, 175);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(56, 20);
-            this.textBox3.TabIndex = 8;
-            this.textBox3.Text = "160";
+            this.upperThresholdCanny_analyzeWithPlots_textBox.Location = new System.Drawing.Point(139, 175);
+            this.upperThresholdCanny_analyzeWithPlots_textBox.Name = "upperThresholdCanny_analyzeWithPlots_textBox";
+            this.upperThresholdCanny_analyzeWithPlots_textBox.Size = new System.Drawing.Size(56, 20);
+            this.upperThresholdCanny_analyzeWithPlots_textBox.TabIndex = 8;
+            this.upperThresholdCanny_analyzeWithPlots_textBox.Text = "160";
             // 
-            // textBox4
+            // bottomThresholdCanny_analyzeWithPlots_textBox
             // 
-            this.textBox4.Location = new System.Drawing.Point(139, 143);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(56, 20);
-            this.textBox4.TabIndex = 7;
-            this.textBox4.Text = "140";
+            this.bottomThresholdCanny_analyzeWithPlots_textBox.Location = new System.Drawing.Point(139, 143);
+            this.bottomThresholdCanny_analyzeWithPlots_textBox.Name = "bottomThresholdCanny_analyzeWithPlots_textBox";
+            this.bottomThresholdCanny_analyzeWithPlots_textBox.Size = new System.Drawing.Size(56, 20);
+            this.bottomThresholdCanny_analyzeWithPlots_textBox.TabIndex = 7;
+            this.bottomThresholdCanny_analyzeWithPlots_textBox.Text = "140";
             // 
             // label26
             // 
@@ -749,21 +680,21 @@
             this.label27.TabIndex = 5;
             this.label27.Text = "Нижний порог";
             // 
-            // textBox5
+            // analyzeWithPlots_sigma_textBox
             // 
-            this.textBox5.Location = new System.Drawing.Point(139, 62);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(56, 20);
-            this.textBox5.TabIndex = 4;
-            this.textBox5.Text = "1";
+            this.analyzeWithPlots_sigma_textBox.Location = new System.Drawing.Point(139, 62);
+            this.analyzeWithPlots_sigma_textBox.Name = "analyzeWithPlots_sigma_textBox";
+            this.analyzeWithPlots_sigma_textBox.Size = new System.Drawing.Size(56, 20);
+            this.analyzeWithPlots_sigma_textBox.TabIndex = 4;
+            this.analyzeWithPlots_sigma_textBox.Text = "1";
             // 
-            // textBox6
+            // k_analyzeWithPlots_textBox
             // 
-            this.textBox6.Location = new System.Drawing.Point(139, 98);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(56, 20);
-            this.textBox6.TabIndex = 3;
-            this.textBox6.Text = "0";
+            this.k_analyzeWithPlots_textBox.Location = new System.Drawing.Point(139, 98);
+            this.k_analyzeWithPlots_textBox.Name = "k_analyzeWithPlots_textBox";
+            this.k_analyzeWithPlots_textBox.Size = new System.Drawing.Size(56, 20);
+            this.k_analyzeWithPlots_textBox.TabIndex = 3;
+            this.k_analyzeWithPlots_textBox.Text = "0";
             // 
             // label28
             // 
@@ -790,13 +721,13 @@
             this.label30.TabIndex = 7;
             this.label30.Text = "Модифицированный метод Канни (используется вейвлет-преобразование Хаара)";
             // 
-            // textBox7
+            // upperThresholdHaar_analyzeWithPlots_textBox
             // 
-            this.textBox7.Location = new System.Drawing.Point(192, 179);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(52, 20);
-            this.textBox7.TabIndex = 6;
-            this.textBox7.Text = "150";
+            this.upperThresholdHaar_analyzeWithPlots_textBox.Location = new System.Drawing.Point(192, 179);
+            this.upperThresholdHaar_analyzeWithPlots_textBox.Name = "upperThresholdHaar_analyzeWithPlots_textBox";
+            this.upperThresholdHaar_analyzeWithPlots_textBox.Size = new System.Drawing.Size(52, 20);
+            this.upperThresholdHaar_analyzeWithPlots_textBox.TabIndex = 6;
+            this.upperThresholdHaar_analyzeWithPlots_textBox.Text = "150";
             // 
             // label31
             // 
@@ -807,21 +738,21 @@
             this.label31.TabIndex = 5;
             this.label31.Text = "Верхний порог";
             // 
-            // textBox8
+            // bottomThresholdHaar_analyzeWithPlots_textBox
             // 
-            this.textBox8.Location = new System.Drawing.Point(192, 137);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(52, 20);
-            this.textBox8.TabIndex = 4;
-            this.textBox8.Text = "140";
+            this.bottomThresholdHaar_analyzeWithPlots_textBox.Location = new System.Drawing.Point(192, 137);
+            this.bottomThresholdHaar_analyzeWithPlots_textBox.Name = "bottomThresholdHaar_analyzeWithPlots_textBox";
+            this.bottomThresholdHaar_analyzeWithPlots_textBox.Size = new System.Drawing.Size(52, 20);
+            this.bottomThresholdHaar_analyzeWithPlots_textBox.TabIndex = 4;
+            this.bottomThresholdHaar_analyzeWithPlots_textBox.Text = "140";
             // 
-            // textBox9
+            // waveletLength_analyzeWithPlots_textBox
             // 
-            this.textBox9.Location = new System.Drawing.Point(192, 95);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(52, 20);
-            this.textBox9.TabIndex = 3;
-            this.textBox9.Text = "8";
+            this.waveletLength_analyzeWithPlots_textBox.Location = new System.Drawing.Point(192, 95);
+            this.waveletLength_analyzeWithPlots_textBox.Name = "waveletLength_analyzeWithPlots_textBox";
+            this.waveletLength_analyzeWithPlots_textBox.Size = new System.Drawing.Size(52, 20);
+            this.waveletLength_analyzeWithPlots_textBox.TabIndex = 3;
+            this.waveletLength_analyzeWithPlots_textBox.Text = "8";
             // 
             // label32
             // 
@@ -840,6 +771,56 @@
             this.label33.TabIndex = 1;
             this.label33.Text = "Длина носителя для вейвлет-преобразования";
             // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.varyParameter_label);
+            this.panel2.Controls.Add(this.varyWidthOfDiffer_radioButton);
+            this.panel2.Controls.Add(this.varyQ_radioButton);
+            this.panel2.Controls.Add(this.label34);
+            this.panel2.Controls.Add(this.to_textBox);
+            this.panel2.Controls.Add(this.label22);
+            this.panel2.Controls.Add(this.from_textBox);
+            this.panel2.Controls.Add(this.label23);
+            this.panel2.Controls.Add(this.label24);
+            this.panel2.Location = new System.Drawing.Point(624, 31);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(168, 271);
+            this.panel2.TabIndex = 11;
+            // 
+            // varyParameter_label
+            // 
+            this.varyParameter_label.AutoSize = true;
+            this.varyParameter_label.Location = new System.Drawing.Point(5, 146);
+            this.varyParameter_label.Name = "varyParameter_label";
+            this.varyParameter_label.Size = new System.Drawing.Size(82, 13);
+            this.varyParameter_label.TabIndex = 8;
+            this.varyParameter_label.Text = "Варьировать q";
+            // 
+            // varyWidthOfDiffer_radioButton
+            // 
+            this.varyWidthOfDiffer_radioButton.AutoSize = true;
+            this.varyWidthOfDiffer_radioButton.Location = new System.Drawing.Point(8, 116);
+            this.varyWidthOfDiffer_radioButton.Name = "varyWidthOfDiffer_radioButton";
+            this.varyWidthOfDiffer_radioButton.Size = new System.Drawing.Size(154, 17);
+            this.varyWidthOfDiffer_radioButton.TabIndex = 7;
+            this.varyWidthOfDiffer_radioButton.Text = "протяженность перепада";
+            this.varyWidthOfDiffer_radioButton.UseVisualStyleBackColor = true;
+            this.varyWidthOfDiffer_radioButton.CheckedChanged += new System.EventHandler(this.varyWidthOfDiffer_radioButton_CheckedChanged);
+            // 
+            // varyQ_radioButton
+            // 
+            this.varyQ_radioButton.AutoSize = true;
+            this.varyQ_radioButton.Checked = true;
+            this.varyQ_radioButton.Location = new System.Drawing.Point(8, 93);
+            this.varyQ_radioButton.Name = "varyQ_radioButton";
+            this.varyQ_radioButton.Size = new System.Drawing.Size(153, 17);
+            this.varyQ_radioButton.TabIndex = 6;
+            this.varyQ_radioButton.TabStop = true;
+            this.varyQ_radioButton.Text = "отношение сигнал/шум q";
+            this.varyQ_radioButton.UseVisualStyleBackColor = true;
+            this.varyQ_radioButton.CheckedChanged += new System.EventHandler(this.varyQ_radioButton_CheckedChanged);
+            // 
             // label34
             // 
             this.label34.Location = new System.Drawing.Point(3, 50);
@@ -848,36 +829,57 @@
             this.label34.TabIndex = 5;
             this.label34.Text = "Зависимость значения критерия Прэтта от параметра:";
             // 
-            // radioButton1
+            // to_textBox
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(8, 93);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(153, 17);
-            this.radioButton1.TabIndex = 6;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "отношение сигнал/шум q";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.to_textBox.Location = new System.Drawing.Point(60, 201);
+            this.to_textBox.Name = "to_textBox";
+            this.to_textBox.Size = new System.Drawing.Size(40, 20);
+            this.to_textBox.TabIndex = 4;
+            this.to_textBox.Text = "100";
             // 
-            // radioButton2
+            // label22
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(8, 116);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(154, 17);
-            this.radioButton2.TabIndex = 7;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "протяженность перепада";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.label22.Location = new System.Drawing.Point(21, 204);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(29, 34);
+            this.label22.TabIndex = 3;
+            this.label22.Text = "До";
             // 
-            // label35
+            // from_textBox
             // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(5, 146);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(82, 13);
-            this.label35.TabIndex = 8;
-            this.label35.Text = "Варьировать q";
+            this.from_textBox.Location = new System.Drawing.Point(60, 172);
+            this.from_textBox.Name = "from_textBox";
+            this.from_textBox.Size = new System.Drawing.Size(40, 20);
+            this.from_textBox.TabIndex = 2;
+            this.from_textBox.Text = "1";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(21, 175);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(20, 13);
+            this.label23.TabIndex = 1;
+            this.label23.Text = "От";
+            // 
+            // label24
+            // 
+            this.label24.Location = new System.Drawing.Point(14, 10);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(148, 40);
+            this.label24.TabIndex = 0;
+            this.label24.Text = "Дополнительные параметры для анализа";
+            // 
+            // analyzeWithPlots_button
+            // 
+            this.analyzeWithPlots_button.BackColor = System.Drawing.Color.Transparent;
+            this.analyzeWithPlots_button.Location = new System.Drawing.Point(355, 3);
+            this.analyzeWithPlots_button.Name = "analyzeWithPlots_button";
+            this.analyzeWithPlots_button.Size = new System.Drawing.Size(75, 23);
+            this.analyzeWithPlots_button.TabIndex = 9;
+            this.analyzeWithPlots_button.Text = "Анализ";
+            this.analyzeWithPlots_button.UseVisualStyleBackColor = false;
+            this.analyzeWithPlots_button.Click += new System.EventHandler(this.analyzeWithPlots_button_Click);
             // 
             // Form1
             // 
@@ -905,14 +907,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel1.PerformLayout();
             this.splitContainer3.Panel2.ResumeLayout(false);
             this.splitContainer3.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -969,32 +971,32 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox upperThresholdCanny_analyzeWithPlots_textBox;
+        private System.Windows.Forms.TextBox bottomThresholdCanny_analyzeWithPlots_textBox;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox analyzeWithPlots_sigma_textBox;
+        private System.Windows.Forms.TextBox k_analyzeWithPlots_textBox;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox upperThresholdHaar_analyzeWithPlots_textBox;
         private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox bottomThresholdHaar_analyzeWithPlots_textBox;
+        private System.Windows.Forms.TextBox waveletLength_analyzeWithPlots_textBox;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton varyWidthOfDiffer_radioButton;
+        private System.Windows.Forms.RadioButton varyQ_radioButton;
         private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox to_textBox;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox from_textBox;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Button analyzeWithPlots_button;
+        private System.Windows.Forms.Label varyParameter_label;
     }
 }
 

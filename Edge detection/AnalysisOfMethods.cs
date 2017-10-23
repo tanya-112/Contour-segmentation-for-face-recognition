@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Medallion;
+using System.Runtime.InteropServices;
 
 namespace Edge_detection
 {
     public partial class AnalysisOfMethods : Form
     {
-        double PrettCriteria;
-        double correctness;
-        double efficiency;
+        //double PrettCriteria;
+        //double correctness;
+        //double efficiency;
 
         double cannyPrettCrit;
         double haarPrettCrit;
@@ -28,6 +30,12 @@ namespace Edge_detection
         int waveletLength;
         int widthOfBrightnessDiffer;
         double snr;
+        static Canny CannyForm;
+        static Haar HaarForm;
+
+
+        //enum prettCritt { cannyPrettCrit, haarPrettCrit };
+
         //public AnalysisOfMethods(double PrettCriteria, double correctness, double efficiency)
         public AnalysisOfMethods(double sigma, short k, double bottomThresholdCanny, double upperThresholdCanny, int waveletLength, double bottomThresholdHaar, double upperThresholdHaar, int widthOfBrightnessDiffer, double snr)
         {
@@ -48,28 +56,52 @@ namespace Edge_detection
 
         private void AnalysisOfMethods_Load(object sender, EventArgs e)
         {
-            double [,] origImage = MakeOriginImArr(widthOfBrightnessDiffer);
+            DoTheAnalysis(sigma, k, bottomThresholdCanny, upperThresholdCanny,
+              waveletLength, bottomThresholdHaar, upperThresholdHaar, widthOfBrightnessDiffer, true, snr);
+            CannyForm.Show();
+            HaarForm.Show();
+        }
+
+
+        public static double[] DoTheAnalysis(double sigma, short k, double bottomThresholdCanny, double upperThresholdCanny,
+            int waveletLength, double bottomThresholdHaar, double upperThresholdHaar, int widthOfBrightnessDiffer, bool noiseImage, double snr)
+        {
+            double[,] origImage = MakeOriginImArr(widthOfBrightnessDiffer);
+            double[,] origImageCopyForHaar = MakeOriginImArr(widthOfBrightnessDiffer);
+
             double[,] perfectEdgeImage = MakePerfectEdgeImArr();
 
-            Bitmap bmp = new Bitmap(origImage.GetLength(0), origImage.GetLength(1));
-            for (int i = 0; i < origImage.GetLength(0); i++)
-                for (int j = 0; j < origImage.GetLength(1); j++)
-                    bmp.SetPixel(j, i, Color.FromArgb(Convert.ToInt32(origImage[i, j]), Convert.ToInt32(origImage[i, j]), Convert.ToInt32(origImage[i, j])));
+            //float[][] tempImage;
+            //tempImage = ToFloat<double>(origImage);
+            //Bitmap res = ToBitmapNoLinear24BitGray(tempImage);
+            ////res.Save(fileName, ImageFormat.Bmp);
 
-            bmp = AddGausNoise(bmp, snr);// зашумляем изображение
-            Canny CannyForm = new Canny(bmp, sigma, k, bottomThresholdCanny, upperThresholdCanny); //создаем окно для вывода результатов метода Канни, передавая путь к выбранному файлу
-            CannyForm.Show();
-           // Bitmap cannyResBmp = // СЧИТАТЬ ИЗ ПИКЧЕРБОКСА 4 ИЗОБРАЖЕНИЕ
-            double [,] cannyAlmostResult = Form1.suppressed;
+            //Bitmap bmp = new Bitmap(origImage.GetLength(0), origImage.GetLength(1));
+            //for (int i = 0; i < origImage.GetLength(0); i++)
+            //    for (int j = 0; j < origImage.GetLength(1); j++)
+            //        bmp.SetPixel(j, i, Color.FromArgb((byte)(origImage[i, j]), (byte)(origImage[i, j]), (byte)(origImage[i, j])));
+            //if (noiseImage)
+            //    bmp = AddGausNoise(bmp, snr);// зашумляем изображение
+
+            if (noiseImage)
+            {
+                origImage = AddGausNoise(origImage, snr);// зашумляем изображение
+                origImageCopyForHaar = AddGausNoise(origImageCopyForHaar, snr);
+            }
+
+            CannyForm = new Canny(sigma, k, bottomThresholdCanny, upperThresholdCanny, bmp: null, imageArray: origImage); //создаем окно для вывода результатов метода Канни, передавая путь к выбранному файлу
+            //CannyForm.Show();
+            // Bitmap cannyResBmp = // СЧИТАТЬ ИЗ ПИКЧЕРБОКСА 4 ИЗОБРАЖЕНИЕ
+            double[,] cannyAlmostResult = Form1.suppressed;
             double[,] cannyResult = new double[cannyAlmostResult.GetLength(0) - 2, cannyAlmostResult.GetLength(1) - 2];
             for (int i = 0; i < cannyResult.GetLength(0); i++)
-                for(int j = 0; j < cannyResult.GetLength(1); j++)
+                for (int j = 0; j < cannyResult.GetLength(1); j++)
                 {
                     cannyResult[i, j] = cannyAlmostResult[i + 1, j + 1];
                 }
-            Haar HaarForm = new Haar(bmp,waveletLength,bottomThresholdHaar,upperThresholdHaar); //создаем окно для вывода результатов метода Хаара, передавая путь к выбранному файлу
-            HaarForm.Show();
-            double [,] haarAlmostResult = Form1.suppressed;
+            HaarForm = new Haar (waveletLength, bottomThresholdHaar, upperThresholdHaar, bmp:null, imageArray: origImageCopyForHaar); //создаем окно для вывода результатов метода Хаара, передавая путь к выбранному файлу
+            //HaarForm.Show();
+            double[,] haarAlmostResult = Form1.suppressed;
             double[,] haarResult = new double[haarAlmostResult.GetLength(0) - 2, haarAlmostResult.GetLength(1) - 2];
             for (int i = 0; i < haarResult.GetLength(0); i++)
                 for (int j = 0; j < haarResult.GetLength(1); j++)
@@ -77,41 +109,77 @@ namespace Edge_detection
                     haarResult[i, j] = haarAlmostResult[i + 1, j + 1];
                 }
 
-            cannyPrettCrit = CountPrettCriteria(perfectEdgeImage, cannyResult);
-            haarPrettCrit = CountPrettCriteria(perfectEdgeImage, haarResult);
+            double cannyPrettCrit = CountPrettCriteria(perfectEdgeImage, cannyResult);
+            double haarPrettCrit = CountPrettCriteria(perfectEdgeImage, haarResult);
+            //prettCritt.cannyPrettCrit = cannyPrettCrit;
+            double[] prettCrit = new double[2];
+            prettCrit[0] = cannyPrettCrit;
+            prettCrit[1] = haarPrettCrit;
 
-            textBox1.Text = cannyPrettCrit.ToString();
-            textBox2.Text = haarPrettCrit.ToString();
-            textBox3.Text = efficiency.ToString();
+            return prettCrit;
+            //textBox1.Text = cannyPrettCrit.ToString();
+            //textBox2.Text = haarPrettCrit.ToString();
+            //textBox3.Text = efficiency.ToString();
         }
 
-        //public static double [,] MakeOriginImArr()
-        //{
-        //    double[,] imageArr = new double[256, 256];
-
-        //    for (int i = 0; i < 256; i++)
-        //        for(int j = 0; j < 128; j++)
-        //        {
-        //            imageArr[i, j] = 0;
-        //        }
-
-        //    for (int i = 0; i < 256; i++)
-        //        for (int j = 128; j < 256; j++)
-        //        {
-        //            imageArr[i, j] = 255;
-        //        }
-
-        //    return imageArr;
-        //}
-
         public static double[,] MakeOriginImArr(int widthOfBrightnessDiffer)
+        {
+            double[,] imageArr = new double[201, 201];
+            double coeff = 255.00 / Convert.ToDouble(widthOfBrightnessDiffer);
+            int x = 1; // будет, увеличиваясь, подставляться в уравнение y = -x + widthOfBrightnessDiffer?????????????????
+
+
+            for (int i = 0; i < 201; i++)
+                for (int j = 0; j < 101; j++)
+                {
+                    imageArr[i, j] = 255;
+                }
+            //строим левый перепад
+            x = 1;
+            //int iStart = 50 - widthOfBrightnessDiffer + 1;
+            //int iEnd = 150 + widthOfBrightnessDiffer - 1;
+
+            for (int j = 101 - widthOfBrightnessDiffer + 1; j < 50; j++)// было for (int j = 0; j < 200; j++)
+            {
+                for (int i = 0; i < 201; i++)// по смыслу то же, что и for (int i = 50 - widthOfBrightnessDiffer + 1; i < 50; i++)
+                {
+                    imageArr[i, j] = x * (-coeff) + 255;
+                }
+                x++;
+                //iStart++;
+                //iEnd--;
+            }
+
+            //строим правый перепад
+            x = 1;
+            //iStart = 50 - widthOfBrightnessDiffer + 1;
+            //iEnd = 150 + widthOfBrightnessDiffer - 1;
+
+            for (int j = 101; j < 101 + widthOfBrightnessDiffer; j++)
+            {
+                for (int i = 0; i < 201; i++)
+                {
+                    imageArr[i, j] = x * (-coeff) + 255;
+                }
+                x++;
+                //iStart++;
+                //iEnd--;
+            }
+            //for (int i = 0; i < 201; i++)
+            //    for (int j = 101; j < 201; j++)
+            //    {
+            //        imageArr[i, j] = 0;
+            //    }
+
+            return imageArr;
+        }
+
+        public static double[,] MakeOriginImArrSquareInSquare(int widthOfBrightnessDiffer)
         {
             double coeff = 255.00 / Convert.ToDouble(widthOfBrightnessDiffer);
             double[,] imageArr = new double[200, 200];
             int x = 1; // будет, увеличиваясь, подставляться в уравнение y = -x + widthOfBrightnessDiffer?????????????????
 
-            //for (int j = 0; j < 200; j++)//тестирую, можно удалить
-            //    imageArr[50, j] = 170;
 
             //создаем массив изображения "квадрат в квадрате"
 
@@ -191,7 +259,7 @@ namespace Edge_detection
             iStart = 50 - widthOfBrightnessDiffer + 1;
             iEnd = 150 + widthOfBrightnessDiffer - 1;
 
-            for (int j = 150 + widthOfBrightnessDiffer - 1; j > 150; j--) 
+            for (int j = 150 + widthOfBrightnessDiffer - 1; j > 150; j--)
             {
                 for (int i = iStart; i < iEnd; i++)
                 {
@@ -216,7 +284,7 @@ namespace Edge_detection
             {
                 for (int j = jStart; j < jEnd; j++)// было for (int j = 0; j < 200; j++)
                 {
-                    imageArr[i, j] = x * (coeff); 
+                    imageArr[i, j] = x * (coeff);
                 }
                 x++;
                 jStart++;
@@ -224,15 +292,15 @@ namespace Edge_detection
             }
 
 
-            //строим нижний перепад
             x = 1;
+            //строим нижний перепад
             jStart = 75 - widthOfBrightnessDiffer + 1;
             jEnd = 125 + widthOfBrightnessDiffer;
             for (int i = 125 + widthOfBrightnessDiffer - 1; i >= 125; i--)// по смыслу то же, что и for (int i = 50 - widthOfBrightnessDiffer + 1; i < 50; i++)
             {
                 for (int j = jStart; j < jEnd; j++)// было for (int j = 0; j < 200; j++)
                 {
-                    imageArr[i, j] = x * (coeff) ;
+                    imageArr[i, j] = x * (coeff);
                 }
                 x++;
                 jStart++;
@@ -270,12 +338,36 @@ namespace Edge_detection
                 x++;
                 iStart++;
                 iEnd--;
-            }           
+            }
             return imageArr;
         }
 
+        public static double[,] MakePerfectEdgeImArr()
+        {
+            double[,] imageArr = new double[201, 201];
 
-        public static double [,] MakePerfectEdgeImArr()
+            //for (int i = 0; i < 200; i++) 
+            //    
+
+            for (int i = 0; i < 200; i++)
+            {
+                //for (int j = 0; j < 100; j++)
+                    //    {
+                    //        imageArr[i, j] = 0;
+                    //    }
+
+                    imageArr[i, 101] = 255;// вертикальная полоса (идеальный перепад)
+                    //    for (int j = 102; j< 201; j++)
+                    //    {
+                    //        imageArr[i, j] = 0;
+                    //    }
+            }
+
+            //for (int i = 0; i< 200; i++)
+
+            return imageArr;
+        }
+    public static double [,] MakePerfectEdgeImArrSquareInSquare()
         {
             double[,] imageArr = new double[200, 200];
 
@@ -302,24 +394,6 @@ namespace Edge_detection
                 imageArr[i, 75] = 255;
                 imageArr[i, 126] = 255;
             }
-
-
-
-            //for (int i = 0; i < 256; i++)
-            //    for (int j = 0; j < 128; j++)
-            //    {
-            //        imageArr[i, j] = 0;
-            //    }
-
-            //for (int i = 0; i < 256; i++)
-            //    imageArr[i, 128] = 255;// вертикальная полоса (идеальный перепад)
-
-            //for (int i = 129; i < 256; i++)
-            //    for (int j = 129; j < 256; j++)
-            //    {
-            //        imageArr[i, j] = 0;
-            //    }
-
             return imageArr;
         }
 
@@ -487,6 +561,33 @@ namespace Edge_detection
                 }
 
             return bmp;
+        }
+
+        public static double[,] AddGausNoise(double[,] origImage, double snr)
+        {
+            var random = new Random();
+            int height = origImage.GetLength(0);
+            int width = origImage.GetLength(1);
+            for (int i = 0; i < height; i++)
+                for (int j = 0; j < width; j++)
+                {
+                    int q = random.Next(100);
+                    double value = 255 * (1.00 / Math.Sqrt(snr)) * random.NextGaussian();// SNR - отношение сигнал/шум
+                    //double x1 = 1 - random.NextDouble();
+                    //double x2 = 1 - random.NextDouble();
+
+                    //double y1 = Math.Sqrt(-2.0 * Math.Log(x1)) * Math.Cos(2.0 * Math.PI * x2);
+                    //double value =  y1 * 1.00/Math.Sqrt(10.00)*255;
+                    //if (q <= 40)
+                    double newColor = origImage[j, i] + value;
+                    if (newColor > 255)
+                        newColor = 255;
+                    if (newColor < 0)
+                        newColor = 0;
+                    origImage[j, i]= newColor;
+                }
+
+            return origImage;
         }
     }
 }

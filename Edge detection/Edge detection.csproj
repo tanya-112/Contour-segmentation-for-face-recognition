@@ -48,6 +48,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ZedGraph">
+      <HintPath>.\ZedGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalysisOfMethods.cs">
@@ -55,6 +58,12 @@
     </Compile>
     <Compile Include="AnalysisOfMethods.Designer.cs">
       <DependentUpon>AnalysisOfMethods.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AnalyzeWithPlots.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AnalyzeWithPlots.Designer.cs">
+      <DependentUpon>AnalyzeWithPlots.cs</DependentUpon>
     </Compile>
     <Compile Include="Canny.cs">
       <SubType>Form</SubType>
@@ -78,6 +87,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AnalysisOfMethods.resx">
       <DependentUpon>AnalysisOfMethods.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnalyzeWithPlots.resx">
+      <DependentUpon>AnalyzeWithPlots.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Canny.resx">
       <DependentUpon>Canny.cs</DependentUpon>
