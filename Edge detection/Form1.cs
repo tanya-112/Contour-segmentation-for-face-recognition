@@ -910,7 +910,7 @@ namespace Edge_detection
         }
 
 
-        public static double[,] HaarWavelet(double[,] imageArray, int filterLength)
+        public static double[,] HaarWaveletVertical(double[,] imageArray, int filterLength)
         {
             int[] haarMatrix = new int[filterLength];
             for (int i = 0; i < filterLength / 2; i++)
@@ -919,8 +919,84 @@ namespace Edge_detection
                 haarMatrix[i] = -1;
 
 
-            double resX = 0;//будет сканировать значения в пределах строки, т.е. реагировать на вертикальные контуры
+            //double resX = 0;//будет сканировать значения в пределах строки, т.е. реагировать на вертикальные контуры
             double resY = 0;//будет сканировать значения в пределах столбца, т.е. реагировать на горизонтальные контуры
+            double[,] respondY = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
+            respond = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
+            atan = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
+
+
+            double[,] bigPic = new double[respond.GetLength(0) + filterLength, respond.GetLength(1) + filterLength];
+            int addToBmp = (bigPic.GetLength(1) - imageArray.GetLength(1)) / 2;
+            bigPic = FormBigPic(imageArray, addToBmp);
+            //int y = 0;
+            for (int x = 0; x < imageArray.GetLength(0) + 4; x++)
+                for (int y = 0; y < imageArray.GetLength(1) + 4; y++)
+                {
+                    //resX = 0;
+                    resY = 0;
+                    for (int u = 0; u < filterLength; u++)
+                    {
+                        // resX += haarMatrix[u] * bigPic[x + filterLength / 2, y + u];//было resX += haarMatrix[u] * bigPic[x, y + u]; 22.11.2016
+                        resY += haarMatrix[u] * bigPic[x + u, y + filterLength / 2];
+                    }
+                    //resX = Math.Abs(resX / filterLength);//усреднили
+                    //resY = Math.Abs(resY / filterLength);//усреднили
+
+                    //respond[x, y] = Math.Sqrt(resX * resX) + Math.Sqrt(resY * resY);
+
+
+                    // atan[x, y] = (Math.Atan2(resY, resX)) * (180 / Math.PI);
+                    atan[x, y] = 90;
+                    //if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
+                    //if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
+                    //{
+                    //    atan[x, y] = 0;
+                    //}
+                    //else if (atan[x, y] > 22.5 && atan[x, y] < 67.5)
+                    //{
+                    //    atan[x, y] = 45;
+                    //}
+                    //else if (atan[x, y] > 67.5 && atan[x, y] < 112.5)
+                    //{
+                    //    atan[x, y] = 90;
+                    //}
+                    //else if (atan[x, y] > 112.5 && atan[x, y] < 157.5)
+                    //{
+                    //    atan[x, y] = 135;
+                    //}
+                    //respond[x, y] = Math.Sqrt(resX * resX + resY * resY);
+
+                    // respond[x, y] = resX;
+                    respondY[x, y] = Math.Sqrt(resY * resY);
+
+                    respond[x, y] = respondY[x, y];
+
+                    //if (y < (bmp.Width-1))
+                    //    y++;
+                }
+            double maxResp = Max(respond);
+            for (int i = 0; i < respond.GetLength(0); i++)
+                for (int j = 0; j < respond.GetLength(1); j++)
+                    respond[i, j] = (respond[i, j] / maxResp) * 255; //нормируем значение отклика от 0 до 255
+            for (int x = 0; x < imageArray.GetLength(0); x++)
+                for (int y = 0; y < imageArray.GetLength(1); y++)
+                    imageArray[x, y] = respond[x + 2, y + 2];
+            return imageArray;
+        }
+
+        public static double[,] HaarWaveletHorisontal(double[,] imageArray, int filterLength)
+        {
+            int[] haarMatrix = new int[filterLength];
+            for (int i = 0; i < filterLength / 2; i++)
+                haarMatrix[i] = 1;
+            for (int i = filterLength / 2; i < filterLength; i++)
+                haarMatrix[i] = -1;
+
+
+            //double resX = 0;//будет сканировать значения в пределах строки, т.е. реагировать на вертикальные контуры
+            double resX = 0;//будет сканировать значения в пределах столбца, т.е. реагировать на горизонтальные контуры
+            double[,] respondX = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
             respond = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
             atan = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
 
@@ -933,40 +1009,43 @@ namespace Edge_detection
                 for (int y = 0; y < imageArray.GetLength(1) + 4; y++)
                 {
                     resX = 0;
-                    resY = 0;
+                    //resY = 0;
                     for (int u = 0; u < filterLength; u++)
                     {
                         resX += haarMatrix[u] * bigPic[x + filterLength / 2, y + u];//было resX += haarMatrix[u] * bigPic[x, y + u]; 22.11.2016
-                        resY += haarMatrix[u] * bigPic[x + u, y + filterLength / 2];
+                        //resY += haarMatrix[u] * bigPic[x + u, y + filterLength / 2];
                     }
                     //resX = Math.Abs(resX / filterLength);//усреднили
                     //resY = Math.Abs(resY / filterLength);//усреднили
 
-                    respond[x, y] = Math.Sqrt(resX * resX) + Math.Sqrt(resY * resY);
+                    //respond[x, y] = Math.Sqrt(resX * resX) + Math.Sqrt(resY * resY);
 
 
-                    atan[x, y] = (Math.Atan2(resY, resX)) * (180 / Math.PI);
-                    //atan[x, y] = 0;
-                    if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
-                    if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
-                    {
-                        atan[x, y] = 0;
-                    }
-                    else if (atan[x, y] > 22.5 && atan[x, y] < 67.5)
-                    {
-                        atan[x, y] = 45;
-                    }
-                    else if (atan[x, y] > 67.5 && atan[x, y] < 112.5)
-                    {
-                        atan[x, y] = 90;
-                    }
-                    else if (atan[x, y] > 112.5 && atan[x, y] < 157.5)
-                    {
-                        atan[x, y] = 135;
-                    }
+                   // atan[x, y] = (Math.Atan2(resY, resX)) * (180 / Math.PI);
+                    atan[x, y] = 0;
+                    //if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
+                    //if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
+                    //{
+                    //    atan[x, y] = 0;
+                    //}
+                    //else if (atan[x, y] > 22.5 && atan[x, y] < 67.5)
+                    //{
+                    //    atan[x, y] = 45;
+                    //}
+                    //else if (atan[x, y] > 67.5 && atan[x, y] < 112.5)
+                    //{
+                    //    atan[x, y] = 90;
+                    //}
+                    //else if (atan[x, y] > 112.5 && atan[x, y] < 157.5)
+                    //{
+                    //    atan[x, y] = 135;
+                    //}
                     //respond[x, y] = Math.Sqrt(resX * resX + resY * resY);
 
                     // respond[x, y] = resX;
+                    respondX[x, y] = Math.Sqrt(resX * resX);
+
+                    respond[x, y] = respondX[x, y];
 
                     //if (y < (bmp.Width-1))
                     //    y++;
