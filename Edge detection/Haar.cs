@@ -17,6 +17,9 @@ namespace Edge_detection
         double upperThreshold;
         int waveletLength;
         Bitmap bmp;
+        List<int> contourIndicesX;
+        List<int> contourIndicesY;
+
         public Haar(string filePath, int waveletLength, double bottomThreshold, double upperThreshold)
         {
             InitializeComponent();
@@ -101,6 +104,155 @@ namespace Edge_detection
 
 
         }
+
+        private void useHaarInCannyMethod_button_Click(object sender, EventArgs e)
+        {
+            contourIndicesX = new List<int>();
+            contourIndicesY = new List<int>();
+            Bitmap bmp = new Bitmap(pictureBox4.Image);
+
+            int[,] imageArray = new int[bmp.Height, bmp.Width];
+            for (int i = 0; i < bmp.Width; i++)
+                for (int j = 0; j < bmp.Height; j++)
+                    imageArray[j, i] = bmp.GetPixel(i, j).R;
+
+
+            for (int i = 0; i < imageArray.GetLength(0); i++)
+                for (int j = 0; j < imageArray.GetLength(1); j++)
+                {
+                    if (imageArray[i, j] == 255)
+                    {
+                        contourIndicesX.Add(i);
+                        int rememberXIndexIfNeedTiRemove = contourIndicesX.Count;
+                        contourIndicesY.Add(j);
+                        int rememberYIndexIfNeedTiRemove = contourIndicesY.Count;
+                        recursiveFindNeighborContourIndices(imageArray, contourIndicesX, contourIndicesY, i, j);
+                        break;
+                    }
+                }
+            int abc = 1;
+
+        }
+
+        public void recursiveFindNeighborContourIndices(int[,] imageArray, List<int> contourIndicesX, List<int> contourIndicesY,
+            int startPositionX, int startPositionY)
+        {
+            bool foundNeighbor = false;
+            int i = startPositionX;
+            int j = startPositionY;
+            if (imageArray[i, j + 1] == 255 &&
+                            CheckIfNotALoop(imageArray, i, j + 1, contourIndicesX, contourIndicesY))
+            {
+                j++;
+                contourIndicesX.Add(i);
+                contourIndicesY.Add(j);
+                foundNeighbor = true;
+            }
+            else if (imageArray[i + 1, j + 1] == 255 &&
+                 CheckIfNotALoop(imageArray, i + 1, j + 1, contourIndicesX, contourIndicesY))
+            {
+                i++;
+                j++;
+                contourIndicesX.Add(i);
+                contourIndicesY.Add(j);
+                foundNeighbor = true;
+            }
+            else if (imageArray[i + 1, j] == 255 &&
+                 CheckIfNotALoop(imageArray, i + 1, j, contourIndicesX, contourIndicesY))
+            {
+                i++;
+                contourIndicesX.Add(i);
+                contourIndicesY.Add(j);
+                foundNeighbor = true;
+            }
+
+            else if (imageArray[i + 1, j - 1] == 255 &&
+                 CheckIfNotALoop(imageArray, i + 1, j - 1, contourIndicesX, contourIndicesY))
+            {
+                i++;
+                j--;
+                contourIndicesX.Add(i);
+                contourIndicesY.Add(j);
+                foundNeighbor = true;
+            }
+            else if (imageArray[i, j - 1] == 255 &&
+                 CheckIfNotALoop(imageArray, i, j - 1, contourIndicesX, contourIndicesY))
+            {
+                j--;
+                contourIndicesX.Add(i);
+                contourIndicesY.Add(j);
+                foundNeighbor = true;
+            }
+            else if (imageArray[i - 1, j - 1] == 255 &&
+                 CheckIfNotALoop(imageArray, i - 1, j - 1, contourIndicesX, contourIndicesY))
+            {
+                i--;
+                j--;
+                contourIndicesX.Add(i);
+                contourIndicesY.Add(j);
+                foundNeighbor = true;
+            }
+            else if (imageArray[i - 1, j] == 255 &&
+                 CheckIfNotALoop(imageArray, i - 1, j, contourIndicesX, contourIndicesY))
+            {
+                i--;
+                contourIndicesX.Add(i);
+                contourIndicesY.Add(j);
+                foundNeighbor = true;
+            }
+
+            else if (imageArray[i - 1, j + 1] == 255 &&
+                 CheckIfNotALoop(imageArray, i - 1, j + 1, contourIndicesX, contourIndicesY))
+            {
+                i--;
+                j++;
+                contourIndicesX.Add(i);
+                contourIndicesY.Add(j);
+                foundNeighbor = true;
+            }
+
+            if (foundNeighbor == false)
+            {
+                //contourIndicesX.RemoveAt(rememberXIndexIfNeedTiRemove);
+                //contourIndicesY.RemoveAt(rememberYIndexIfNeedTiRemove);
+                contourIndicesX.RemoveAt(startPositionX);
+                contourIndicesY.RemoveAt(startPositionY);
+                return;
+            }
+            //        while (contourIndicesX[contourIndicesX.Count - 1] != contourIndicesX[0] ||
+            //contourIndicesY[contourIndicesY.Count - 1] != contourIndicesY[0])// if haven't reached the beginnig
+            bool notTheBeginning = (contourIndicesX.Count - 1 > 1 || contourIndicesY.Count - 1 > 1);
+                //&& ()//ни один элемент окрестности не является начальным эл-том
+            while (contourIndicesX[contourIndicesX.Count - 1] != contourIndicesX[0] ||
+                contourIndicesY[contourIndicesY.Count - 1] != contourIndicesY[0]) // if haven't reached the beginnig
+                recursiveFindNeighborContourIndices(imageArray, contourIndicesX, contourIndicesY, contourIndicesX[contourIndicesX.Count - 1],
+                    contourIndicesY[contourIndicesY.Count - 1]);
+
+            //удаляем по последнему индексу, т.к. они совпадают с началом просложенного контура, который уже занесен в список
+            contourIndicesX.RemoveAt(contourIndicesX.Count - 1);
+            contourIndicesY.RemoveAt(contourIndicesY.Count - 1);
+
+            int abc = 123;
+        }
+
+
+        public bool CheckIfNotALoop(int[,] imageArray, int iCheck, int jCheck, List<int> listToCheckInX, List<int> listToCheckInY)
+        {
+            //if(imageArray[iCheck, jCheck] != contourIndicesX[contourIndicesX.Count] ||
+            //                imageArray[iCheck, jCheck + 1] != contourIndicesY[contourIndicesY.Count])
+            bool isNotALoop = true;
+            for (int i = 0; i < contourIndicesX.Count; i++)
+                {
+                    if (iCheck == contourIndicesX[i] &&
+                                    jCheck == contourIndicesY[i] && (iCheck!= contourIndicesX[0] || jCheck!= contourIndicesY[0]))
+                    {
+                        isNotALoop = false;
+                        break; //??
+                    }
+                }
+            return isNotALoop;
+        }
+
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
