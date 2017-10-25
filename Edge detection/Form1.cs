@@ -724,7 +724,7 @@ namespace Edge_detection
         }
 
 
-        public static Bitmap HaarWavelet(Bitmap bmp, int filterLength)
+        public static Bitmap HaarWaveletHorisontal(Bitmap bmp, int filterLength)
         {
             int[] haarMatrix = new int[filterLength];
             for (int i = 0; i < filterLength / 2; i++)
@@ -735,6 +735,8 @@ namespace Edge_detection
 
             double resX = 0;//будет сканировать значения в пределах строки, т.е. реагировать на вертикальные контуры
             double resY = 0;//будет сканировать значения в пределах столбца, т.е. реагировать на горизонтальные контуры
+            double [,] respondX = new double[bmp.Height + 4, bmp.Width + 4];
+            double[,] respondY = new double[bmp.Height + 4, bmp.Width + 4];
             respond = new double[bmp.Height + 4, bmp.Width + 4];
             atan = new double[bmp.Height + 4, bmp.Width + 4];
 
@@ -758,32 +760,40 @@ namespace Edge_detection
 
 
 
-                    atan[x, y] = (Math.Atan2(Math.Abs(resY), Math.Abs(resX))) * (180 / Math.PI);
-                    //atan[x, y] = 0;
-                    if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
-                    if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
-                    {
-                        atan[x, y] = 0;
-                    }
-                    else if (atan[x, y] > 22.5 && atan[x, y] < 67.5)
-                    {
-                        atan[x, y] = 45;
-                    }
-                    else if (atan[x, y] > 67.5 && atan[x, y] < 112.5)
-                    {
-                        atan[x, y] = 90;
-                    }
-                    else if (atan[x, y] > 112.5 && atan[x, y] < 157.5)
-                    {
-                        atan[x, y] = 135;
-                    }
-                    respond[x, y] = Math.Sqrt(resX * resX + resY * resY);
-
-                    // respond[x, y] = resX;
+                    //atan[x, y] = (Math.Atan2(resY, resX) * (180 / Math.PI));
+                    atan[x, y] = 0;
+                    //if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
+                    //if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
+                    //{
+                    //    atan[x, y] = 0;
+                    //}
+                    //else if (atan[x, y] > 22.5 && atan[x, y] < 67.5)
+                    //{
+                    //    atan[x, y] = 45;
+                    //}
+                    //else if (atan[x, y] > 67.5 && atan[x, y] < 112.5)
+                    //{
+                    //    atan[x, y] = 90;
+                    //}
+                    //else if (atan[x, y] > 112.5 && atan[x, y] < 157.5)
+                    //{
+                    //    atan[x, y] = 135;
+                    //}
+                    //respond[x, y] = Math.Sqrt(resX * resX + resY * resY);
+                     respondX[x, y] = Math.Sqrt(resX * resX);
+                     //respondY[x, y] = Math.Sqrt(resY * resY);
+                    //respond[x, y] = Math.Sqrt(resX * resX);
+                    respond[x, y] = respondX[x, y];
 
                     //if (y < (bmp.Width-1))
                     //    y++;
                 }
+            //for (int x = 0; x < respond.GetLength(0); x++)
+            //    for (int y = 0; y < respond.GetLength(1); y++)
+            //    {
+            //        if (respondX[x, y] == 255 || respondY[x, y] == 255)
+            //            respond[x, y] = 255;
+            //    }
             double maxResp = Max(respond);
             for (int i = 0; i < respond.GetLength(0); i++)
                 for (int j = 0; j < respond.GetLength(1); j++)
@@ -792,6 +802,111 @@ namespace Edge_detection
                 for (int y = 0; y < bmp.Width; y++)
                     bmp.SetPixel(y, x, Color.FromArgb(Convert.ToInt32(respond[x + 2, y + 2]), Convert.ToInt32(respond[x + 2, y + 2]), Convert.ToInt32(respond[x + 2, y + 2])));
             return bmp;
+        }
+
+        public static Bitmap HaarWaveletVertical(Bitmap bmp, int filterLength)
+        {
+            int[] haarMatrix = new int[filterLength];
+            for (int i = 0; i < filterLength / 2; i++)
+                haarMatrix[i] = 1;
+            for (int i = filterLength / 2; i < filterLength; i++)
+                haarMatrix[i] = -1;
+
+
+            double resX = 0;//будет сканировать значения в пределах строки, т.е. реагировать на вертикальные контуры
+            double resY = 0;//будет сканировать значения в пределах столбца, т.е. реагировать на горизонтальные контуры
+            //double[,] respondX = new double[bmp.Height + 4, bmp.Width + 4];
+            double[,] respondY = new double[bmp.Height + 4, bmp.Width + 4];
+            respond = new double[bmp.Height + 4, bmp.Width + 4];
+            atan = new double[bmp.Height + 4, bmp.Width + 4];
+
+
+            double[,] bigPic = new double[respond.GetLength(0) + filterLength, respond.GetLength(1) + filterLength];
+            int addToBmp = (bigPic.GetLength(1) - bmp.Width) / 2;
+            bigPic = FormBigPic(bmp, addToBmp);
+            //int y = 0;
+            for (int x = 0; x < bmp.Height + 4; x++)
+                for (int y = 0; y < bmp.Width + 4; y++)
+                {
+                    //resX = 0;
+                    resY = 0;
+                    for (int u = 0; u < filterLength; u++)
+                    {
+                        //resX += haarMatrix[u] * bigPic[x + filterLength / 2, y + u];//было resX += haarMatrix[u] * bigPic[x, y + u]; 22.11.2016
+                        resY += haarMatrix[u] * bigPic[x + u, y + filterLength / 2];
+                    }
+                    //resX = Math.Abs(resX / filterLength);//усреднили
+                    //resY = Math.Abs(resY / filterLength);//усреднили
+
+
+
+                    //atan[x, y] = (Math.Atan2(resY, resX) * (180 / Math.PI));
+                    atan[x, y] = 90;
+                    //if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
+                    //if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
+                    //{
+                    //    atan[x, y] = 0;
+                    //}
+                    //else if (atan[x, y] > 22.5 && atan[x, y] < 67.5)
+                    //{
+                    //    atan[x, y] = 45;
+                    //}
+                    //else if (atan[x, y] > 67.5 && atan[x, y] < 112.5)
+                    //{
+                    //    atan[x, y] = 90;
+                    //}
+                    //else if (atan[x, y] > 112.5 && atan[x, y] < 157.5)
+                    //{
+                    //    atan[x, y] = 135;
+                    //}
+                    //respond[x, y] = Math.Sqrt(resX * resX + resY * resY);
+                    //respondX[x, y] = Math.Sqrt(resX * resX);
+                    respondY[x, y] = Math.Sqrt(resY * resY);
+                    //respond[x, y] = Math.Sqrt(resX * resX);
+                    respond[x, y] = respondY[x, y];
+
+                    //if (y < (bmp.Width-1))
+                    //    y++;
+                }
+         
+            double maxResp = Max(respond);
+            for (int i = 0; i < respond.GetLength(0); i++)
+                for (int j = 0; j < respond.GetLength(1); j++)
+                    respond[i, j] = (respond[i, j] / maxResp) * 255; //нормируем значение отклика от 0 до 255
+            for (int x = 0; x < bmp.Height; x++)
+                for (int y = 0; y < bmp.Width; y++)
+                    bmp.SetPixel(y, x, Color.FromArgb(Convert.ToInt32(respond[x + 2, y + 2]), Convert.ToInt32(respond[x + 2, y + 2]), Convert.ToInt32(respond[x + 2, y + 2])));
+            return bmp;
+        }
+
+
+        public static Bitmap SumHorisAndVerticHaarResults(Bitmap HorisontalHaarResult, Bitmap VerticalHaarResult)
+        {
+            int[,] incomeImage = new int[HorisontalHaarResult.Height, HorisontalHaarResult.Width];//тестирую (можно удалить)
+            for (int i = 0; i < HorisontalHaarResult.Width; i++)//тестирую (можно удалить)
+                for (int j = 0; j < HorisontalHaarResult.Height; j++)//тестирую (можно удалить)
+                    incomeImage[j, i] = HorisontalHaarResult.GetPixel(i, j).R;//тестирую (можно удалить)
+
+            int[,] incomeImage2 = new int[VerticalHaarResult.Height, VerticalHaarResult.Width];//тестирую (можно удалить)
+            for (int i = 0; i < VerticalHaarResult.Width; i++)//тестирую (можно удалить)
+                for (int j = 0; j < VerticalHaarResult.Height; j++)//тестирую (можно удалить)
+                    incomeImage2[j, i] = VerticalHaarResult.GetPixel(i, j).R;//тестирую (можно удалить)
+
+            Bitmap summedBmp = new Bitmap(HorisontalHaarResult.Width, HorisontalHaarResult.Height);
+            for (int x = 0; x < HorisontalHaarResult.Height; x++)
+                for (int y = 0; y < HorisontalHaarResult.Width; y++)
+                {
+                    if (HorisontalHaarResult.GetPixel(y, x).R == 255 || VerticalHaarResult.GetPixel(y, x).R == 255)
+                        summedBmp.SetPixel(y, x, Color.FromArgb(255, 255, 255));
+                    else
+                        summedBmp.SetPixel(y, x, Color.FromArgb(0, 0, 0));
+
+                }
+            int[,] incomeImage3 = new int[VerticalHaarResult.Height, VerticalHaarResult.Width];//тестирую (можно удалить)
+            for (int i = 0; i < VerticalHaarResult.Width; i++)//тестирую (можно удалить)
+                for (int j = 0; j < VerticalHaarResult.Height; j++)//тестирую (можно удалить)
+                    incomeImage3[j, i] = summedBmp.GetPixel(i, j).R;//тестирую (можно удалить)
+            return summedBmp;
         }
 
 
@@ -827,9 +942,10 @@ namespace Edge_detection
                     //resX = Math.Abs(resX / filterLength);//усреднили
                     //resY = Math.Abs(resY / filterLength);//усреднили
 
+                    respond[x, y] = Math.Sqrt(resX * resX) + Math.Sqrt(resY * resY);
 
 
-                    atan[x, y] = (Math.Atan2(Math.Abs(resY), Math.Abs(resX))) * (180 / Math.PI);
+                    atan[x, y] = (Math.Atan2(resY, resX)) * (180 / Math.PI);
                     //atan[x, y] = 0;
                     if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
                     if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
@@ -848,7 +964,7 @@ namespace Edge_detection
                     {
                         atan[x, y] = 135;
                     }
-                    respond[x, y] = Math.Sqrt(resX * resX + resY * resY);
+                    //respond[x, y] = Math.Sqrt(resX * resX + resY * resY);
 
                     // respond[x, y] = resX;
 

@@ -72,17 +72,29 @@ namespace Edge_detection
                 //pictureBox4.Image = Form1.Hysteresis_Thresholding(c, "Haar");
             }
         }
+
         private void Haar_Load(object sender, EventArgs e)
         {
-            //Bitmap a = new Bitmap(pictureBox1.Image);
-            //Form1.GrayScale(a);
-            //Form1.HaarWavelet(a, waveletLength);
-            //pictureBox2.Image = a;
-            //Bitmap b = new Bitmap(a);
-            //Form1.Non_Maximum_Suppression(b);
-            //pictureBox3.Image = Form1.Double_Threshold(b, bottomThreshold, upperThreshold);
-            //Bitmap c = new Bitmap(b);
-            //pictureBox4.Image = Form1.Hysteresis_Thresholding(c, "Haar");
+            Bitmap a = new Bitmap(pictureBox1.Image);
+            Form1.GrayScale(a);
+            Form1.HaarWaveletHorisontal(a, waveletLength);           
+            Bitmap b = new Bitmap(a);
+            Form1.Non_Maximum_Suppression(b);
+            Form1.Double_Threshold(b, bottomThreshold, upperThreshold);
+            Bitmap c = new Bitmap(b);
+            Form1.Hysteresis_Thresholding(c, "Haar");
+
+
+            a = new Bitmap(pictureBox1.Image);
+            Form1.GrayScale(a);
+            Form1.HaarWaveletVertical(a, waveletLength);
+            Form1.Non_Maximum_Suppression(a);
+            Form1.Double_Threshold(a, bottomThreshold, upperThreshold);
+            Form1.Hysteresis_Thresholding(a, "Haar");
+            Bitmap resBmp = Form1.SumHorisAndVerticHaarResults(c, a);
+            pictureBox4.Image =resBmp;
+
+
         }
     }
 }
