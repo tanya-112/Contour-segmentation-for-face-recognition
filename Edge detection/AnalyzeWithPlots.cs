@@ -48,7 +48,12 @@ namespace Edge_detection
         {
             if (Form1.varyQ_radioButtonChecked == true)
             {
-                double[,] R = new double[2, to - from + 1];// в 0й строке будут все значения крит.Прэтта для Канни, в 1й - для Хаара
+                int quantityOfExperimentsWithOneQ = 5; // столько раз будем проводить один и тот же эксперимент, а затем усредним рез-т, просуммировав и разделив на это число
+                double[][,] R = new double[quantityOfExperimentsWithOneQ][,];// в 0й строке будут все значения крит.Прэтта для Канни, в 1й - для Хаара
+
+                for (int k = 0; k < quantityOfExperimentsWithOneQ; k++)
+                    R[k] = new double[2, (to - from + 1)];
+
                 int qStep = 1;
                 // Получим панель для рисования
                 GraphPane pane = zedGraphControl1.GraphPane;
@@ -61,15 +66,30 @@ namespace Edge_detection
                 int i = 0;
                 for (int q = from; q <= to; q+= qStep)
                 {
-
-                    double [] prettCritt = AnalysisOfMethods.DoTheAnalysis(sigma, k, bottomThresholdCanny, upperThresholdCanny,
+                    double[] prettCritt;
+                    for (int numberOfExperimentToAverage = 0; numberOfExperimentToAverage < quantityOfExperimentsWithOneQ; numberOfExperimentToAverage++)
+                    {
+                        prettCritt = AnalysisOfMethods.DoTheAnalysis(sigma, k, bottomThresholdCanny, upperThresholdCanny,
                       waveletLength, bottomThresholdHaar, upperThresholdHaar, 1, q);
-                    R[0, i] = prettCritt[0];// знач.критерия Прэтта для метода Канни при отношении сигнал/шум = q
-                    R[1, i] = prettCritt[1];// знач.критерия Прэтта для метода Хаара при отношении сигнал/шум = q
-                
+                        R[numberOfExperimentToAverage][0, i] = prettCritt[0];// знач.критерия Прэтта для метода Канни при отношении сигнал/шум = q
+                        R[numberOfExperimentToAverage][1, i] = prettCritt[1];// знач.критерия Прэтта для метода Хаара при отношении сигнал/шум = q
+                    }
+                    double[,] averageOfExperimentsForOneQ = new double[2, 1];
+                    averageOfExperimentsForOneQ[0, 0] = 0;
+                    averageOfExperimentsForOneQ[1, 0] = 0;
+
+                    for (int k = 0; k < quantityOfExperimentsWithOneQ; k++)
+                    {
+                        averageOfExperimentsForOneQ[0, 0] += R[k][0, i];
+                        averageOfExperimentsForOneQ[1, 0] += R[k][1, i];
+
+                    }
+
+                    averageOfExperimentsForOneQ[0, 0] /= quantityOfExperimentsWithOneQ;//получили усредненный результат с экспериментом для опр-го q для м.Канни
+                    averageOfExperimentsForOneQ[1, 0] /= quantityOfExperimentsWithOneQ;//получили усредненный результат с экспериментом для опр-го q для м.Хаара
                     // добавим в список полученные точки для дальнейшего отображения на графике
-                    listForCanny.Add(q, R[0, i]);
-                    listForHaar.Add(q, R[1, i]);
+                    listForCanny.Add(q, averageOfExperimentsForOneQ[0, 0]);
+                    listForHaar.Add(q, averageOfExperimentsForOneQ[1, 0]);
                     i++;
                 }
                 //Color color = Color.Black;
