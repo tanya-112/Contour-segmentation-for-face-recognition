@@ -105,6 +105,7 @@
             this.label23 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.analyzeWithPlots_button = new System.Windows.Forms.Button();
+            this.enableNoisingImage_checkBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -367,6 +368,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.enableNoisingImage_checkBox);
             this.panel1.Controls.Add(this.SNR_textBox);
             this.panel1.Controls.Add(this.label21);
             this.panel1.Controls.Add(this.widthOfBrigtnessDiffer_textBox);
@@ -379,7 +381,7 @@
             // 
             // SNR_textBox
             // 
-            this.SNR_textBox.Location = new System.Drawing.Point(107, 143);
+            this.SNR_textBox.Location = new System.Drawing.Point(107, 164);
             this.SNR_textBox.Name = "SNR_textBox";
             this.SNR_textBox.Size = new System.Drawing.Size(40, 20);
             this.SNR_textBox.TabIndex = 4;
@@ -387,7 +389,7 @@
             // 
             // label21
             // 
-            this.label21.Location = new System.Drawing.Point(6, 139);
+            this.label21.Location = new System.Drawing.Point(6, 160);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(94, 34);
             this.label21.TabIndex = 3;
@@ -881,6 +883,19 @@
             this.analyzeWithPlots_button.UseVisualStyleBackColor = false;
             this.analyzeWithPlots_button.Click += new System.EventHandler(this.analyzeWithPlots_button_Click);
             // 
+            // enableNoisingImage_checkBox
+            // 
+            this.enableNoisingImage_checkBox.AutoSize = true;
+            this.enableNoisingImage_checkBox.Checked = true;
+            this.enableNoisingImage_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enableNoisingImage_checkBox.Location = new System.Drawing.Point(9, 136);
+            this.enableNoisingImage_checkBox.Name = "enableNoisingImage_checkBox";
+            this.enableNoisingImage_checkBox.Size = new System.Drawing.Size(101, 17);
+            this.enableNoisingImage_checkBox.TabIndex = 5;
+            this.enableNoisingImage_checkBox.Text = "Наложить шум";
+            this.enableNoisingImage_checkBox.UseVisualStyleBackColor = true;
+            this.enableNoisingImage_checkBox.CheckedChanged += new System.EventHandler(this.enableNoisingImage_checkBox_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -997,6 +1012,7 @@
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Button analyzeWithPlots_button;
         private System.Windows.Forms.Label varyParameter_label;
+        private System.Windows.Forms.CheckBox enableNoisingImage_checkBox;
     }
 }
 

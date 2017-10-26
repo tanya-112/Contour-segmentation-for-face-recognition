@@ -19,6 +19,7 @@ namespace Edge_detection
         Bitmap bmp;
         List<int> contourIndicesX;
         List<int> contourIndicesY;
+        public Bitmap resultBmp;
 
         public Haar(string filePath, int waveletLength, double bottomThreshold, double upperThreshold)
         {
@@ -49,10 +50,53 @@ namespace Edge_detection
                     }
                 pictureBox1.Image = bmp1;
                 //imageArray = Form1.GrayScale(imageArray);
+                double[,] imageArrayCopyNeeded = new double[imageArray.GetLength(0), imageArray.GetLength(1)];
 
-            //ВСЕ, ЧТО НИЖЕ 1 РАЗ ЗАКОММЕНТИРОВАЛА, НАДО ПЕРЕСТРОИТЬ ПОД 2 МЕТОДА ХААРА(ГОРИЗ.И ВЕРТИК.) !!!
+                for (int i = 0; i < imageArray.GetLength(0); i++)
+                    for (int j = 0; j < imageArray.GetLength(1); j++)
+                        imageArrayCopyNeeded[i, j] = imageArray[i, j];
 
-                //imageArray = Form1.HaarWavelet(imageArray, waveletLength);
+                //ВСЕ, ЧТО НИЖЕ 1 РАЗ ЗАКОММЕНТИРОВАЛА, НАДО ПЕРЕСТРОИТЬ ПОД 2 МЕТОДА ХААРА(ГОРИЗ.И ВЕРТИК.) !!!
+
+                        //Bitmap a = new Bitmap(pictureBox1.Image);
+                //Form1.GrayScale(imageArray);
+                Form1.HaarWaveletHorisontal(imageArray, waveletLength);
+                Bitmap bmpFromArray = new Bitmap(imageArray.GetLength(1), imageArray.GetLength(0));
+                for (int i = 0; i < bmpFromArray.Height; i++)
+                    for (int j = 0; j < bmpFromArray.Width; j++)
+                    {
+                        bmpFromArray.SetPixel(j,i,Color.FromArgb((int)imageArray[i,j], (int)imageArray[i, j],(int)imageArray[i, j]));
+                    }
+
+                pictureBox2_1.Image = bmpFromArray;
+                Bitmap b = new Bitmap(bmpFromArray);
+                Form1.Non_Maximum_Suppression(b);
+                pictureBox3_1.Image = Form1.Double_Threshold(b, bottomThreshold, upperThreshold);
+                Bitmap c = new Bitmap(b);
+                Form1.Hysteresis_Thresholding(c, "Haar");
+
+
+                //Bitmap a2 = new Bitmap(pictureBox1.Image);
+                //Form1.GrayScale(imageArrayCopyNeeded);
+                
+               Form1.HaarWaveletVertical(imageArrayCopyNeeded, waveletLength);
+                Bitmap bmpFromArray2 = new Bitmap(imageArrayCopyNeeded.GetLength(1), imageArrayCopyNeeded.GetLength(0));
+                for (int i = 0; i < bmpFromArray2.Height; i++)
+                    for (int j = 0; j < bmpFromArray2.Width; j++)
+                    {
+                        bmpFromArray2.SetPixel(j, i, Color.FromArgb((int)imageArrayCopyNeeded[i, j], (int)imageArrayCopyNeeded[i, j], (int)imageArrayCopyNeeded[i, j]));
+                    }
+                pictureBox2_2.Image = bmpFromArray2;
+                Bitmap b2 = new Bitmap(bmpFromArray2);
+               Form1.Non_Maximum_Suppression(b2);
+                pictureBox3_2.Image = Form1.Double_Threshold(b2, bottomThreshold, upperThreshold);
+                 Bitmap c2 = new Bitmap(b2);
+                Form1.Hysteresis_Thresholding(c2, "Haar");
+
+                resultBmp = Form1.SumHorisAndVerticHaarResults(c2, c);
+                pictureBox4.Image = resultBmp;
+
+                //imageArray = Form1.HaarWaveletHorisontal(imageArray, waveletLength);
                 //Bitmap bmp2 = new Bitmap(imageArray.GetLength(1), imageArray.GetLength(0));
                 //for (int i = 0; i < imageArray.GetLength(0); i++)
                 //    for (int j = 0; j < imageArray.GetLength(1); j++)
@@ -213,16 +257,10 @@ namespace Edge_detection
 
             if (foundNeighbor == false)
             {
-                //contourIndicesX.RemoveAt(rememberXIndexIfNeedTiRemove);
-                //contourIndicesY.RemoveAt(rememberYIndexIfNeedTiRemove);
                 contourIndicesX.RemoveAt(startPositionX);
                 contourIndicesY.RemoveAt(startPositionY);
                 return;
             }
-            //        while (contourIndicesX[contourIndicesX.Count - 1] != contourIndicesX[0] ||
-            //contourIndicesY[contourIndicesY.Count - 1] != contourIndicesY[0])// if haven't reached the beginnig
-            bool notTheBeginning = (contourIndicesX.Count - 1 > 1 || contourIndicesY.Count - 1 > 1);
-                //&& ()//ни один элемент окрестности не является начальным эл-том
             while (contourIndicesX[contourIndicesX.Count - 1] != contourIndicesX[0] ||
                 contourIndicesY[contourIndicesY.Count - 1] != contourIndicesY[0]) // if haven't reached the beginnig
                 recursiveFindNeighborContourIndices(imageArray, contourIndicesX, contourIndicesY, contourIndicesX[contourIndicesX.Count - 1],
@@ -238,8 +276,6 @@ namespace Edge_detection
 
         public bool CheckIfNotALoop(int[,] imageArray, int iCheck, int jCheck, List<int> listToCheckInX, List<int> listToCheckInY)
         {
-            //if(imageArray[iCheck, jCheck] != contourIndicesX[contourIndicesX.Count] ||
-            //                imageArray[iCheck, jCheck + 1] != contourIndicesY[contourIndicesY.Count])
             bool isNotALoop = true;
             for (int i = 0; i < contourIndicesX.Count; i++)
                 {

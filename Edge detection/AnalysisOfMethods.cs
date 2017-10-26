@@ -28,6 +28,7 @@ namespace Edge_detection
         double bottomThresholdHaar;
         double upperThresholdHaar;
         int waveletLength;
+        //bool noiseImage;
         int widthOfBrightnessDiffer;
         double snr;
         static Canny CannyForm;
@@ -37,7 +38,7 @@ namespace Edge_detection
         //enum prettCritt { cannyPrettCrit, haarPrettCrit };
 
         //public AnalysisOfMethods(double PrettCriteria, double correctness, double efficiency)
-        public AnalysisOfMethods(double sigma, short k, double bottomThresholdCanny, double upperThresholdCanny, int waveletLength, double bottomThresholdHaar, double upperThresholdHaar, int widthOfBrightnessDiffer, double snr)
+        public AnalysisOfMethods(double sigma, short k, double bottomThresholdCanny, double upperThresholdCanny, int waveletLength, double bottomThresholdHaar, double upperThresholdHaar, int widthOfBrightnessDiffer, double snr = -1)
         {
             InitializeComponent();
             this.sigma = sigma;
@@ -47,6 +48,7 @@ namespace Edge_detection
             this.waveletLength = waveletLength;
             this.bottomThresholdHaar = bottomThresholdHaar;
             this.upperThresholdHaar = upperThresholdHaar;
+            //this.noiseImage = noiseImage;
             this.widthOfBrightnessDiffer = widthOfBrightnessDiffer;
             this.snr = snr;
             //this.PrettCriteria = PrettCriteria;
@@ -54,17 +56,26 @@ namespace Edge_detection
             //this.efficiency = efficiency;
         }
 
+        public AnalysisOfMethods()
+        {
+            InitializeComponent();
+           
+        }
         private void AnalysisOfMethods_Load(object sender, EventArgs e)
         {
+            //bool enableNoisingImage = false;
+            //if (Form1.enableNoisingImage_checkBoxChecked)
+            //    enableNoisingImage = true;
+
             DoTheAnalysis(sigma, k, bottomThresholdCanny, upperThresholdCanny,
-              waveletLength, bottomThresholdHaar, upperThresholdHaar, widthOfBrightnessDiffer, true, snr);
+              waveletLength, bottomThresholdHaar, upperThresholdHaar, widthOfBrightnessDiffer, snr);
             CannyForm.Show();
             HaarForm.Show();
         }
 
 
         public static double[] DoTheAnalysis(double sigma, short k, double bottomThresholdCanny, double upperThresholdCanny,
-            int waveletLength, double bottomThresholdHaar, double upperThresholdHaar, int widthOfBrightnessDiffer, bool noiseImage, double snr)
+            int waveletLength, double bottomThresholdHaar, double upperThresholdHaar, int widthOfBrightnessDiffer, double snr = -1)
         {
             double[,] origImage = MakeOriginImArr(widthOfBrightnessDiffer);
             double[,] origImageCopyForHaar = MakeOriginImArr(widthOfBrightnessDiffer);
@@ -83,7 +94,7 @@ namespace Edge_detection
             //if (noiseImage)
             //    bmp = AddGausNoise(bmp, snr);// зашумляем изображение
 
-            if (noiseImage)
+            if (snr > -1)
             {
                 origImage = AddGausNoise(origImage, snr);// зашумляем изображение
                 origImageCopyForHaar = AddGausNoise(origImageCopyForHaar, snr);
@@ -101,13 +112,17 @@ namespace Edge_detection
                 }
             HaarForm = new Haar (waveletLength, bottomThresholdHaar, upperThresholdHaar, bmp:null, imageArray: origImageCopyForHaar); //создаем окно для вывода результатов метода Хаара, передавая путь к выбранному файлу
             //HaarForm.Show();
-            double[,] haarAlmostResult = Form1.suppressed;
-            double[,] haarResult = new double[haarAlmostResult.GetLength(0) - 2, haarAlmostResult.GetLength(1) - 2];
+            //double[,] haarAlmostResult = Form1.suppressed;
+            //double[,] haarResult = new double[haarAlmostResult.GetLength(0) - 2, haarAlmostResult.GetLength(1) - 2];
+            double[,] haarResult = new double[HaarForm.resultBmp.Height, HaarForm.resultBmp.Width];
             for (int i = 0; i < haarResult.GetLength(0); i++)
                 for (int j = 0; j < haarResult.GetLength(1); j++)
-                {
-                    haarResult[i, j] = haarAlmostResult[i + 1, j + 1];
-                }
+                    haarResult[i, j] = HaarForm.resultBmp.GetPixel(j, i).R;
+            //for (int i = 0; i < haarResult.GetLength(0); i++)
+            //    for (int j = 0; j < haarResult.GetLength(1); j++)
+            //    {
+            //        haarResult[i, j] = haarAlmostResult[i + 1, j + 1];
+            //    }
 
             double cannyPrettCrit = CountPrettCriteria(perfectEdgeImage, cannyResult);
             double haarPrettCrit = CountPrettCriteria(perfectEdgeImage, haarResult);
@@ -349,7 +364,7 @@ namespace Edge_detection
             //for (int i = 0; i < 200; i++) 
             //    
 
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 201; i++)
             {
                 //for (int j = 0; j < 100; j++)
                     //    {
@@ -400,7 +415,7 @@ namespace Edge_detection
         public static double CountPrettCriteria(double[,] perfectResult, double[,] methodResult)
         {
             List<int>[] perfectEdgeIndecesPerRow = FindPerfectEdgeIndices(perfectResult);
-            int[][] methodEdgeIndecesPerRow = FindMethodEdgeIndices(methodResult, perfectEdgeIndecesPerRow);
+            List<int>[] methodEdgeIndecesPerRow = FindMethodEdgeIndices(methodResult, perfectEdgeIndecesPerRow);
             double R = 0; // коэффициент Прэтта
             int iI = 0; //число точек перепада в идеальном контурном препарате
             int iA = 0; //число точек перепада в реальном контурном препарате
@@ -435,106 +450,141 @@ namespace Edge_detection
                 //else minCount = perfectEdgeIndecesPerRow[i].Count;
                 //for (int j = 0; j < minCount; j++)
                 // for (int i = 0; i < methodResult.GetLength(0); i++)
-                    for (int j = 0; j < methodResult.GetLength(1); j++)
-                    {
-                        if (methodResult[i, j] == 255)
-                            iA++;
-                    }
-                for (int j = 0; j < methodEdgeIndecesPerRow[i].Length; j++)// было for (int j = 0; j < perfectEdgeIndecesPerRow[i].Count; j++)
-                    R += 1.0 / (1.0 + (1.0 / 9.0) * Convert.ToDouble(Math.Pow(methodEdgeIndecesPerRow[i][j] - perfectEdgeIndecesPerRow[i][j], 2)));
+                int iAInnerInRow = 0;
+                for (int j = 0; j < methodResult.GetLength(1); j++)
+                {
+                    if (methodResult[i, j] == 255)
+                        iAInnerInRow++;
+                }
+                //int indexOfColomnForPerfectEdge = perfectEdgeIndecesPerRow[i][j];
+                int numberOfPixInARowInPerfectInd = perfectEdgeIndecesPerRow[i].Count;
+                int k = 0;
+                for (int j = 0; j < iAInnerInRow; j++)// было for (int j = 0; j < perfectEdgeIndecesPerRow[i].Count; j++)
+                {
+                    double distance = Convert.ToDouble(Math.Pow(methodEdgeIndecesPerRow[i][j] - perfectEdgeIndecesPerRow[i][k], 2));
+                    R += 1.0 / (1.0 + (1.0 / 9.0) * distance);
+                    if (k < numberOfPixInARowInPerfectInd - 1)
+                        k++;
+                }
             }
             R = R / In;
             return R;
         }
 
-        public static List<int> [] FindPerfectEdgeIndices(double [,] perfectResult)
+        //ЭТО МЕТОД ДЛЯ МНОГОМЕРНОГО СЛУЧАЯ, Т.Е. КОГДА ИДЕАЛЬНЫЙ КОНТУРНЫЙ ПРЕПАРАТ ЯВЛЯЕТСЯ НЕ ВЕРТИК.ЛИНИЕЙ, А ФИГУРОЙ,
+        //ГДЕ В ОДНОЙ СТРОКЕ МОЖЕТ БЫТЬ НЕСКОЛЬКО КОНТУРНЫХ ТОЧЕК, А НЕ ОДНА, КАК В СЛУЧАЕ С ВЕРТИК.ЛИНИЕЙ
+        public static List<int>[] FindPerfectEdgeIndices(double[,] perfectResult)
         {
             //int j = 0; // номер столбца в массиве
             //int k = 0; // номер найденного элемента в пределах строки
             //int[][] indecesPerRow = new int[][] {};
             int numberOfRows = perfectResult.GetLength(0);
             //List<int> [] indecesPerRow = new List<int>[numberOfRows]{ };// массив списков, где i-ый список содержит индексы столбцов с ненулевыми элементами в рамках i-ой строки
-            List<int> [] indecesPerRow = new List<int>[numberOfRows];// массив списков, где i-ый список содержит индексы столбцов с ненулевыми элементами в рамках i-ой строки
+            List<int>[] indecesPerRow = new List<int>[numberOfRows];// массив списков, где i-ый список содержит индексы столбцов с ненулевыми элементами в рамках i-ой строки
 
             for (int i = 0; i < perfectResult.GetLength(0); i++)
             {
                 //indecesPerRow.Add(new List<int>());// создали список indecesPerRow[i]
-                indecesPerRow[i] = new List<int> ();
+                indecesPerRow[i] = new List<int>();
                 for (int j = 0; j < perfectResult.GetLength(1); j++)
                 {
                     if (perfectResult[i, j] == 255)
                         indecesPerRow[i].Add(j);
-                   // k++;
+                    // k++;
                 }
             }
             return indecesPerRow;
         }
 
-        public static int [][] FindMethodEdgeIndices(double[,] methodResult, List<int>[] perfect_IndecesPerRow)
+        public static List<int>[] FindMethodEdgeIndices(double[,] methodResult, List<int>[] perfect_IndecesPerRow)
         {
-            bool foundEdgePix = false;
-            bool notOutOfSequence = true;
             int numberOfRows = methodResult.GetLength(0);
             //int numberOfCol = methodResult.
-            int [][] indecesPerRow = new int[numberOfRows][];// массив списков, где i-ый список содержит индексы столбцов с ненулевыми элементами в рамках i-ой строки
+            List<int>[] indecesPerRow = new List<int>[numberOfRows];// массив списков, где i-ый список содержит индексы столбцов с ненулевыми элементами в рамках i-ой строки
             for (int i = 0; i < methodResult.GetLength(0); i++)
             {
                 //indecesPerRow.Add(new List<int>());// создали список indecesPerRow[i]
-                //indecesPerRow[i] = new List<int>();
-                indecesPerRow[i] = new int[perfect_IndecesPerRow[i].Count];
-                for (int j = 0; j < perfect_IndecesPerRow[i].Count; j++)// перебираем все элементы в i-ом списке
+                indecesPerRow[i] = new List<int>();
+                //indecesPerRow[i] = new int[perfect_IndecesPerRow[i].Count];
+                for (int j = 0; j < methodResult.GetLength(1); j++)// перебираем все элементы в i-ом списке
                 {
-                    int k = perfect_IndecesPerRow[i][j]; // индекс для передвижения в массиве methodResult = j-му элементу i-го списка
-                    int kGoOneSide = k;
-                    int kGoAnotherSide = k;
-
-                    if (perfect_IndecesPerRow[i].Count <= 4)// если список хранит элементы вертикальных контуров (сканируем влево и вправо от k)
-                    {
-                        while (foundEdgePix == false && kGoOneSide > 0 && kGoAnotherSide < (methodResult.GetLength(1) - 1) && methodResult[i, kGoOneSide] != 255 && methodResult[i, kGoAnotherSide] != 255)
-                        {
-                            kGoOneSide--;
-                            kGoAnotherSide++;
-                        }
+                    
                         //добавляем в i-ый список (т.е. список для i-ой строки) индекс найденного элемента или индекс крайнего элемента в строке, если элемент отсутствует
-                        if ((methodResult[i, kGoOneSide] == 255) || kGoOneSide == 0)
-                            //indecesPerRow[i].Add(kGoOneSide);
-                            indecesPerRow[i][j]=kGoOneSide;
-                        else if ((methodResult[i, kGoAnotherSide] == 255)||(kGoAnotherSide == (methodResult.GetLength(1) - 1)))
-                            //indecesPerRow[i].Add(kGoAnotherSide);
-                            indecesPerRow[i][j] = kGoAnotherSide;
-                    }
-                    else// если список хранит элементы горизонтальных контуров (сканируем вверх и вниз от k)
-                    {
-                        
-                        while (kGoOneSide > 0 && kGoAnotherSide < (methodResult.GetLength(0) - 1) && methodResult[kGoOneSide, i] != 255 && methodResult[kGoAnotherSide, i] != 255)
-                        {
-                            kGoOneSide--;
-                            kGoAnotherSide++;
-                        }
-                        //добавляем в i-ый список (т.е. список для i-ой строки) индекс найденного элемента или индекс крайнего элемента в столбце, если элемент отсутствует
-                        if ((methodResult[kGoOneSide, i] == 255)||kGoOneSide == 0)
-                            //indecesPerRow[i].Add(kGoOneSide);
-                            indecesPerRow[i][j]= kGoOneSide;
-                        else if ((methodResult[kGoAnotherSide, i] == 255)||(kGoAnotherSide == (methodResult.GetLength(0) - 1)))
-                            //indecesPerRow[i].Add(kGoAnotherSide);
-                            indecesPerRow[i][j] = kGoAnotherSide;
-
-
-                        //while (kGoOneSide > 0 && kGoAnotherSide < (methodResult.GetLength(0) - 1) && methodResult[kGoOneSide, i] != 255 && methodResult[kGoAnotherSide, i] != 255)
-                        //{
-                        //    kGoOneSide--;
-                        //    kGoAnotherSide++;
-                        //}
-                        ////добавляем в i-ый список (т.е. список для i-ой строки) найденный элемент
-                        //if (methodResult[kGoOneSide, i] == 255)
-                        //    indecesPerRow[i].Add(kGoOneSide);
-                        //if (methodResult[kGoAnotherSide, i] == 255)
-                        //    indecesPerRow[i].Add(kGoAnotherSide);
-                    }
+                        if (methodResult[i, j] == 255)
+                            indecesPerRow[i].Add(j);
+                            //indecesPerRow[i][j] = kGoOneSide;
                 }
             }
             return indecesPerRow;
         }
+
+
+
+        //public static int [][] FindMethodEdgeIndices(double[,] methodResult, List<int>[] perfect_IndecesPerRow)
+        //{
+        //    bool foundEdgePix = false;
+        //    bool notOutOfSequence = true;
+        //    int numberOfRows = methodResult.GetLength(0);
+        //    //int numberOfCol = methodResult.
+        //    int [][] indecesPerRow = new int[numberOfRows][];// массив списков, где i-ый список содержит индексы столбцов с ненулевыми элементами в рамках i-ой строки
+        //    for (int i = 0; i < methodResult.GetLength(0); i++)
+        //    {
+        //        //indecesPerRow.Add(new List<int>());// создали список indecesPerRow[i]
+        //        //indecesPerRow[i] = new List<int>();
+        //        indecesPerRow[i] = new int[perfect_IndecesPerRow[i].Count];
+        //        for (int j = 0; j < perfect_IndecesPerRow[i].Count; j++)// перебираем все элементы в i-ом списке
+        //        {
+        //            int k = perfect_IndecesPerRow[i][j]; // индекс для передвижения в массиве methodResult = j-му элементу i-го списка
+        //            int kGoOneSide = k;
+        //            int kGoAnotherSide = k;
+
+        //            if (perfect_IndecesPerRow[i].Count <= 4)// если список хранит элементы вертикальных контуров (сканируем влево и вправо от k)
+        //            {
+        //                while (foundEdgePix == false && kGoOneSide > 0 && kGoAnotherSide < (methodResult.GetLength(1) - 1) && methodResult[i, kGoOneSide] != 255 && methodResult[i, kGoAnotherSide] != 255)
+        //                {
+        //                    kGoOneSide--;
+        //                    kGoAnotherSide++;
+        //                }
+        //                //добавляем в i-ый список (т.е. список для i-ой строки) индекс найденного элемента или индекс крайнего элемента в строке, если элемент отсутствует
+        //                if ((methodResult[i, kGoOneSide] == 255) || kGoOneSide == 0)
+        //                    //indecesPerRow[i].Add(kGoOneSide);
+        //                    indecesPerRow[i][j]=kGoOneSide;
+        //                else if ((methodResult[i, kGoAnotherSide] == 255)||(kGoAnotherSide == (methodResult.GetLength(1) - 1)))
+        //                    //indecesPerRow[i].Add(kGoAnotherSide);
+        //                    indecesPerRow[i][j] = kGoAnotherSide;
+        //            }
+        //            else// если список хранит элементы горизонтальных контуров (сканируем вверх и вниз от k)
+        //            {
+
+        //                while (kGoOneSide > 0 && kGoAnotherSide < (methodResult.GetLength(0) - 1) && methodResult[kGoOneSide, i] != 255 && methodResult[kGoAnotherSide, i] != 255)
+        //                {
+        //                    kGoOneSide--;
+        //                    kGoAnotherSide++;
+        //                }
+        //                //добавляем в i-ый список (т.е. список для i-ой строки) индекс найденного элемента или индекс крайнего элемента в столбце, если элемент отсутствует
+        //                if ((methodResult[kGoOneSide, i] == 255)||kGoOneSide == 0)
+        //                    //indecesPerRow[i].Add(kGoOneSide);
+        //                    indecesPerRow[i][j]= kGoOneSide;
+        //                else if ((methodResult[kGoAnotherSide, i] == 255)||(kGoAnotherSide == (methodResult.GetLength(0) - 1)))
+        //                    //indecesPerRow[i].Add(kGoAnotherSide);
+        //                    indecesPerRow[i][j] = kGoAnotherSide;
+
+
+        //                //while (kGoOneSide > 0 && kGoAnotherSide < (methodResult.GetLength(0) - 1) && methodResult[kGoOneSide, i] != 255 && methodResult[kGoAnotherSide, i] != 255)
+        //                //{
+        //                //    kGoOneSide--;
+        //                //    kGoAnotherSide++;
+        //                //}
+        //                ////добавляем в i-ый список (т.е. список для i-ой строки) найденный элемент
+        //                //if (methodResult[kGoOneSide, i] == 255)
+        //                //    indecesPerRow[i].Add(kGoOneSide);
+        //                //if (methodResult[kGoAnotherSide, i] == 255)
+        //                //    indecesPerRow[i].Add(kGoAnotherSide);
+        //            }
+        //        }
+        //    }
+        //    return indecesPerRow;
+        //}
 
         public static Bitmap AddGausNoise(Bitmap bmp, double snr)
         {

@@ -21,6 +21,7 @@ namespace Edge_detection
         public static bool varyQ_radioButtonChecked;
         public static bool varyWidthOfDiffer_radioButtonChecked;
         public static double[,] bigPicIncomeInSobel;
+        public static bool enableNoisingImage_checkBoxChecked;
 
 
         public Form1()
@@ -870,9 +871,12 @@ namespace Edge_detection
                 }
          
             double maxResp = Max(respond);
-            for (int i = 0; i < respond.GetLength(0); i++)
-                for (int j = 0; j < respond.GetLength(1); j++)
-                    respond[i, j] = (respond[i, j] / maxResp) * 255; //нормируем значение отклика от 0 до 255
+            if (maxResp != 0)
+            {
+                for (int i = 0; i < respond.GetLength(0); i++)
+                    for (int j = 0; j < respond.GetLength(1); j++)
+                        respond[i, j] = (respond[i, j] / maxResp) * 255; //нормируем значение отклика от 0 до 255
+            }
             for (int x = 0; x < bmp.Height; x++)
                 for (int y = 0; y < bmp.Width; y++)
                     bmp.SetPixel(y, x, Color.FromArgb(Convert.ToInt32(respond[x + 2, y + 2]), Convert.ToInt32(respond[x + 2, y + 2]), Convert.ToInt32(respond[x + 2, y + 2])));
@@ -976,9 +980,12 @@ namespace Edge_detection
                     //    y++;
                 }
             double maxResp = Max(respond);
-            for (int i = 0; i < respond.GetLength(0); i++)
-                for (int j = 0; j < respond.GetLength(1); j++)
-                    respond[i, j] = (respond[i, j] / maxResp) * 255; //нормируем значение отклика от 0 до 255
+            if (maxResp != 0)
+            {
+                for (int i = 0; i < respond.GetLength(0); i++)
+                    for (int j = 0; j < respond.GetLength(1); j++)
+                        respond[i, j] = (respond[i, j] / maxResp) * 255; //нормируем значение отклика от 0 до 255
+            }
             for (int x = 0; x < imageArray.GetLength(0); x++)
                 for (int y = 0; y < imageArray.GetLength(1); y++)
                     imageArray[x, y] = respond[x + 2, y + 2];
@@ -1072,13 +1079,21 @@ namespace Edge_detection
 
 private void analyze_button_Click(object sender, EventArgs e)
         {
-            AnalysisOfMethods analyzeForm = new AnalysisOfMethods(Convert.ToDouble(analyze_sigma_textBox.Text), Convert.ToInt16(k_analyze_textBox.Text),
+            AnalysisOfMethods analyzeForm = new AnalysisOfMethods();
+            if (enableNoisingImage_checkBox.Checked)
+            analyzeForm = new AnalysisOfMethods(Convert.ToDouble(analyze_sigma_textBox.Text), Convert.ToInt16(k_analyze_textBox.Text),
             Convert.ToDouble(bottomThresholdCanny_analyze_textBox.Text), Convert.ToDouble(upperThresholdCanny_analyze_textBox.Text), 
             Int32.Parse(waveletLength_analyze_textBox.Text), Convert.ToDouble(bottomThresholdHaar_analyze_textBox.Text), 
             Convert.ToDouble(upperThresholdHaar_analyze_textBox.Text), Int32.Parse(widthOfBrigtnessDiffer_textBox.Text), Convert.ToDouble(SNR_textBox.Text));
 
+            else
+                if (enableNoisingImage_checkBox.Checked == false)
+                analyzeForm = new AnalysisOfMethods(Convert.ToDouble(analyze_sigma_textBox.Text), Convert.ToInt16(k_analyze_textBox.Text),
+                Convert.ToDouble(bottomThresholdCanny_analyze_textBox.Text), Convert.ToDouble(upperThresholdCanny_analyze_textBox.Text),
+                Int32.Parse(waveletLength_analyze_textBox.Text), Convert.ToDouble(bottomThresholdHaar_analyze_textBox.Text),
+                Convert.ToDouble(upperThresholdHaar_analyze_textBox.Text), Int32.Parse(widthOfBrigtnessDiffer_textBox.Text));
 
-            analyzeForm.Show();
+                analyzeForm.Show();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -1114,6 +1129,22 @@ private void analyze_button_Click(object sender, EventArgs e)
             Convert.ToDouble(upperThresholdHaar_analyzeWithPlots_textBox.Text), Int32.Parse(from_textBox.Text), Int32.Parse(to_textBox.Text));
 
             analyzeWithPlotsForm.Show();
+        }
+
+        private void enableNoisingImage_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (enableNoisingImage_checkBox.Checked == false)
+            {
+                SNR_textBox.Text = "";
+                SNR_textBox.Enabled = false;
+                enableNoisingImage_checkBoxChecked = false;
+            }
+            else
+            {
+                SNR_textBox.Text = "100";
+                SNR_textBox.Enabled = true;
+                enableNoisingImage_checkBoxChecked = true;
+            }
         }
     }
 }

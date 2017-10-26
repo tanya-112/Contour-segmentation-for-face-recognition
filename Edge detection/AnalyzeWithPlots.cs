@@ -57,12 +57,13 @@ namespace Edge_detection
                 PointPairList listForCanny = new PointPairList();
                 PointPairList listForHaar = new PointPairList();
 
+
                 int i = 0;
                 for (int q = from; q <= to; q+= qStep)
                 {
 
                     double [] prettCritt = AnalysisOfMethods.DoTheAnalysis(sigma, k, bottomThresholdCanny, upperThresholdCanny,
-                      waveletLength, bottomThresholdHaar, upperThresholdHaar, 1, true, q);
+                      waveletLength, bottomThresholdHaar, upperThresholdHaar, 1, q);
                     R[0, i] = prettCritt[0];// знач.критерия Прэтта для метода Канни при отношении сигнал/шум = q
                     R[1, i] = prettCritt[1];// знач.критерия Прэтта для метода Хаара при отношении сигнал/шум = q
                 
@@ -99,7 +100,7 @@ namespace Edge_detection
                 {
 
                     double[] prettCritt = AnalysisOfMethods.DoTheAnalysis(sigma, k, bottomThresholdCanny, upperThresholdCanny,
-                      waveletLength, bottomThresholdHaar, upperThresholdHaar, width, false, -1);
+                      waveletLength, bottomThresholdHaar, upperThresholdHaar, width);
                     R[0, i] = prettCritt[0];// знач.критерия Прэтта для метода Канни при отношении сигнал/шум = q
                     R[1, i] = prettCritt[1];// знач.критерия Прэтта для метода Хаара при отношении сигнал/шум = q
 
