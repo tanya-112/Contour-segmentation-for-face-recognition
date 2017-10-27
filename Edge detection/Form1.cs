@@ -581,7 +581,7 @@ namespace Edge_detection
             for (int x = 1; x < respond.GetLength(0) - 1; x++)
             {
                 double maxRespondInDirection = 0;
-                //int indexUntilWhichChecked = 0;
+                int indexUntilWhichChecked = 0;
 
 
                 for (int y = 1; y < respond.GetLength(1) - 1; y++)/*цикл от 1 и до предпосл.элемента, т.к. respond - это увеличенное на 2 пикселя с каждой стороны изображение 
@@ -591,14 +591,15 @@ namespace Edge_detection
                     if (atan[x, y] == 0)
                     {
                         if (respond[x, y] > 0)
-                            //if (y > indexUntilWhichChecked)
+                            if (y > indexUntilWhichChecked)
                             {
                                 maxRespondInDirection = respond[x, y];
                                 int maxRespondInDirectionIndex = y;
                                 int kGoOneSide = y - 1;
                                 int kGoAnotherSide = y + 1;
                                 List<int> memorizeIndicesToMakeZero = new List<int>();
-                                while ((respond[x, kGoOneSide] > 0 && atan[x, kGoOneSide] == 0) || (respond[x, kGoAnotherSide] > 0 && atan[x, kGoAnotherSide] == 0))
+                                while ((respond[x, kGoOneSide] > 0 && atan[x, kGoOneSide] == 0 && kGoOneSide > indexUntilWhichChecked) 
+                                    || (respond[x, kGoAnotherSide] > 0 && atan[x, kGoAnotherSide] == 0))
                                 {
                                     if (respond[x, kGoOneSide] > maxRespondInDirection)
                                     {
@@ -610,12 +611,21 @@ namespace Edge_detection
                                         maxRespondInDirection = respond[x, kGoAnotherSide];
                                         maxRespondInDirectionIndex = kGoAnotherSide;
                                     }
-                                    kGoOneSide--;//make if not out of range!!!
-                                    kGoAnotherSide++;
+                                    if (kGoOneSide <= 0 && kGoAnotherSide >= respond.GetLength(0))
+                                        break;
+                                    else
+                                    {
+                                        if (kGoOneSide > 0)
+                                            kGoOneSide--;//make if not out of range!!!
+                                        if (kGoAnotherSide < respond.GetLength(0))
+                                            kGoAnotherSide++;
+                                    }
+
+
                                 }
                                 //suppressed[x - 1, y - 1] = maxRespondInDirection;
 
-                                //indexUntilWhichChecked = maxRespondInDirectionIndex;//чтобы потом не затрагивать текущий макс.элемент и все, что до текущего максимального элемента
+                                indexUntilWhichChecked = maxRespondInDirectionIndex;//чтобы потом не затрагивать текущий макс.элемент и все, что до текущего максимального элемента
 
                                 for (int i = kGoOneSide + 1; i < kGoAnotherSide; i++)
                                 {
@@ -629,6 +639,13 @@ namespace Edge_detection
                                         suppressed[x - 1, i - 1] = maxRespondInDirection;
                                     }
                                 }
+
+                            if (respond[x, kGoOneSide + 1] == 0 || respond[x, kGoAnotherSide - 1] == 0)
+                                {
+                                maxRespondInDirection = 0;
+                                maxRespondInDirectionIndex = 0;
+                            }
+
                             }
                     }
                     if (atan[x, y] == 45)

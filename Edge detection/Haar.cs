@@ -20,6 +20,7 @@ namespace Edge_detection
         List<int> contourIndicesX;
         List<int> contourIndicesY;
         public Bitmap resultBmp;
+        public double [,] imageArray;
 
         public Haar(string filePath, int waveletLength, double bottomThreshold, double upperThreshold)
         {
@@ -42,6 +43,7 @@ namespace Edge_detection
 
             if (imageArray != null)
             {
+                this.imageArray = imageArray;
                 Bitmap bmp1 = new Bitmap(imageArray.GetLength(1), imageArray.GetLength(0));
                 for (int i = 0; i < imageArray.GetLength(0); i++)
                     for (int j = 0; j < imageArray.GetLength(1); j++)
@@ -125,6 +127,12 @@ namespace Edge_detection
         private void Haar_Load(object sender, EventArgs e)
         {
             Bitmap a = new Bitmap(pictureBox1.Image);
+            this.imageArray = new double[a.Height, a.Width];
+            for (int i = 0; i < a.Height; i++)
+                for (int j = 0; j < a.Width; j++)
+                    this.imageArray[i, j] = a.GetPixel(j, i).R;
+
+
             Form1.GrayScale(a);
             pictureBox2_1.Image = Form1.HaarWaveletHorisontal(a, waveletLength);           
             Bitmap b = new Bitmap(a);
@@ -149,7 +157,7 @@ namespace Edge_detection
 
         }
 
-        private void useHaarInCannyMethod_button_Click(object sender, EventArgs e)
+        private void useHaarInCannyMethod_button_Click(object sender, EventArgs e) //!!!!!!! change the name of eventHadler
         {
             contourIndicesX = new List<int>();
             contourIndicesY = new List<int>();
@@ -174,6 +182,53 @@ namespace Edge_detection
                         break;
                     }
                 }
+            //удаляем по последнему индексу, т.к. они совпадают с началом просложенного контура, который уже занесен в список
+            contourIndicesX.RemoveAt(contourIndicesX.Count - 1);
+            contourIndicesY.RemoveAt(contourIndicesY.Count - 1);
+
+            //определяем часть изображения, попавшую внутрь прослеженного контура и где надо, увеличиваем изображение, чтоб в итоге у него была постоянная ширина и пост.высота
+            int minFromcontourIndicesX = contourIndicesX[0];
+            int maxFromcontourIndicesX = contourIndicesX[0];
+            int minFromcontourIndicesY = contourIndicesY[0];
+            int maxFromcontourIndicesY = contourIndicesY[0];
+
+
+            for (int i = 0; i < contourIndicesX.Count; i++)
+            {
+                if (contourIndicesX[i] < minFromcontourIndicesX)
+                    minFromcontourIndicesX = contourIndicesX[i];
+                if (contourIndicesY[i] < minFromcontourIndicesY)
+                    minFromcontourIndicesY = contourIndicesY[i];
+                if (contourIndicesX[i] > maxFromcontourIndicesX)
+                    maxFromcontourIndicesX = contourIndicesX[i];
+                if (contourIndicesY[i] > maxFromcontourIndicesY)
+                    maxFromcontourIndicesY = contourIndicesY[i];
+            }
+            double[,] newImageArray = new double [maxFromcontourIndicesX - minFromcontourIndicesX + 1, maxFromcontourIndicesY - minFromcontourIndicesY + 1];
+            if (this.imageArray != null)
+            {
+                int iNew = 0;
+                int jNew = 0;
+                for (int i = minFromcontourIndicesX; i < maxFromcontourIndicesX; i++)
+                {
+                    jNew = 0;
+                    for (int j = minFromcontourIndicesY; j < maxFromcontourIndicesY; j++)
+                    {
+                        //if() !!!
+                        newImageArray[iNew, jNew] = this.imageArray[i, j];
+                        jNew++;
+                    }
+                    iNew++;
+                }
+            }
+
+            Haar newHaarForm = new Haar(Int32.Parse(waveletLength_textBox.Text), Convert.ToDouble(bottomThresholdHaar_textBox.Text),
+                Convert.ToDouble(upperThresholdHaar_textBox.Text), bmp = null, newImageArray);
+            newHaarForm.Show();
+            //pictureBox2_1.Image = Form1.HaarWaveletHorisontal(a, waveletLength);
+
+
+
             int abc = 1;
 
         }
@@ -265,10 +320,6 @@ namespace Edge_detection
                 contourIndicesY[contourIndicesY.Count - 1] != contourIndicesY[0]) // if haven't reached the beginnig
                 recursiveFindNeighborContourIndices(imageArray, contourIndicesX, contourIndicesY, contourIndicesX[contourIndicesX.Count - 1],
                     contourIndicesY[contourIndicesY.Count - 1]);
-
-            //удаляем по последнему индексу, т.к. они совпадают с началом просложенного контура, который уже занесен в список
-            contourIndicesX.RemoveAt(contourIndicesX.Count - 1);
-            contourIndicesY.RemoveAt(contourIndicesY.Count - 1);
 
             int abc = 123;
         }
