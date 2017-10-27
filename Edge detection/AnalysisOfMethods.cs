@@ -101,15 +101,19 @@ namespace Edge_detection
             }
 
             CannyForm = new Canny(sigma, k, bottomThresholdCanny, upperThresholdCanny, bmp: null, imageArray: origImage); //создаем окно для вывода результатов метода Канни, передавая путь к выбранному файлу
-            //CannyForm.Show();
-            // Bitmap cannyResBmp = // СЧИТАТЬ ИЗ ПИКЧЕРБОКСА 4 ИЗОБРАЖЕНИЕ
-            double[,] cannyAlmostResult = Form1.suppressed;
-            double[,] cannyResult = new double[cannyAlmostResult.GetLength(0) - 2, cannyAlmostResult.GetLength(1) - 2];
+            CannyForm.Show();
+            //Bitmap cannyResBmp = // СЧИТАТЬ ИЗ ПИКЧЕРБОКСА 4 ИЗОБРАЖЕНИЕ
+            //double[,] cannyAlmostResult = Form1.suppressed;
+            //double[,] cannyResult = new double[cannyAlmostResult.GetLength(0) - 2, cannyAlmostResult.GetLength(1) - 2];
+            //for (int i = 1; i < cannyResult.GetLength(0); i++)
+            //    for (int j = 1; j < cannyResult.GetLength(1); j++)
+            //    {
+            //        cannyResult[i - 1, j - 1] = cannyAlmostResult[i, j];
+            //    }
+            double[,] cannyResult = new double[CannyForm.cannyResult.Height, CannyForm.cannyResult.Width];
             for (int i = 0; i < cannyResult.GetLength(0); i++)
                 for (int j = 0; j < cannyResult.GetLength(1); j++)
-                {
-                    cannyResult[i, j] = cannyAlmostResult[i + 1, j + 1];
-                }
+                    cannyResult[i, j] = CannyForm.cannyResult.GetPixel(j, i).R;
             HaarForm = new Haar (waveletLength, bottomThresholdHaar, upperThresholdHaar, bmp:null, imageArray: origImageCopyForHaar); //создаем окно для вывода результатов метода Хаара, передавая путь к выбранному файлу
             //HaarForm.Show();
             //double[,] haarAlmostResult = Form1.suppressed;

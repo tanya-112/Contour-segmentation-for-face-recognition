@@ -18,6 +18,7 @@ namespace Edge_detection
         double bottomThreshold;
         double upperThreshold;
         Bitmap bmp;
+        public Bitmap cannyResult;
 
 
 
@@ -56,7 +57,8 @@ namespace Edge_detection
                 bmpFromImageArray = Form1.Double_Threshold(bmpFromImageArray, bottomThreshold, upperThreshold);
                 pictureBox3.Image = bmpFromImageArray;
                 //Bitmap c = new Bitmap(b);
-                pictureBox4.Image= Form1.Hysteresis_Thresholding(bmpFromImageArray, "Canny");
+               cannyResult = Form1.Hysteresis_Thresholding(bmpFromImageArray, "Canny");
+                pictureBox4.Image = cannyResult;
             }
             else
             {

@@ -579,18 +579,58 @@ namespace Edge_detection
                 suppressed = new double[imageArray.GetLength(0) + 2, imageArray.GetLength(1) + 2];
 
             for (int x = 1; x < respond.GetLength(0) - 1; x++)
+            {
+                double maxRespondInDirection = 0;
+                //int indexUntilWhichChecked = 0;
+
+
                 for (int y = 1; y < respond.GetLength(1) - 1; y++)/*цикл от 1 и до предпосл.элемента, т.к. respond - это увеличенное на 2 пикселя с каждой стороны изображение 
                                                             и при этом заполняется suppressed,кот. с каждой стороны на 1 пиксель меньше,чем respond. 
                                                             Избегается краевой эффект. */
                 {
                     if (atan[x, y] == 0)
-                        if (respond[x, y - 1] < respond[x, y] && respond[x, y + 1] < respond[x, y])
-                            suppressed[x - 1, y - 1] = respond[x, y];
-                        else
-                        {
-                            suppressed[x - 1, y - 1] = 0;
-                            respond[x, y] = 0;
-                        }
+                    {
+                        if (respond[x, y] > 0)
+                            //if (y > indexUntilWhichChecked)
+                            {
+                                maxRespondInDirection = respond[x, y];
+                                int maxRespondInDirectionIndex = y;
+                                int kGoOneSide = y - 1;
+                                int kGoAnotherSide = y + 1;
+                                List<int> memorizeIndicesToMakeZero = new List<int>();
+                                while ((respond[x, kGoOneSide] > 0 && atan[x, kGoOneSide] == 0) || (respond[x, kGoAnotherSide] > 0 && atan[x, kGoAnotherSide] == 0))
+                                {
+                                    if (respond[x, kGoOneSide] > maxRespondInDirection)
+                                    {
+                                        maxRespondInDirection = respond[x, kGoOneSide];
+                                        maxRespondInDirectionIndex = kGoOneSide;
+                                    }
+                                    if (respond[x, kGoAnotherSide] >= maxRespondInDirection)
+                                    {
+                                        maxRespondInDirection = respond[x, kGoAnotherSide];
+                                        maxRespondInDirectionIndex = kGoAnotherSide;
+                                    }
+                                    kGoOneSide--;//make if not out of range!!!
+                                    kGoAnotherSide++;
+                                }
+                                //suppressed[x - 1, y - 1] = maxRespondInDirection;
+
+                                //indexUntilWhichChecked = maxRespondInDirectionIndex;//чтобы потом не затрагивать текущий макс.элемент и все, что до текущего максимального элемента
+
+                                for (int i = kGoOneSide + 1; i < kGoAnotherSide; i++)
+                                {
+                                    if (i != maxRespondInDirectionIndex)
+                                    {
+                                        suppressed[x - 1, i - 1] = 0;
+                                        respond[x, i] = 0;
+                                    }
+                                    else
+                                    {
+                                        suppressed[x - 1, i - 1] = maxRespondInDirection;
+                                    }
+                                }
+                            }
+                    }
                     if (atan[x, y] == 45)
                         if (respond[x - 1, y - 1] < respond[x, y] && respond[x + 1, y + 1] < respond[x, y])
                             suppressed[x - 1, y - 1] = respond[x, y];
@@ -610,48 +650,28 @@ namespace Edge_detection
                     if (atan[x, y] == 135)
                         if (respond[x - 1, y + 1] < respond[x, y] && respond[x + 1, y - 1] < respond[x, y])
                             suppressed[x - 1, y - 1] = respond[x, y];
-                        else {
+                        else
+                        {
                             suppressed[x - 1, y - 1] = 0;
                             respond[x, y] = 0;
                         }
-                            //bmp.SetPixel(y-1, x-1, Color.FromArgb((int)suppressed[x-1, y-1], (int)suppressed[x-1, y-1], (int)suppressed[x-1, y-1]));
-                        }
-            
+
+                    //bmp.SetPixel(y-1, x-1, Color.FromArgb((int)suppressed[x-1, y-1], (int)suppressed[x-1, y-1], (int)suppressed[x-1, y-1]));
+                }
+            }
             Bitmap bmp1;
             if (bmp == null)
-                bmp1 = new Bitmap(imageArray.GetLength(0),imageArray.GetLength(1));
+                bmp1 = new Bitmap(imageArray.GetLength(0), imageArray.GetLength(1));
             else
                 bmp1 = new Bitmap(bmp);
-                    for (int x = 0; x < bmp1.Height; x++)
+            for (int x = 0; x < bmp1.Height; x++)
                 for (int y = 0; y < bmp1.Width; y++)
                     bmp1.SetPixel(y, x, Color.FromArgb(Convert.ToInt32(suppressed[x + 1, y + 1]), Convert.ToInt32(suppressed[x + 1, y + 1]), Convert.ToInt32(suppressed[x + 1, y + 1])));
 
-
-            //for (int x = 0; x < bmp.Height; x += bmp.Height - 1)
-            //    for (int y = 0; y < bmp.Width; y += bmp.Width - 1)
-            //    {
-            //        if (atan[x, y] == 0)
-            //            if (respond[x, y - 1] < respond[x, y] && respond[x, y + 1] <= respond[x, y])
-            //                suppressed[x, y] = respond[x, y];
-            //            else suppressed[x, y] = 0;
-            //        if (atan[x, y] == 45)
-            //            if (respond[x - 1, y - 1] < respond[x, y] && respond[x + 1, y + 1] < respond[x, y])
-            //                suppressed[x, y] = respond[x, y];
-            //            else suppressed[x, y] = 0;
-            //        if (atan[x, y] == 90)
-            //            if (respond[x - 1, y] < respond[x, y] && respond[x + 1, y] < respond[x, y])
-            //                suppressed[x, y] = respond[x, y];
-            //            else suppressed[x, y] = 0;
-            //        if (atan[x, y] == 135)
-            //            if (respond[x - 1, y - 1] < respond[x, y] && respond[x + 1, y + 1] < respond[x, y])
-            //                suppressed[x, y] = respond[x, y];
-            //            else suppressed[x, y] = 0;
-            //        bmp.SetPixel(y, x, Color.FromArgb((byte)suppressed[x, y], (byte)suppressed[x, y], (byte)suppressed[x, y]));
-            //    }
             return bmp1;
 
         }
-
+       
 
         public static Bitmap Double_Threshold(Bitmap bmp, double bottomThreshold, double upperThreshold)
         {
