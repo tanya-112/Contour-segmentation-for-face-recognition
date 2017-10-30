@@ -101,7 +101,7 @@ namespace Edge_detection
             }
 
             CannyForm = new Canny(sigma, k, bottomThresholdCanny, upperThresholdCanny, bmp: null, imageArray: origImage); //создаем окно для вывода результатов метода Канни, передавая путь к выбранному файлу
-            CannyForm.Show();
+            //CannyForm.Show();
             //Bitmap cannyResBmp = // СЧИТАТЬ ИЗ ПИКЧЕРБОКСА 4 ИЗОБРАЖЕНИЕ
             //double[,] cannyAlmostResult = Form1.suppressed;
             //double[,] cannyResult = new double[cannyAlmostResult.GetLength(0) - 2, cannyAlmostResult.GetLength(1) - 2];
@@ -122,14 +122,14 @@ namespace Edge_detection
             for (int i = 0; i < haarResult.GetLength(0); i++)
                 for (int j = 0; j < haarResult.GetLength(1); j++)
                     haarResult[i, j] = HaarForm.resultBmp.GetPixel(j, i).R;
-            //for (int i = 0; i < haarResult.GetLength(0); i++)
+            //for (int i = 0; i < haarResult.GetLength(0); i++)5
             //    for (int j = 0; j < haarResult.GetLength(1); j++)
             //    {
             //        haarResult[i, j] = haarAlmostResult[i + 1, j + 1];
             //    }
 
             double cannyPrettCrit = CountPrettCriteria(perfectEdgeImage, cannyResult);
-            double haarPrettCrit = CountPrettCriteria(perfectEdgeImage, haarResult);
+            double haarPrettCrit = CountPrettCriteriaWithoutBorderPixels(perfectEdgeImage, haarResult);
             //prettCritt.cannyPrettCrit = cannyPrettCrit;
             double[] prettCrit = new double[2];
             prettCrit[0] = cannyPrettCrit;
@@ -415,6 +415,66 @@ namespace Edge_detection
             }
             return imageArr;
         }
+        public static double CountPrettCriteriaWithoutBorderPixels(double[,] perfectResult, double[,] methodResult)
+        {
+            List<int>[] perfectEdgeIndecesPerRow = FindPerfectEdgeIndices(perfectResult);
+            List<int>[] methodEdgeIndecesPerRow = FindMethodEdgeIndices(methodResult, perfectEdgeIndecesPerRow);
+            double R = 0; // коэффициент Прэтта
+            int iI = 0; //число точек перепада в идеальном контурном препарате
+            int iA = 0; //число точек перепада в реальном контурном препарате
+
+            int widthOfIgnoringFromSide = 7;
+
+            for (int i = 0; i < perfectResult.GetLength(0); i++)
+                for (int j = widthOfIgnoringFromSide; j < perfectResult.GetLength(1)- widthOfIgnoringFromSide; j++)
+                {
+                    if (perfectResult[i, j] == 255)
+                        iI++;
+                }
+            for (int i = 0; i < methodResult.GetLength(0); i++)
+                for (int j = widthOfIgnoringFromSide; j < methodResult.GetLength(1)- widthOfIgnoringFromSide; j++)
+                {
+                    if (methodResult[i, j] == 255)
+                        iA++;
+                }
+
+            //вычисляем массив расстояний реального и идеального контуров для каждой строки
+            double distanse = 0;
+            //for (int i = 0; i < perfectEdgeIndecesPerRow.Count; i++)//двигаемся от одного списка к другому
+            //    for (int j = 0; j < perfectEdgeIndecesPerRow[i].Count; j++)//перебираем элементы в пределах i-го списка
+            //{
+            //    distanse = methodEdgeIndecesPerRow[i][j] - perfectEdgeIndecesPerRow[i][j];
+            //}
+            int minCount = 0;
+            int In = Math.Max(iI, iA);
+            //for (int i = 0; i < iA; i++)
+            for (int i = 0; i < perfectEdgeIndecesPerRow.GetLength(0); i++)//было for (int i = 0; i < methodEdgeIndecesPerRow.GetLength(0); i++)
+            {
+                //if (methodEdgeIndecesPerRow[i].Length < perfectEdgeIndecesPerRow[i].Count)
+                //    minCount = methodEdgeIndecesPerRow[i].Length;
+                //else minCount = perfectEdgeIndecesPerRow[i].Count;
+                //for (int j = 0; j < minCount; j++)
+                // for (int i = 0; i < methodResult.GetLength(0); i++)
+                int iAInnerInRow = 0;
+                for (int j = widthOfIgnoringFromSide; j < methodResult.GetLength(1)- widthOfIgnoringFromSide-1; j++)
+                {
+                    if (methodResult[i, j] == 255)
+                        iAInnerInRow++;
+                }
+                //int indexOfColomnForPerfectEdge = perfectEdgeIndecesPerRow[i][j];
+                int numberOfPixInARowInPerfectInd = 1;//было int numberOfPixInARowInPerfectInd = perfectEdgeIndecesPerRow[i].Count
+                int k = 0;
+                for (int j = 0; j < iAInnerInRow; j++)// было for (int j = 0; j < perfectEdgeIndecesPerRow[i].Count; j++)
+                {
+                    double distance = Convert.ToDouble(Math.Pow(methodEdgeIndecesPerRow[i][j] - perfectEdgeIndecesPerRow[i][k], 2));
+                    R += 1.0 / (1.0 + (1.0 / 9.0) * distance);
+                    if (k < numberOfPixInARowInPerfectInd - 1)
+                        k++;
+                }
+            }
+            R = R / In;
+            return R;
+        }
 
         public static double CountPrettCriteria(double[,] perfectResult, double[,] methodResult)
         {
@@ -471,7 +531,7 @@ namespace Edge_detection
                         k++;
                 }
             }
-            R = R / In;
+            R = R / Convert.ToDouble(In);
             return R;
         }
 
@@ -634,7 +694,7 @@ namespace Edge_detection
                     //double value =  y1 * 1.00/Math.Sqrt(10.00)*255;
                     //if (q <= 40)
                     double newColor = origImage[j, i] + value;
-                    if (newColor > 255)
+                    if (newColor > 255)// ИЛИ, МОЖЕТ, ЛУЧШЕ ПРОНОРМИРОВАТЬ? !!!!
                         newColor = 255;
                     if (newColor < 0)
                         newColor = 0;

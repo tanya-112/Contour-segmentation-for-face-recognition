@@ -58,16 +58,15 @@ namespace Edge_detection
                     for (int j = 0; j < imageArray.GetLength(1); j++)
                         imageArrayCopyNeeded[i, j] = imageArray[i, j];
 
-                //ВСЕ, ЧТО НИЖЕ 1 РАЗ ЗАКОММЕНТИРОВАЛА, НАДО ПЕРЕСТРОИТЬ ПОД 2 МЕТОДА ХААРА(ГОРИЗ.И ВЕРТИК.) !!!
 
-                        //Bitmap a = new Bitmap(pictureBox1.Image);
+                //Bitmap a = new Bitmap(pictureBox1.Image);
                 //Form1.GrayScale(imageArray);
-                Form1.HaarWaveletHorisontal(imageArray, waveletLength);
+                imageArray = Form1.HaarWaveletHorisontal(imageArray, waveletLength);
                 Bitmap bmpFromArray = new Bitmap(imageArray.GetLength(1), imageArray.GetLength(0));
                 for (int i = 0; i < bmpFromArray.Height; i++)
                     for (int j = 0; j < bmpFromArray.Width; j++)
                     {
-                        bmpFromArray.SetPixel(j,i,Color.FromArgb((int)imageArray[i,j], (int)imageArray[i, j],(int)imageArray[i, j]));
+                        bmpFromArray.SetPixel(j, i, Color.FromArgb((int)imageArray[i, j], (int)imageArray[i, j], (int)imageArray[i, j]));
                     }
 
                 pictureBox2_1.Image = bmpFromArray;
@@ -75,29 +74,43 @@ namespace Edge_detection
                 Form1.Non_Maximum_Suppression(b);
                 pictureBox3_1.Image = Form1.Double_Threshold(b, bottomThreshold, upperThreshold);
                 Bitmap c = new Bitmap(b);
-                Form1.Hysteresis_Thresholding(c, "Haar");
+                resultBmp = Form1.Hysteresis_Thresholding(c, "Haar");
 
 
                 //Bitmap a2 = new Bitmap(pictureBox1.Image);
                 //Form1.GrayScale(imageArrayCopyNeeded);
-                
-               Form1.HaarWaveletVertical(imageArrayCopyNeeded, waveletLength);
-                Bitmap bmpFromArray2 = new Bitmap(imageArrayCopyNeeded.GetLength(1), imageArrayCopyNeeded.GetLength(0));
-                for (int i = 0; i < bmpFromArray2.Height; i++)
-                    for (int j = 0; j < bmpFromArray2.Width; j++)
-                    {
-                        bmpFromArray2.SetPixel(j, i, Color.FromArgb((int)imageArrayCopyNeeded[i, j], (int)imageArrayCopyNeeded[i, j], (int)imageArrayCopyNeeded[i, j]));
-                    }
-                pictureBox2_2.Image = bmpFromArray2;
-                Bitmap b2 = new Bitmap(bmpFromArray2);
-               Form1.Non_Maximum_Suppression(b2);
-                pictureBox3_2.Image = Form1.Double_Threshold(b2, bottomThreshold, upperThreshold);
-                 Bitmap c2 = new Bitmap(b2);
-                Form1.Hysteresis_Thresholding(c2, "Haar");
 
-                resultBmp = Form1.SumHorisAndVerticHaarResults(c2, c);
+
+                //---------------------------------------------------------------------------------------------------------------------------------------
+                //----------------------------------ЗАКОММЕНТИРОВАННОЕ НИЖУ НЕ УДАЛЯТЬ-----------------------------------------------------------
+
+                //-------------------------------------------------------------------------------------------------------------------------------
+                //Form1.HaarWaveletVertical(imageArrayCopyNeeded, waveletLength);
+                //Bitmap bmpFromArray2 = new Bitmap(imageArrayCopyNeeded.GetLength(1), imageArrayCopyNeeded.GetLength(0));
+                //for (int i = 0; i < bmpFromArray2.Height; i++)
+                //    for (int j = 0; j < bmpFromArray2.Width; j++)
+                //    {
+                //        bmpFromArray2.SetPixel(j, i, Color.FromArgb((int)imageArrayCopyNeeded[i, j], (int)imageArrayCopyNeeded[i, j], (int)imageArrayCopyNeeded[i, j]));
+                //    }
+                //pictureBox2_2.Image = bmpFromArray2;
+                //Bitmap b2 = new Bitmap(bmpFromArray2);
+                //Form1.Non_Maximum_Suppression(b2);
+                //pictureBox3_2.Image = Form1.Double_Threshold(b2, bottomThreshold, upperThreshold);
+                //Bitmap c2 = new Bitmap(b2);
+                //Form1.Hysteresis_Thresholding(c2, "Haar");
+
+                //resultBmp = Form1.SumHorisAndVerticHaarResults(c2, c);
                 pictureBox4.Image = resultBmp;
+                //---------------------------------------------------------------------------------------------------------------------------------------
+                //----------------------------------ЗАКОММЕНТИРОВАННОЕ ВЫШЕ НЕ УДАЛЯТЬ-----------------------------------------------------------
 
+                //-------------------------------------------------------------------------------------------------------------------------------
+                
+            
+            
+            
+            
+            
                 //imageArray = Form1.HaarWaveletHorisontal(imageArray, waveletLength);
                 //Bitmap bmp2 = new Bitmap(imageArray.GetLength(1), imageArray.GetLength(0));
                 //for (int i = 0; i < imageArray.GetLength(0); i++)
@@ -122,9 +135,39 @@ namespace Edge_detection
                 ////Bitmap c = new Bitmap(b);
                 ////pictureBox4.Image = Form1.Hysteresis_Thresholding(c, "Haar");
             }
+            else if (bmp != null)
+            {
+                Bitmap a = new Bitmap(pictureBox1.Image);
+                this.imageArray = new double[a.Height, a.Width];
+                for (int i = 0; i < a.Height; i++)
+                    for (int j = 0; j < a.Width; j++)
+                        this.imageArray[i, j] = a.GetPixel(j, i).R;
+
+                Form1.GrayScale(a);
+                pictureBox2_1.Image = Form1.HaarWaveletHorisontal(a, waveletLength);
+                Bitmap b = new Bitmap(a);
+                Form1.Non_Maximum_Suppression(b);
+                pictureBox3_1.Image = Form1.Double_Threshold(b, bottomThreshold, upperThreshold);
+                Bitmap c = new Bitmap(b);
+                Form1.Hysteresis_Thresholding(c, "Haar");
+
+
+                Bitmap a2 = new Bitmap(pictureBox1.Image);
+                Form1.GrayScale(a2);
+                pictureBox2_2.Image = Form1.HaarWaveletVertical(a2, waveletLength);
+                Bitmap b2 = new Bitmap(a2);
+                Form1.Non_Maximum_Suppression(b2);
+                pictureBox3_2.Image = Form1.Double_Threshold(b2, bottomThreshold, upperThreshold);
+                Bitmap c2 = new Bitmap(b2);
+                Form1.Hysteresis_Thresholding(a, "Haar");
+
+                Bitmap resultBmp = Form1.SumHorisAndVerticHaarResults(c, a2);
+                pictureBox4.Image = resultBmp;
+
+            }
         }
 
-        private void Haar_Load(object sender, EventArgs e)
+        internal void findHaarResultsFromBmp()
         {
             Bitmap a = new Bitmap(pictureBox1.Image);
             this.imageArray = new double[a.Height, a.Width];
@@ -132,9 +175,8 @@ namespace Edge_detection
                 for (int j = 0; j < a.Width; j++)
                     this.imageArray[i, j] = a.GetPixel(j, i).R;
 
-
             Form1.GrayScale(a);
-            pictureBox2_1.Image = Form1.HaarWaveletHorisontal(a, waveletLength);           
+            pictureBox2_1.Image = Form1.HaarWaveletHorisontal(a, waveletLength);
             Bitmap b = new Bitmap(a);
             Form1.Non_Maximum_Suppression(b);
             pictureBox3_1.Image = Form1.Double_Threshold(b, bottomThreshold, upperThreshold);
@@ -144,15 +186,46 @@ namespace Edge_detection
 
             Bitmap a2 = new Bitmap(pictureBox1.Image);
             Form1.GrayScale(a2);
-            pictureBox2_2.Image =Form1.HaarWaveletVertical(a2, waveletLength);
+            pictureBox2_2.Image = Form1.HaarWaveletVertical(a2, waveletLength);
             Bitmap b2 = new Bitmap(a2);
             Form1.Non_Maximum_Suppression(b2);
-            pictureBox3_2.Image = Form1.Double_Threshold(b2, bottomThreshold, upperThreshold);
+            Bitmap b3 = Form1.Double_Threshold(b2, bottomThreshold, upperThreshold);
+            pictureBox3_2.Image = b3;
             Bitmap c2 = new Bitmap(b2);
             Form1.Hysteresis_Thresholding(a, "Haar");
 
             Bitmap resultBmp = Form1.SumHorisAndVerticHaarResults(c, a2);
-            pictureBox4.Image =resultBmp;
+            pictureBox4.Image = resultBmp;
+        }
+        private void Haar_Load(object sender, EventArgs e)
+        {
+            //Bitmap a = new Bitmap(pictureBox1.Image);
+            //this.imageArray = new double[a.Height, a.Width];
+            //for (int i = 0; i < a.Height; i++)
+            //    for (int j = 0; j < a.Width; j++)
+            //        this.imageArray[i, j] = a.GetPixel(j, i).R;
+
+
+            //Form1.GrayScale(a);
+            //pictureBox2_1.Image = Form1.HaarWaveletHorisontal(a, waveletLength);           
+            //Bitmap b = new Bitmap(a);
+            //Form1.Non_Maximum_Suppression(b);
+            //pictureBox3_1.Image = Form1.Double_Threshold(b, bottomThreshold, upperThreshold);
+            //Bitmap c = new Bitmap(b);
+            //Form1.Hysteresis_Thresholding(c, "Haar");
+
+
+            //Bitmap a2 = new Bitmap(pictureBox1.Image);
+            //Form1.GrayScale(a2);
+            //pictureBox2_2.Image =Form1.HaarWaveletVertical(a2, waveletLength);
+            //Bitmap b2 = new Bitmap(a2);
+            //Form1.Non_Maximum_Suppression(b2);
+            //pictureBox3_2.Image = Form1.Double_Threshold(b2, bottomThreshold, upperThreshold);
+            //Bitmap c2 = new Bitmap(b2);
+            //Form1.Hysteresis_Thresholding(a, "Haar");
+
+            //Bitmap resultBmp = Form1.SumHorisAndVerticHaarResults(c, a2);
+            //pictureBox4.Image =resultBmp;
 
 
         }
@@ -222,8 +295,26 @@ namespace Edge_detection
                 }
             }
 
-            Haar newHaarForm = new Haar(Int32.Parse(waveletLength_textBox.Text), Convert.ToDouble(bottomThresholdHaar_textBox.Text),
-                Convert.ToDouble(upperThresholdHaar_textBox.Text), bmp = null, newImageArray);
+            //create BMP
+            Bitmap bmpInsideTheContour = new Bitmap(maxFromcontourIndicesY - minFromcontourIndicesY + 1, maxFromcontourIndicesX - minFromcontourIndicesX + 1);
+            if (this.imageArray != null)
+            {
+                int iNew = 0;
+                int jNew = 0;
+                for (int i = minFromcontourIndicesX; i < maxFromcontourIndicesX; i++)
+                {
+                    jNew = 0;
+                    for (int j = minFromcontourIndicesY; j < maxFromcontourIndicesY; j++)
+                    {
+                        //if() !!!
+                        bmpInsideTheContour.SetPixel(jNew, iNew, Color.FromArgb((int) this.imageArray[i, j], (int)this.imageArray[i, j], (int)this.imageArray[i, j]));
+                        jNew++;
+                    }
+                    iNew++;
+                }
+            }
+           Haar newHaarForm = new Haar(Int32.Parse(waveletLength_textBox.Text), Convert.ToDouble(bottomThresholdHaar_textBox.Text),
+                Convert.ToDouble(upperThresholdHaar_textBox.Text), bmp = bmpInsideTheContour);
             newHaarForm.Show();
             //pictureBox2_1.Image = Form1.HaarWaveletHorisontal(a, waveletLength);
 

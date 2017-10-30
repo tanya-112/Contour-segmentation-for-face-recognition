@@ -26,6 +26,9 @@ namespace Edge_detection
         int to;
         int widthOfBrightnessDiffer;
         double snr;
+        static GraphPane pane1;
+        static GraphPane pane2;
+        //static ZedGraphControl zedGraphControl1;
 
         public AnalyzeWithPlots(double sigma, short k, double bottomThresholdCanny, double upperThresholdCanny, 
             int waveletLength, double bottomThresholdHaar, double upperThresholdHaar, int from, int to)
@@ -43,20 +46,24 @@ namespace Edge_detection
             //this.widthOfBrightnessDiffer = widthOfBrightnessDiffer;
             //this.snr = snr;
         }
-
-        private void AnalysisWithPlots_Load(object sender, EventArgs e)
-        {
+        public void MakePlotInSameWindow(double sigma, short k, double bottomThresholdCanny, double upperThresholdCanny,
+            int waveletLength, double bottomThresholdHaar, double upperThresholdHaar, int from, int to)
+            {
             if (Form1.varyQ_radioButtonChecked == true)
             {
                 int quantityOfExperimentsWithOneQ = 5; // столько раз будем проводить один и тот же эксперимент, а затем усредним рез-т, просуммировав и разделив на это число
                 double[][,] R = new double[quantityOfExperimentsWithOneQ][,];// в 0й строке будут все значения крит.Прэтта для Канни, в 1й - для Хаара
 
-                for (int k = 0; k < quantityOfExperimentsWithOneQ; k++)
-                    R[k] = new double[2, (to - from + 1)];
+                for (int z = 0; z < quantityOfExperimentsWithOneQ; z++)
+                    R[z] = new double[2, (to - from + 1)];
 
                 int qStep = 1;
                 // Получим панель для рисования
-                GraphPane pane = zedGraphControl1.GraphPane;
+                if (Form1.mustMakePlotInSameWindow == false)
+                    pane1 = zedGraphControl1.GraphPane;
+
+                pane1.XAxis.Title.Text = "q";
+                pane1.YAxis.Title.Text = "R";
 
                 // Создадим списки точек
                 PointPairList listForCanny = new PointPairList();
@@ -64,7 +71,7 @@ namespace Edge_detection
 
 
                 int i = 0;
-                for (int q = from; q <= to; q+= qStep)
+                for (int q = from; q <= to; q += qStep)
                 {
                     double[] prettCritt;
                     for (int numberOfExperimentToAverage = 0; numberOfExperimentToAverage < quantityOfExperimentsWithOneQ; numberOfExperimentToAverage++)
@@ -78,24 +85,27 @@ namespace Edge_detection
                     averageOfExperimentsForOneQ[0, 0] = 0;
                     averageOfExperimentsForOneQ[1, 0] = 0;
 
-                    for (int k = 0; k < quantityOfExperimentsWithOneQ; k++)
+                    for (int z = 0; z < quantityOfExperimentsWithOneQ; z++)
                     {
-                        averageOfExperimentsForOneQ[0, 0] += R[k][0, i];
-                        averageOfExperimentsForOneQ[1, 0] += R[k][1, i];
+                        averageOfExperimentsForOneQ[0, 0] += R[z][0, i];
+                        averageOfExperimentsForOneQ[1, 0] += R[z][1, i];
 
                     }
 
                     averageOfExperimentsForOneQ[0, 0] /= quantityOfExperimentsWithOneQ;//получили усредненный результат с экспериментом для опр-го q для м.Канни
                     averageOfExperimentsForOneQ[1, 0] /= quantityOfExperimentsWithOneQ;//получили усредненный результат с экспериментом для опр-го q для м.Хаара
-                    // добавим в список полученные точки для дальнейшего отображения на графике
-                    listForCanny.Add(q, averageOfExperimentsForOneQ[0, 0]);
+                                                                                       // добавим в список полученные точки для дальнейшего отображения на графике
+                    if (Form1.mustMakePlotInSameWindow == false)
+                        listForCanny.Add(q, averageOfExperimentsForOneQ[0, 0]);
                     listForHaar.Add(q, averageOfExperimentsForOneQ[1, 0]);
                     i++;
                 }
                 //Color color = Color.Black;
+                LineItem curveForCanny;
                 // Создадим кривую с названием "F", 
-                LineItem curveForCanny = pane.AddCurve("Canny method Prett Criteria", listForCanny, Color.BlueViolet, SymbolType.Circle);
-                LineItem curveForHaar = pane.AddCurve("Haar method Prett Criteria", listForHaar, Color.Green, SymbolType.Circle);
+                if (Form1.mustMakePlotInSameWindow == false)
+                     curveForCanny = pane1.AddCurve("Canny method Prett Criteria", listForCanny, Color.BlueViolet, SymbolType.None);
+                LineItem curveForHaar = pane1.AddCurve("Haar method Prett Criteria", listForHaar, Color.Green, SymbolType.None);
                 // Вызываем метод AxisChange (), чтобы обновить данные об осях. 
                 // В противном случае на рисунке будет показана только часть графика, 
                 // которая умещается в интервалы по осям, установленные по умолчанию
@@ -103,13 +113,18 @@ namespace Edge_detection
 
                 // Обновляем график
                 zedGraphControl1.Invalidate();
+
             }
             if (Form1.varyWidthOfDiffer_radioButtonChecked == true)
             {
                 double[,] R = new double[2, to - from + 1];// в 0й строке будут все значения крит.Прэтта для Канни, в 1й - для Хаара
                 int widthStep = 1;
                 // Получим панель для рисования
-                GraphPane pane = zedGraphControl1.GraphPane;
+                if(Form1.mustMakePlotInSameWindow==false)
+                pane1 = zedGraphControl1.GraphPane;
+
+                pane1.XAxis.Title.Text = "Ширина перепаду";
+                pane1.YAxis.Title.Text = "R";
 
                 // Создадим списки точек
                 PointPairList listForCanny = new PointPairList();
@@ -125,14 +140,17 @@ namespace Edge_detection
                     R[1, i] = prettCritt[1];// знач.критерия Прэтта для метода Хаара при отношении сигнал/шум = q
 
                     // добавим в список полученные точки для дальнейшего отображения на графике
-                    listForCanny.Add(width, R[0, i]);
+                    if (Form1.mustMakePlotInSameWindow == false)
+                        listForCanny.Add(width, R[0, i]);
                     listForHaar.Add(width, R[1, i]);
                     i++;
                 }
                 //Color color = Color.Black;
+                LineItem curveForCanny;
                 // Создадим кривую с названием "F", 
-                LineItem curveForCanny = pane.AddCurve("Canny method Prett Criteria", listForCanny, Color.BlueViolet, SymbolType.Circle);
-                LineItem curveForHaar = pane.AddCurve("Haar method Prett Criteria", listForHaar, Color.Green, SymbolType.Circle);
+                if (Form1.mustMakePlotInSameWindow == false)
+                    curveForCanny = pane1.AddCurve("Canny method Prett Criteria", listForCanny, Color.BlueViolet, SymbolType.None);
+                LineItem curveForHaar = pane1.AddCurve("Haar method Prett Criteria", listForHaar, Color.Green, SymbolType.None);
                 // Вызываем метод AxisChange (), чтобы обновить данные об осях. 
                 // В противном случае на рисунке будет показана только часть графика, 
                 // которая умещается в интервалы по осям, установленные по умолчанию
@@ -141,6 +159,12 @@ namespace Edge_detection
                 // Обновляем график
                 zedGraphControl1.Invalidate();
             }
+        
+    }
+        private void AnalysisWithPlots_Load(object sender, EventArgs e)
+        {
+            MakePlotInSameWindow( sigma,  k,  bottomThresholdCanny,  upperThresholdCanny,
+             waveletLength,  bottomThresholdHaar,  upperThresholdHaar,  from, to);
         }
     }
 }

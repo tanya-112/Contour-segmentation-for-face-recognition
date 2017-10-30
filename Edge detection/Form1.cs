@@ -22,6 +22,9 @@ namespace Edge_detection
         public static bool varyWidthOfDiffer_radioButtonChecked;
         public static double[,] bigPicIncomeInSobel;
         public static bool enableNoisingImage_checkBoxChecked;
+        internal static int addToBmp;
+        internal AnalyzeWithPlots analyzeWithPlotsForm;
+        internal static bool mustMakePlotInSameWindow;
 
 
         public Form1()
@@ -221,8 +224,13 @@ namespace Edge_detection
                 //H[4,2] = 0.013347;
                 //H[4,3] = 0.006581;
                 //H[4,4] = 0.000789;
-
-                bigPic = FormBigPic(imageArray, k);
+                double [,] transposedImageArray = new double[imageArray.GetLength(1), imageArray.GetLength(0)];
+                for(int i=0;i<imageArray.GetLength(0);i++)
+                    for(int j=0; j<imageArray.GetLength(1);j++)
+                    {
+                        transposedImageArray[j, i] = imageArray[i, j];
+                    }
+                bigPic = FormBigPic(transposedImageArray, k);
                 //int diffInPixelAmount=M.L
 
                 double blurredPix;
@@ -580,8 +588,14 @@ namespace Edge_detection
 
             for (int x = 1; x < respond.GetLength(0) - 1; x++)
             {
-                double maxRespondInDirection = 0;
-                int indexUntilWhichChecked = 0;
+                double maxRespondInDirection_0 = 0;
+                double maxRespondInDirection_90 = 0;
+                int maxRespondInDirectionIndex_0 = 0;
+                int maxRespondInDirectionIndex_90 = 0;
+                int indexUntilWhichChecked_0 = 0;
+                int indexUntilWhichChecked_90 = 0;
+
+
 
 
                 for (int y = 1; y < respond.GetLength(1) - 1; y++)/*цикл от 1 и до предпосл.элемента, т.к. respond - это увеличенное на 2 пикселя с каждой стороны изображение 
@@ -591,61 +605,63 @@ namespace Edge_detection
                     if (atan[x, y] == 0)
                     {
                         if (respond[x, y] > 0)
-                            if (y > indexUntilWhichChecked)
+                            if (y > indexUntilWhichChecked_0)
                             {
-                                maxRespondInDirection = respond[x, y];
-                                int maxRespondInDirectionIndex = y;
+                                maxRespondInDirection_0 = respond[x, y];
+                                maxRespondInDirectionIndex_0 = y;
                                 int kGoOneSide = y - 1;
                                 int kGoAnotherSide = y + 1;
                                 List<int> memorizeIndicesToMakeZero = new List<int>();
-                                while ((respond[x, kGoOneSide] > 0 && atan[x, kGoOneSide] == 0 && kGoOneSide > indexUntilWhichChecked) 
+                                if (kGoOneSide >= 0 || kGoAnotherSide < respond.GetLength(0))
+                                {
+                                    while ((respond[x, kGoOneSide] > 0 && atan[x, kGoOneSide] == 0 && kGoOneSide > indexUntilWhichChecked_0)
                                     || (respond[x, kGoAnotherSide] > 0 && atan[x, kGoAnotherSide] == 0))
-                                {
-                                    if (respond[x, kGoOneSide] > maxRespondInDirection)
                                     {
-                                        maxRespondInDirection = respond[x, kGoOneSide];
-                                        maxRespondInDirectionIndex = kGoOneSide;
-                                    }
-                                    if (respond[x, kGoAnotherSide] >= maxRespondInDirection)
-                                    {
-                                        maxRespondInDirection = respond[x, kGoAnotherSide];
-                                        maxRespondInDirectionIndex = kGoAnotherSide;
-                                    }
-                                    if (kGoOneSide <= 0 && kGoAnotherSide >= respond.GetLength(0))
-                                        break;
-                                    else
-                                    {
-                                        if (kGoOneSide > 0)
-                                            kGoOneSide--;//make if not out of range!!!
-                                        if (kGoAnotherSide < respond.GetLength(0))
-                                            kGoAnotherSide++;
-                                    }
+                                        if (respond[x, kGoOneSide] > maxRespondInDirection_0)
+                                        {
+                                            maxRespondInDirection_0 = respond[x, kGoOneSide];
+                                            maxRespondInDirectionIndex_0 = kGoOneSide;
+                                        }
+                                        if (respond[x, kGoAnotherSide] >= maxRespondInDirection_0)
+                                        {
+                                            maxRespondInDirection_0 = respond[x, kGoAnotherSide];
+                                            maxRespondInDirectionIndex_0 = kGoAnotherSide;
+                                        }
+                                        if (kGoOneSide == 0 && kGoAnotherSide == respond.GetLength(0) - 1)
+                                            break;
+                                        else
+                                        {
+                                            if (kGoOneSide > 0)
+                                                kGoOneSide--;//make if not out of range!!!
+                                            if (kGoAnotherSide + 1 < respond.GetLength(0))
+                                                kGoAnotherSide++;
+                                        }
 
 
+                                    }
+                                    //suppressed[x - 1, y - 1] = maxRespondInDirection;
+
+                                    indexUntilWhichChecked_0 = maxRespondInDirectionIndex_0;//чтобы потом не затрагивать текущий макс.элемент и все, что до текущего максимального элемента
+
+                                    for (int i = kGoOneSide + 1; i < kGoAnotherSide; i++)
+                                    {
+                                        if (i != maxRespondInDirectionIndex_0)
+                                        {
+                                            suppressed[x - 1, i - 1] = 0;
+                                            respond[x, i] = 0;
+                                        }
+                                        else
+                                        {
+                                            suppressed[x - 1, i - 1] = maxRespondInDirection_0;
+                                        }
+                                    }
+
+                                    if (respond[x, kGoOneSide + 1] == 0 || respond[x, kGoAnotherSide - 1] == 0)
+                                    {
+                                        maxRespondInDirection_0 = 0;
+                                        maxRespondInDirectionIndex_0 = 0;
+                                    }
                                 }
-                                //suppressed[x - 1, y - 1] = maxRespondInDirection;
-
-                                indexUntilWhichChecked = maxRespondInDirectionIndex;//чтобы потом не затрагивать текущий макс.элемент и все, что до текущего максимального элемента
-
-                                for (int i = kGoOneSide + 1; i < kGoAnotherSide; i++)
-                                {
-                                    if (i != maxRespondInDirectionIndex)
-                                    {
-                                        suppressed[x - 1, i - 1] = 0;
-                                        respond[x, i] = 0;
-                                    }
-                                    else
-                                    {
-                                        suppressed[x - 1, i - 1] = maxRespondInDirection;
-                                    }
-                                }
-
-                            if (respond[x, kGoOneSide + 1] == 0 || respond[x, kGoAnotherSide - 1] == 0)
-                                {
-                                maxRespondInDirection = 0;
-                                maxRespondInDirectionIndex = 0;
-                            }
-
                             }
                     }
                     if (atan[x, y] == 45)
@@ -657,13 +673,74 @@ namespace Edge_detection
                             respond[x, y] = 0;
                         }
                     if (atan[x, y] == 90)
-                        if (respond[x - 1, y] < respond[x, y] && respond[x + 1, y] < respond[x, y])
-                            suppressed[x - 1, y - 1] = respond[x, y];
-                        else
-                        {
-                            suppressed[x - 1, y - 1] = 0;
-                            respond[x, y] = 0;
-                        }
+                    {
+                        if (respond[x, y] > 0)
+                            if (x > indexUntilWhichChecked_90)
+                            {
+                                maxRespondInDirection_90 = respond[x, y];
+                                maxRespondInDirectionIndex_90 = x;
+                                int kGoOneSide = x - 1;
+                                int kGoAnotherSide = x + 1;
+                                List<int> memorizeIndicesToMakeZero = new List<int>();
+                                if (kGoOneSide >= 0 || kGoAnotherSide < respond.GetLength(0))
+                                {
+                                    while ((respond[kGoOneSide, y] > 0 && atan[kGoOneSide, y] == 90 && kGoOneSide > indexUntilWhichChecked_90)
+                                    || (respond[kGoAnotherSide, y] > 0 && atan[kGoAnotherSide, y] == 90))
+                                    {
+                                        if (respond[kGoOneSide, y] > maxRespondInDirection_90)
+                                        {
+                                            maxRespondInDirection_90 = respond[kGoOneSide, y];
+                                            maxRespondInDirectionIndex_90 = kGoOneSide;
+                                        }
+                                        if (respond[kGoAnotherSide, y] >= maxRespondInDirection_90)
+                                        {
+                                            maxRespondInDirection_90 = respond[kGoAnotherSide, y];
+                                            maxRespondInDirectionIndex_90 = kGoAnotherSide;
+                                        }
+                                        if (kGoOneSide == 0 && kGoAnotherSide == respond.GetLength(1) - 1)
+                                            break;
+                                        else
+                                        {
+                                            if (kGoOneSide > 0)
+                                                kGoOneSide--;//make if not out of range!!!
+                                            if (kGoAnotherSide + 1 < respond.GetLength(1))
+                                                kGoAnotherSide++;
+                                        }
+
+
+                                    }
+                                    suppressed[x - 1, y - 1] = maxRespondInDirection_90;
+
+                                    indexUntilWhichChecked_90 = maxRespondInDirectionIndex_90;//чтобы потом не затрагивать текущий макс.элемент и все, что до текущего максимального элемента
+
+                                    for (int i = kGoOneSide + 1; i < kGoAnotherSide; i++)
+                                    {
+                                        if (i != maxRespondInDirectionIndex_90)
+                                        {
+                                            suppressed[i - 1, y - 1] = 0;
+                                            respond[i, y] = 0;
+                                        }
+                                        else
+                                        {
+                                            suppressed[i - 1, y - 1] = maxRespondInDirection_90;
+                                        }
+                                    }
+
+                                    if (respond[kGoOneSide + 1, y] == 0 || respond[kGoAnotherSide - 1, y] == 0)
+                                    {
+                                        maxRespondInDirection_90 = 0;
+                                        maxRespondInDirectionIndex_90 = 0;
+                                    }
+                                }
+                            }
+                    }
+                    //if (respond[x - 1, y] < respond[x, y] && respond[x + 1, y] < respond[x, y])
+                    //    suppressed[x - 1, y - 1] = respond[x, y];
+                    //else
+                    //{
+                    //    suppressed[x - 1, y - 1] = 0;
+                    //    respond[x, y] = 0;
+                    //}
                     if (atan[x, y] == 135)
                         if (respond[x - 1, y + 1] < respond[x, y] && respond[x + 1, y - 1] < respond[x, y])
                             suppressed[x - 1, y - 1] = respond[x, y];
@@ -688,8 +765,94 @@ namespace Edge_detection
             return bmp1;
 
         }
-       
 
+        //public static Bitmap Non_Maximum_Suppression(Bitmap bmp = null, double[,] imageArray = null)
+        //{
+
+        //    //int[,] incomeImage = new int[bmp.Height, bmp.Width];//тестирую (можно удалить)
+        //    //for (int i = 0; i < bmp.Width; i++)//тестирую (можно удалить)
+        //    //    for (int j = 0; j < bmp.Height; j++)//тестирую (можно удалить)
+        //    //        incomeImage[j, i] = bmp.GetPixel(i, j).R;//тестирую (можно удалить)
+
+        //    if (bmp != null)
+        //        suppressed = new double[bmp.Height + 2, bmp.Width + 2];
+        //    else
+        //        suppressed = new double[imageArray.GetLength(0) + 2, imageArray.GetLength(1) + 2];
+
+        //    for (int x = 1; x < respond.GetLength(0) - 1; x++)
+        //        for (int y = 1; y < respond.GetLength(1) - 1; y++)/*цикл от 1 и до предпосл.элемента, т.к. respond - это увеличенное на 2 пикселя с каждой стороны изображение 
+        //                                                    и при этом заполняется suppressed,кот. с каждой стороны на 1 пиксель меньше,чем respond. 
+        //                                                    Избегается краевой эффект. */
+        //        {
+        //            if (atan[x, y] == 0)
+        //                if (respond[x, y - 1] < respond[x, y] && respond[x, y + 1] < respond[x, y])
+        //                    suppressed[x - 1, y - 1] = respond[x, y];
+        //                else
+        //                {
+        //                    suppressed[x - 1, y - 1] = 0;
+        //                    respond[x, y] = 0;
+        //                }
+        //            if (atan[x, y] == 45)
+        //                if (respond[x - 1, y - 1] < respond[x, y] && respond[x + 1, y + 1] < respond[x, y])
+        //                    suppressed[x - 1, y - 1] = respond[x, y];
+        //                else
+        //                {
+        //                    suppressed[x - 1, y - 1] = 0;
+        //                    respond[x, y] = 0;
+        //                }
+        //            if (atan[x, y] == 90)
+        //                if (respond[x - 1, y] < respond[x, y] && respond[x + 1, y] < respond[x, y])
+        //                    suppressed[x - 1, y - 1] = respond[x, y];
+        //                else
+        //                {
+        //                    suppressed[x - 1, y - 1] = 0;
+        //                    respond[x, y] = 0;
+        //                }
+        //            if (atan[x, y] == 135)
+        //                if (respond[x - 1, y + 1] < respond[x, y] && respond[x + 1, y - 1] < respond[x, y])
+        //                    suppressed[x - 1, y - 1] = respond[x, y];
+        //                else
+        //                {
+        //                    suppressed[x - 1, y - 1] = 0;
+        //                    respond[x, y] = 0;
+        //                }
+        //            //bmp.SetPixel(y-1, x-1, Color.FromArgb((int)suppressed[x-1, y-1], (int)suppressed[x-1, y-1], (int)suppressed[x-1, y-1]));
+        //        }
+
+        //    Bitmap bmp1;
+        //    if (bmp == null)
+        //        bmp1 = new Bitmap(imageArray.GetLength(0), imageArray.GetLength(1));
+        //    else
+        //        bmp1 = new Bitmap(bmp);
+        //    for (int x = 0; x < bmp1.Height; x++)
+        //        for (int y = 0; y < bmp1.Width; y++)
+        //            bmp1.SetPixel(y, x, Color.FromArgb(Convert.ToInt32(suppressed[x + 1, y + 1]), Convert.ToInt32(suppressed[x + 1, y + 1]), Convert.ToInt32(suppressed[x + 1, y + 1])));
+
+
+        //    //for (int x = 0; x < bmp.Height; x += bmp.Height - 1)
+        //    //    for (int y = 0; y < bmp.Width; y += bmp.Width - 1)
+        //    //    {
+        //    //        if (atan[x, y] == 0)
+        //    //            if (respond[x, y - 1] < respond[x, y] && respond[x, y + 1] <= respond[x, y])
+        //    //                suppressed[x, y] = respond[x, y];
+        //    //            else suppressed[x, y] = 0;
+        //    //        if (atan[x, y] == 45)
+        //    //            if (respond[x - 1, y - 1] < respond[x, y] && respond[x + 1, y + 1] < respond[x, y])
+        //    //                suppressed[x, y] = respond[x, y];
+        //    //            else suppressed[x, y] = 0;
+        //    //        if (atan[x, y] == 90)
+        //    //            if (respond[x - 1, y] < respond[x, y] && respond[x + 1, y] < respond[x, y])
+        //    //                suppressed[x, y] = respond[x, y];
+        //    //            else suppressed[x, y] = 0;
+        //    //        if (atan[x, y] == 135)
+        //    //            if (respond[x - 1, y - 1] < respond[x, y] && respond[x + 1, y + 1] < respond[x, y])
+        //    //                suppressed[x, y] = respond[x, y];
+        //    //            else suppressed[x, y] = 0;
+        //    //        bmp.SetPixel(y, x, Color.FromArgb((byte)suppressed[x, y], (byte)suppressed[x, y], (byte)suppressed[x, y]));
+        //    //    }
+        //    return bmp1;
+
+        //}
         public static Bitmap Double_Threshold(Bitmap bmp, double bottomThreshold, double upperThreshold)
         {
             int[,] incomeImage = new int[bmp.Height, bmp.Width];//тестирую (можно удалить)
@@ -758,6 +921,7 @@ namespace Edge_detection
         private void useHaarInCannyMethod_button_Click(object sender, EventArgs e)
         {
             Haar HaarForm = new Haar(filePath, Int32.Parse(waveletLength_textBox.Text), Convert.ToDouble(bottomThresholdHaar_textBox.Text), Convert.ToDouble(upperThresholdHaar_textBox.Text)); //создаем окно для вывода результатов метода Канни, передавая путь к выбранному файлу
+            HaarForm.findHaarResultsFromBmp();
             HaarForm.Show();
         }
 
@@ -780,7 +944,7 @@ namespace Edge_detection
 
 
             double[,] bigPic = new double[respond.GetLength(0) + filterLength, respond.GetLength(1) + filterLength];
-            int addToBmp = (bigPic.GetLength(1) - bmp.Width) / 2;
+            addToBmp = (bigPic.GetLength(1) - bmp.Width) / 2;
             bigPic = FormBigPic(bmp, addToBmp);
             //int y = 0;
             for (int x = 0; x < bmp.Height + 4; x++)
@@ -1029,6 +1193,81 @@ namespace Edge_detection
             return imageArray;
         }
 
+        //public static double[,] HaarWaveletHorisontal(double[,] imageArray, int filterLength)
+        //{
+        //    int[] haarMatrix = new int[filterLength];
+        //    for (int i = 0; i < filterLength / 2; i++)
+        //        haarMatrix[i] = 1;
+        //    for (int i = filterLength / 2; i < filterLength; i++)
+        //        haarMatrix[i] = -1;
+
+
+        //    //double resX = 0;//будет сканировать значения в пределах строки, т.е. реагировать на вертикальные контуры
+        //    double resX = 0;//будет сканировать значения в пределах столбца, т.е. реагировать на горизонтальные контуры
+        //    double[,] respondX = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
+        //    respond = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
+        //    atan = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
+
+
+        //    double[,] bigPic = new double[respond.GetLength(0) + filterLength, respond.GetLength(1) + filterLength];
+        //    int addToBmp = (bigPic.GetLength(1) - imageArray.GetLength(1)) / 2;
+        //    bigPic = FormBigPic(imageArray, addToBmp);
+        //    //int y = 0;
+        //    for (int x = 0; x < imageArray.GetLength(0) + 4; x++)
+        //        for (int y = 0; y < imageArray.GetLength(1) + 4; y++)
+        //        {
+        //            resX = 0;
+        //            //resY = 0;
+        //            for (int u = 0; u < filterLength; u++)
+        //            {
+        //                resX += haarMatrix[u] * bigPic[x + filterLength / 2, y + u];//было resX += haarMatrix[u] * bigPic[x, y + u]; 22.11.2016
+        //                //resY += haarMatrix[u] * bigPic[x + u, y + filterLength / 2];
+        //            }
+        //            //resX = Math.Abs(resX / filterLength);//усреднили
+        //            //resY = Math.Abs(resY / filterLength);//усреднили
+
+        //            //respond[x, y] = Math.Sqrt(resX * resX) + Math.Sqrt(resY * resY);
+
+
+        //           // atan[x, y] = (Math.Atan2(resY, resX)) * (180 / Math.PI);
+        //            atan[x, y] = 0;
+        //            //if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
+        //            //if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
+        //            //{
+        //            //    atan[x, y] = 0;
+        //            //}
+        //            //else if (atan[x, y] > 22.5 && atan[x, y] < 67.5)
+        //            //{
+        //            //    atan[x, y] = 45;
+        //            //}
+        //            //else if (atan[x, y] > 67.5 && atan[x, y] < 112.5)
+        //            //{
+        //            //    atan[x, y] = 90;
+        //            //}
+        //            //else if (atan[x, y] > 112.5 && atan[x, y] < 157.5)
+        //            //{
+        //            //    atan[x, y] = 135;
+        //            //}
+        //            //respond[x, y] = Math.Sqrt(resX * resX + resY * resY);
+
+        //            // respond[x, y] = resX;
+        //            respondX[x, y] = Math.Sqrt(resX * resX);
+
+        //            respond[x, y] = respondX[x, y];
+
+        //            //if (y < (bmp.Width-1))
+        //            //    y++;
+        //        }
+        //    double maxResp = Max(respond);
+        //    for (int i = 0; i < respond.GetLength(0); i++)
+        //        for (int j = 0; j < respond.GetLength(1); j++)
+        //            respond[i, j] = (respond[i, j] / maxResp) * 255; //нормируем значение отклика от 0 до 255
+        //    for (int x = 0; x < imageArray.GetLength(0); x++)
+        //        for (int y = 0; y < imageArray.GetLength(1); y++)
+        //            imageArray[x, y] =respond[x + 2, y + 2];
+        //    return imageArray;
+        //}
+
         public static double[,] HaarWaveletHorisontal(double[,] imageArray, int filterLength)
         {
             int[] haarMatrix = new int[filterLength];
@@ -1040,23 +1279,27 @@ namespace Edge_detection
 
             //double resX = 0;//будет сканировать значения в пределах строки, т.е. реагировать на вертикальные контуры
             double resX = 0;//будет сканировать значения в пределах столбца, т.е. реагировать на горизонтальные контуры
-            double[,] respondX = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
+            double[,] respondX = new double[imageArray.GetLength(0), imageArray.GetLength(1)];
+
+            double[,] respondNotBigYet = new double[imageArray.GetLength(0), imageArray.GetLength(1)];
+            double[,] atanNotBigYet = new double[imageArray.GetLength(0), imageArray.GetLength(1)];
+
             respond = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
             atan = new double[imageArray.GetLength(0) + 4, imageArray.GetLength(1) + 4];
 
 
-            double[,] bigPic = new double[respond.GetLength(0) + filterLength, respond.GetLength(1) + filterLength];
-            int addToBmp = (bigPic.GetLength(1) - imageArray.GetLength(1)) / 2;
-            bigPic = FormBigPic(imageArray, addToBmp);
+            //double[,] bigPic = new double[respond.GetLength(0) + filterLength, respond.GetLength(1) + filterLength];
+            //int addToBmp = (bigPic.GetLength(1) - imageArray.GetLength(1)) / 2;
+            //bigPic = FormBigPic(imageArray, addToBmp);
             //int y = 0;
-            for (int x = 0; x < imageArray.GetLength(0) + 4; x++)
-                for (int y = 0; y < imageArray.GetLength(1) + 4; y++)
+            for (int x = 0; x < imageArray.GetLength(0); x++)
+                for (int y = 0; y < imageArray.GetLength(1) - filterLength; y++) 
                 {
                     resX = 0;
                     //resY = 0;
                     for (int u = 0; u < filterLength; u++)
                     {
-                        resX += haarMatrix[u] * bigPic[x + filterLength / 2, y + u];//было resX += haarMatrix[u] * bigPic[x, y + u]; 22.11.2016
+                        resX += haarMatrix[u] * imageArray[x, y + u];//было resX += haarMatrix[u] * bigPic[x, y + u]; 22.11.2016
                         //resY += haarMatrix[u] * bigPic[x + u, y + filterLength / 2];
                     }
                     //resX = Math.Abs(resX / filterLength);//усреднили
@@ -1065,8 +1308,8 @@ namespace Edge_detection
                     //respond[x, y] = Math.Sqrt(resX * resX) + Math.Sqrt(resY * resY);
 
 
-                   // atan[x, y] = (Math.Atan2(resY, resX)) * (180 / Math.PI);
-                    atan[x, y] = 0;
+                    // atan[x, y] = (Math.Atan2(resY, resX)) * (180 / Math.PI);
+                    atanNotBigYet[x, y + (filterLength / 2) + 1] = 0;
                     //if (atan[x, y] < 0) atan[x, y] = atan[x, y] + 180;
                     //if ((atan[x, y] > 0 && atan[x, y] < 22.5) || (atan[x, y] > 157.5 && atan[x, y] <= 180))
                     //{
@@ -1087,22 +1330,29 @@ namespace Edge_detection
                     //respond[x, y] = Math.Sqrt(resX * resX + resY * resY);
 
                     // respond[x, y] = resX;
-                    respondX[x, y] = Math.Sqrt(resX * resX);
+                    respondX[x, y + (filterLength / 2)] = Math.Sqrt(resX * resX);
 
-                    respond[x, y] = respondX[x, y];
+                    respondNotBigYet[x, y + (filterLength / 2)] = respondX[x, y + (filterLength / 2)];
 
                     //if (y < (bmp.Width-1))
                     //    y++;
                 }
-            double maxResp = Max(respond);
-            for (int i = 0; i < respond.GetLength(0); i++)
-                for (int j = 0; j < respond.GetLength(1); j++)
-                    respond[i, j] = (respond[i, j] / maxResp) * 255; //нормируем значение отклика от 0 до 255
+            double maxResp = Max(respondNotBigYet);
+            for (int i = 0; i < respondNotBigYet.GetLength(0); i++)
+                for (int j = 0; j < respondNotBigYet.GetLength(1); j++)
+                    respondNotBigYet[i, j] = (respondNotBigYet[i, j] / maxResp) * 255; //нормируем значение отклика от 0 до 255
+
+            respond = FormBigPic(respondNotBigYet, 2);
+            atan = FormBigPic(atanNotBigYet, 2);
+
             for (int x = 0; x < imageArray.GetLength(0); x++)
                 for (int y = 0; y < imageArray.GetLength(1); y++)
-                    imageArray[x, y] =respond[x + 2, y + 2];
+                    imageArray[x, y] = respond[x + 2, y + 2];
+
+
             return imageArray;
         }
+
 
         private static double Max(double[,] arr)
         {
@@ -1160,12 +1410,26 @@ private void analyze_button_Click(object sender, EventArgs e)
 
         private void analyzeWithPlots_button_Click(object sender, EventArgs e)
         {
-            AnalyzeWithPlots analyzeWithPlotsForm = new AnalyzeWithPlots(Convert.ToDouble(analyzeWithPlots_sigma_textBox.Text), Convert.ToInt16(k_analyzeWithPlots_textBox.Text),
-            Convert.ToDouble(bottomThresholdCanny_analyzeWithPlots_textBox.Text), Convert.ToDouble(upperThresholdCanny_analyzeWithPlots_textBox.Text),
-            Int32.Parse(waveletLength_analyzeWithPlots_textBox.Text), Convert.ToDouble(bottomThresholdHaar_analyzeWithPlots_textBox.Text),
-            Convert.ToDouble(upperThresholdHaar_analyzeWithPlots_textBox.Text), Int32.Parse(from_textBox.Text), Int32.Parse(to_textBox.Text));
-
-            analyzeWithPlotsForm.Show();
+            if (analyzeWithPlotsForm != null)
+            {
+                mustMakePlotInSameWindow = true;
+                analyzeWithPlotsForm.MakePlotInSameWindow(Convert.ToDouble(analyzeWithPlots_sigma_textBox.Text), Convert.ToInt16(k_analyzeWithPlots_textBox.Text),
+                Convert.ToDouble(bottomThresholdCanny_analyzeWithPlots_textBox.Text), Convert.ToDouble(upperThresholdCanny_analyzeWithPlots_textBox.Text),
+                Int32.Parse(waveletLength_analyzeWithPlots_textBox.Text), Convert.ToDouble(bottomThresholdHaar_analyzeWithPlots_textBox.Text),
+                Convert.ToDouble(upperThresholdHaar_analyzeWithPlots_textBox.Text), Int32.Parse(from_textBox.Text), Int32.Parse(to_textBox.Text));
+            }
+            if (analyzeWithPlotsForm == null)
+            {
+                analyzeWithPlotsForm = new AnalyzeWithPlots(Convert.ToDouble(analyzeWithPlots_sigma_textBox.Text), Convert.ToInt16(k_analyzeWithPlots_textBox.Text),
+                Convert.ToDouble(bottomThresholdCanny_analyzeWithPlots_textBox.Text), Convert.ToDouble(upperThresholdCanny_analyzeWithPlots_textBox.Text),
+                Int32.Parse(waveletLength_analyzeWithPlots_textBox.Text), Convert.ToDouble(bottomThresholdHaar_analyzeWithPlots_textBox.Text),
+                Convert.ToDouble(upperThresholdHaar_analyzeWithPlots_textBox.Text), Int32.Parse(from_textBox.Text), Int32.Parse(to_textBox.Text));
+                mustMakePlotInSameWindow = false;
+            }
+               
+            if (mustMakePlotInSameWindow)
+                analyzeWithPlotsForm.Refresh();
+            else analyzeWithPlotsForm.Show();
         }
 
         private void enableNoisingImage_checkBox_CheckedChanged(object sender, EventArgs e)
