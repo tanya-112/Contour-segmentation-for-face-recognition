@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Edge_detection.AnalysisOfMethods">
+    <Position X="4" Y="3.75" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BABIAACAACIEABAIAAiAAAACUAAgQAQQACFAAACAAAA=</HashCode>
+      <FileName>AnalysisOfMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge_detection.AnalyzeWithPlots">
+    <Position X="8.75" Y="3" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAACIAAAAIDACAAAgCEAAAQCQQACBAAAAAAAA=</HashCode>
+      <FileName>AnalyzeWithPlots.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge_detection.CannyForm" Collapsed="true">
+    <Position X="1.25" Y="5.75" Width="1.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAhAAACAAABIAgACAIAACAAACAEAQAAAAAABAACA=</HashCode>
+      <FileName>CannyForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge_detection.CannyStandardVersion" Collapsed="true">
+    <Position X="3.5" Y="1.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CannyStandardVersion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge_detection.CannyWithHaarWavelet" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AgAgAAAAABAAAAAAQAAAAAAEAAAEACAAAAAAAAAAAAA=</HashCode>
+      <FileName>CannyWithHaarWavelet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge_detection.HaarForm" Collapsed="true">
+    <Position X="2.5" Y="5.5" Width="1.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAACgAAACAAABIggACAAQAOMAACA0AAoAAADABAACA=</HashCode>
+      <FileName>HaarForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge_detection.ImageProcessing" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAACAAACBBAQAAAAhAAAAAAAIQAAMBAAHAABAgACEA=</HashCode>
+      <FileName>ImageProcessing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge_detection.MainWindowForm" Collapsed="true">
+    <Position X="3.75" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>/wSYEhQEiGAEQpEACBCAQICqIYAAg0QBkDgAJQABJLA=</HashCode>
+      <FileName>MainWindowForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge_detection.Program" Collapsed="true">
+    <Position X="3.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge_detection.Properties.Resources" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge_detection.Properties.Settings" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

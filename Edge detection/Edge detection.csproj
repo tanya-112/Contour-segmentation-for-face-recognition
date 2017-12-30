@@ -65,24 +65,27 @@
     <Compile Include="AnalyzeWithPlots.Designer.cs">
       <DependentUpon>AnalyzeWithPlots.cs</DependentUpon>
     </Compile>
-    <Compile Include="Canny.cs">
+    <Compile Include="CannyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Canny.Designer.cs">
-      <DependentUpon>Canny.cs</DependentUpon>
+    <Compile Include="CannyForm.Designer.cs">
+      <DependentUpon>CannyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="CannyStandardVersion.cs" />
+    <Compile Include="CannyWithHaarWavelet.cs" />
+    <Compile Include="MainWindowForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainWindowForm.Designer.cs">
+      <DependentUpon>MainWindowForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Haar.cs">
+    <Compile Include="HaarForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Haar.Designer.cs">
-      <DependentUpon>Haar.cs</DependentUpon>
+    <Compile Include="HaarForm.Designer.cs">
+      <DependentUpon>HaarForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageProcessing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AnalysisOfMethods.resx">
@@ -91,14 +94,14 @@
     <EmbeddedResource Include="AnalyzeWithPlots.resx">
       <DependentUpon>AnalyzeWithPlots.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Canny.resx">
-      <DependentUpon>Canny.cs</DependentUpon>
+    <EmbeddedResource Include="CannyForm.resx">
+      <DependentUpon>CannyForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="MainWindowForm.resx">
+      <DependentUpon>MainWindowForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Haar.resx">
-      <DependentUpon>Haar.cs</DependentUpon>
+    <EmbeddedResource Include="HaarForm.resx">
+      <DependentUpon>HaarForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -112,6 +115,7 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
     <None Include="ClassDiagram3.cd" />
+    <None Include="ClassDiagram4.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

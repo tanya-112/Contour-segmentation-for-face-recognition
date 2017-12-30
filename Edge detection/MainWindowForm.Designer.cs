@@ -1,6 +1,6 @@
 ﻿namespace Edge_detection
 {
-    partial class Form1
+    partial class MainWindowForm
     {
         /// <summary>
         /// Required designer variable.
@@ -39,9 +39,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.sigma_textBox = new System.Windows.Forms.TextBox();
-            this.k_textBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.useCannyMethod_button = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.upperThresholdHaar_textBox = new System.Windows.Forms.TextBox();
@@ -53,6 +51,7 @@
             this.useHaarInCannyMethod_button = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.enableNoisingImage_checkBox = new System.Windows.Forms.CheckBox();
             this.SNR_textBox = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.widthOfBrigtnessDiffer_textBox = new System.Windows.Forms.TextBox();
@@ -66,9 +65,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.analyze_sigma_textBox = new System.Windows.Forms.TextBox();
-            this.k_analyze_textBox = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.upperThresholdHaar_analyze_textBox = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -84,9 +81,7 @@
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.analyzeWithPlots_sigma_textBox = new System.Windows.Forms.TextBox();
-            this.k_analyzeWithPlots_textBox = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.upperThresholdHaar_analyzeWithPlots_textBox = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
@@ -105,7 +100,6 @@
             this.label23 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.analyzeWithPlots_button = new System.Windows.Forms.Button();
-            this.enableNoisingImage_checkBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -138,7 +132,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(806, 331);
+            this.tabControl1.Size = new System.Drawing.Size(871, 331);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -149,13 +143,13 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(798, 305);
+            this.tabPage1.Size = new System.Drawing.Size(863, 305);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Основной режим";
             // 
             // chooseFile_button
             // 
-            this.chooseFile_button.Location = new System.Drawing.Point(329, 3);
+            this.chooseFile_button.Location = new System.Drawing.Point(359, 2);
             this.chooseFile_button.Name = "chooseFile_button";
             this.chooseFile_button.Size = new System.Drawing.Size(131, 23);
             this.chooseFile_button.TabIndex = 3;
@@ -178,9 +172,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.label6);
             this.splitContainer1.Panel1.Controls.Add(this.label5);
             this.splitContainer1.Panel1.Controls.Add(this.sigma_textBox);
-            this.splitContainer1.Panel1.Controls.Add(this.k_textBox);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
-            this.splitContainer1.Panel1.Controls.Add(this.label1);
             this.splitContainer1.Panel1.Controls.Add(this.useCannyMethod_button);
             // 
             // splitContainer1.Panel2
@@ -193,17 +185,17 @@
             this.splitContainer1.Panel2.Controls.Add(this.label4);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.useHaarInCannyMethod_button);
-            this.splitContainer1.Size = new System.Drawing.Size(785, 271);
-            this.splitContainer1.SplitterDistance = 385;
+            this.splitContainer1.Size = new System.Drawing.Size(850, 271);
+            this.splitContainer1.SplitterDistance = 416;
             this.splitContainer1.TabIndex = 4;
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(3, 10);
+            this.label8.Location = new System.Drawing.Point(22, 10);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(329, 40);
             this.label8.TabIndex = 9;
-            this.label8.Text = "Стандартный метод Канни (используется маска Собеля)";
+            this.label8.Text = "Стандартный метод Канни";
             // 
             // upperThreshold_textBox
             // 
@@ -211,7 +203,7 @@
             this.upperThreshold_textBox.Name = "upperThreshold_textBox";
             this.upperThreshold_textBox.Size = new System.Drawing.Size(56, 20);
             this.upperThreshold_textBox.TabIndex = 8;
-            this.upperThreshold_textBox.Text = "40";
+            this.upperThreshold_textBox.Text = "60";
             // 
             // bottomThreshold_textBox
             // 
@@ -219,7 +211,7 @@
             this.bottomThreshold_textBox.Name = "bottomThreshold_textBox";
             this.bottomThreshold_textBox.Size = new System.Drawing.Size(56, 20);
             this.bottomThreshold_textBox.TabIndex = 7;
-            this.bottomThreshold_textBox.Text = "30";
+            this.bottomThreshold_textBox.Text = "40";
             // 
             // label6
             // 
@@ -241,36 +233,20 @@
             // 
             // sigma_textBox
             // 
-            this.sigma_textBox.Location = new System.Drawing.Point(139, 62);
+            this.sigma_textBox.Location = new System.Drawing.Point(139, 107);
             this.sigma_textBox.Name = "sigma_textBox";
             this.sigma_textBox.Size = new System.Drawing.Size(56, 20);
             this.sigma_textBox.TabIndex = 4;
             this.sigma_textBox.Text = "1";
             // 
-            // k_textBox
-            // 
-            this.k_textBox.Location = new System.Drawing.Point(139, 98);
-            this.k_textBox.Name = "k_textBox";
-            this.k_textBox.Size = new System.Drawing.Size(56, 20);
-            this.k_textBox.TabIndex = 3;
-            this.k_textBox.Text = "9";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(43, 69);
+            this.label2.Location = new System.Drawing.Point(43, 114);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Sigma";
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(43, 98);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 42);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "k для размытия Гауссовским фильтром ";
             // 
             // useCannyMethod_button
             // 
@@ -297,7 +273,7 @@
             this.upperThresholdHaar_textBox.Name = "upperThresholdHaar_textBox";
             this.upperThresholdHaar_textBox.Size = new System.Drawing.Size(52, 20);
             this.upperThresholdHaar_textBox.TabIndex = 6;
-            this.upperThresholdHaar_textBox.Text = "50";
+            this.upperThresholdHaar_textBox.Text = "65";
             // 
             // label7
             // 
@@ -314,7 +290,7 @@
             this.bottomThresholdHaar_textBox.Name = "bottomThresholdHaar_textBox";
             this.bottomThresholdHaar_textBox.Size = new System.Drawing.Size(52, 20);
             this.bottomThresholdHaar_textBox.TabIndex = 4;
-            this.bottomThresholdHaar_textBox.Text = "20";
+            this.bottomThresholdHaar_textBox.Text = "60";
             // 
             // waveletLength_textBox
             // 
@@ -322,7 +298,7 @@
             this.waveletLength_textBox.Name = "waveletLength_textBox";
             this.waveletLength_textBox.Size = new System.Drawing.Size(52, 20);
             this.waveletLength_textBox.TabIndex = 3;
-            this.waveletLength_textBox.Text = "10";
+            this.waveletLength_textBox.Text = "56";
             // 
             // label4
             // 
@@ -360,7 +336,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(798, 305);
+            this.tabPage2.Size = new System.Drawing.Size(863, 305);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Анализ методов";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -376,8 +352,21 @@
             this.panel1.Controls.Add(this.label19);
             this.panel1.Location = new System.Drawing.Point(624, 31);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(168, 271);
+            this.panel1.Size = new System.Drawing.Size(233, 271);
             this.panel1.TabIndex = 8;
+            // 
+            // enableNoisingImage_checkBox
+            // 
+            this.enableNoisingImage_checkBox.AutoSize = true;
+            this.enableNoisingImage_checkBox.Checked = true;
+            this.enableNoisingImage_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enableNoisingImage_checkBox.Location = new System.Drawing.Point(9, 136);
+            this.enableNoisingImage_checkBox.Name = "enableNoisingImage_checkBox";
+            this.enableNoisingImage_checkBox.Size = new System.Drawing.Size(101, 17);
+            this.enableNoisingImage_checkBox.TabIndex = 5;
+            this.enableNoisingImage_checkBox.Text = "Наложить шум";
+            this.enableNoisingImage_checkBox.UseVisualStyleBackColor = true;
+            this.enableNoisingImage_checkBox.CheckedChanged += new System.EventHandler(this.enableNoisingImage_checkBox_CheckedChanged);
             // 
             // SNR_textBox
             // 
@@ -423,7 +412,7 @@
             // analyze_button
             // 
             this.analyze_button.BackColor = System.Drawing.Color.Transparent;
-            this.analyze_button.Location = new System.Drawing.Point(355, 3);
+            this.analyze_button.Location = new System.Drawing.Point(393, 3);
             this.analyze_button.Name = "analyze_button";
             this.analyze_button.Size = new System.Drawing.Size(75, 23);
             this.analyze_button.TabIndex = 5;
@@ -446,9 +435,7 @@
             this.splitContainer2.Panel1.Controls.Add(this.label11);
             this.splitContainer2.Panel1.Controls.Add(this.label12);
             this.splitContainer2.Panel1.Controls.Add(this.analyze_sigma_textBox);
-            this.splitContainer2.Panel1.Controls.Add(this.k_analyze_textBox);
             this.splitContainer2.Panel1.Controls.Add(this.label13);
-            this.splitContainer2.Panel1.Controls.Add(this.label14);
             // 
             // splitContainer2.Panel2
             // 
@@ -465,11 +452,11 @@
             // 
             // label10
             // 
-            this.label10.Location = new System.Drawing.Point(3, 10);
+            this.label10.Location = new System.Drawing.Point(22, 10);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(329, 40);
+            this.label10.Size = new System.Drawing.Size(186, 40);
             this.label10.TabIndex = 9;
-            this.label10.Text = "Стандартный метод Канни (используется маска Собеля)";
+            this.label10.Text = "Стандартный метод Канни";
             // 
             // upperThresholdCanny_analyze_textBox
             // 
@@ -507,36 +494,20 @@
             // 
             // analyze_sigma_textBox
             // 
-            this.analyze_sigma_textBox.Location = new System.Drawing.Point(139, 62);
+            this.analyze_sigma_textBox.Location = new System.Drawing.Point(139, 107);
             this.analyze_sigma_textBox.Name = "analyze_sigma_textBox";
             this.analyze_sigma_textBox.Size = new System.Drawing.Size(56, 20);
             this.analyze_sigma_textBox.TabIndex = 4;
             this.analyze_sigma_textBox.Text = "1";
             // 
-            // k_analyze_textBox
-            // 
-            this.k_analyze_textBox.Location = new System.Drawing.Point(139, 98);
-            this.k_analyze_textBox.Name = "k_analyze_textBox";
-            this.k_analyze_textBox.Size = new System.Drawing.Size(56, 20);
-            this.k_analyze_textBox.TabIndex = 3;
-            this.k_analyze_textBox.Text = "0";
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(43, 69);
+            this.label13.Location = new System.Drawing.Point(43, 114);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(36, 13);
             this.label13.TabIndex = 2;
             this.label13.Text = "Sigma";
-            // 
-            // label14
-            // 
-            this.label14.Location = new System.Drawing.Point(43, 98);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(110, 42);
-            this.label14.TabIndex = 1;
-            this.label14.Text = "k для размытия Гауссовским фильтром ";
             // 
             // label15
             // 
@@ -603,7 +574,7 @@
             this.tabPage3.Controls.Add(this.analyzeWithPlots_button);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(798, 305);
+            this.tabPage3.Size = new System.Drawing.Size(863, 305);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Анализ с графиками";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -623,9 +594,7 @@
             this.splitContainer3.Panel1.Controls.Add(this.label26);
             this.splitContainer3.Panel1.Controls.Add(this.label27);
             this.splitContainer3.Panel1.Controls.Add(this.analyzeWithPlots_sigma_textBox);
-            this.splitContainer3.Panel1.Controls.Add(this.k_analyzeWithPlots_textBox);
             this.splitContainer3.Panel1.Controls.Add(this.label28);
-            this.splitContainer3.Panel1.Controls.Add(this.label29);
             // 
             // splitContainer3.Panel2
             // 
@@ -642,11 +611,11 @@
             // 
             // label25
             // 
-            this.label25.Location = new System.Drawing.Point(3, 10);
+            this.label25.Location = new System.Drawing.Point(22, 10);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(329, 40);
+            this.label25.Size = new System.Drawing.Size(239, 40);
             this.label25.TabIndex = 9;
-            this.label25.Text = "Стандартный метод Канни (используется маска Собеля)";
+            this.label25.Text = "Стандартный метод Канни";
             // 
             // upperThresholdCanny_analyzeWithPlots_textBox
             // 
@@ -684,36 +653,20 @@
             // 
             // analyzeWithPlots_sigma_textBox
             // 
-            this.analyzeWithPlots_sigma_textBox.Location = new System.Drawing.Point(139, 62);
+            this.analyzeWithPlots_sigma_textBox.Location = new System.Drawing.Point(139, 107);
             this.analyzeWithPlots_sigma_textBox.Name = "analyzeWithPlots_sigma_textBox";
             this.analyzeWithPlots_sigma_textBox.Size = new System.Drawing.Size(56, 20);
             this.analyzeWithPlots_sigma_textBox.TabIndex = 4;
             this.analyzeWithPlots_sigma_textBox.Text = "1";
             // 
-            // k_analyzeWithPlots_textBox
-            // 
-            this.k_analyzeWithPlots_textBox.Location = new System.Drawing.Point(139, 98);
-            this.k_analyzeWithPlots_textBox.Name = "k_analyzeWithPlots_textBox";
-            this.k_analyzeWithPlots_textBox.Size = new System.Drawing.Size(56, 20);
-            this.k_analyzeWithPlots_textBox.TabIndex = 3;
-            this.k_analyzeWithPlots_textBox.Text = "0";
-            // 
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(43, 69);
+            this.label28.Location = new System.Drawing.Point(43, 114);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(36, 13);
             this.label28.TabIndex = 2;
             this.label28.Text = "Sigma";
-            // 
-            // label29
-            // 
-            this.label29.Location = new System.Drawing.Point(43, 98);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(110, 42);
-            this.label29.TabIndex = 1;
-            this.label29.Text = "k для размытия Гауссовским фильтром ";
             // 
             // label30
             // 
@@ -787,13 +740,13 @@
             this.panel2.Controls.Add(this.label24);
             this.panel2.Location = new System.Drawing.Point(624, 31);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(168, 271);
+            this.panel2.Size = new System.Drawing.Size(232, 271);
             this.panel2.TabIndex = 11;
             // 
             // varyParameter_label
             // 
             this.varyParameter_label.AutoSize = true;
-            this.varyParameter_label.Location = new System.Drawing.Point(5, 146);
+            this.varyParameter_label.Location = new System.Drawing.Point(16, 160);
             this.varyParameter_label.Name = "varyParameter_label";
             this.varyParameter_label.Size = new System.Drawing.Size(82, 13);
             this.varyParameter_label.TabIndex = 8;
@@ -802,7 +755,7 @@
             // varyWidthOfDiffer_radioButton
             // 
             this.varyWidthOfDiffer_radioButton.AutoSize = true;
-            this.varyWidthOfDiffer_radioButton.Location = new System.Drawing.Point(8, 116);
+            this.varyWidthOfDiffer_radioButton.Location = new System.Drawing.Point(21, 128);
             this.varyWidthOfDiffer_radioButton.Name = "varyWidthOfDiffer_radioButton";
             this.varyWidthOfDiffer_radioButton.Size = new System.Drawing.Size(154, 17);
             this.varyWidthOfDiffer_radioButton.TabIndex = 7;
@@ -814,7 +767,7 @@
             // 
             this.varyQ_radioButton.AutoSize = true;
             this.varyQ_radioButton.Checked = true;
-            this.varyQ_radioButton.Location = new System.Drawing.Point(8, 93);
+            this.varyQ_radioButton.Location = new System.Drawing.Point(21, 105);
             this.varyQ_radioButton.Name = "varyQ_radioButton";
             this.varyQ_radioButton.Size = new System.Drawing.Size(153, 17);
             this.varyQ_radioButton.TabIndex = 6;
@@ -825,15 +778,15 @@
             // 
             // label34
             // 
-            this.label34.Location = new System.Drawing.Point(3, 50);
+            this.label34.Location = new System.Drawing.Point(16, 62);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(148, 40);
+            this.label34.Size = new System.Drawing.Size(197, 40);
             this.label34.TabIndex = 5;
             this.label34.Text = "Зависимость значения критерия Прэтта от параметра:";
             // 
             // to_textBox
             // 
-            this.to_textBox.Location = new System.Drawing.Point(60, 201);
+            this.to_textBox.Location = new System.Drawing.Point(72, 215);
             this.to_textBox.Name = "to_textBox";
             this.to_textBox.Size = new System.Drawing.Size(40, 20);
             this.to_textBox.TabIndex = 4;
@@ -841,7 +794,7 @@
             // 
             // label22
             // 
-            this.label22.Location = new System.Drawing.Point(21, 204);
+            this.label22.Location = new System.Drawing.Point(33, 218);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(29, 34);
             this.label22.TabIndex = 3;
@@ -849,7 +802,7 @@
             // 
             // from_textBox
             // 
-            this.from_textBox.Location = new System.Drawing.Point(60, 172);
+            this.from_textBox.Location = new System.Drawing.Point(72, 186);
             this.from_textBox.Name = "from_textBox";
             this.from_textBox.Size = new System.Drawing.Size(40, 20);
             this.from_textBox.TabIndex = 2;
@@ -858,7 +811,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(21, 175);
+            this.label23.Location = new System.Drawing.Point(33, 189);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(20, 13);
             this.label23.TabIndex = 1;
@@ -866,16 +819,16 @@
             // 
             // label24
             // 
-            this.label24.Location = new System.Drawing.Point(14, 10);
+            this.label24.Location = new System.Drawing.Point(3, 10);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(148, 40);
+            this.label24.Size = new System.Drawing.Size(224, 40);
             this.label24.TabIndex = 0;
             this.label24.Text = "Дополнительные параметры для анализа";
             // 
             // analyzeWithPlots_button
             // 
             this.analyzeWithPlots_button.BackColor = System.Drawing.Color.Transparent;
-            this.analyzeWithPlots_button.Location = new System.Drawing.Point(355, 3);
+            this.analyzeWithPlots_button.Location = new System.Drawing.Point(393, 3);
             this.analyzeWithPlots_button.Name = "analyzeWithPlots_button";
             this.analyzeWithPlots_button.Size = new System.Drawing.Size(75, 23);
             this.analyzeWithPlots_button.TabIndex = 9;
@@ -883,26 +836,13 @@
             this.analyzeWithPlots_button.UseVisualStyleBackColor = false;
             this.analyzeWithPlots_button.Click += new System.EventHandler(this.analyzeWithPlots_button_Click);
             // 
-            // enableNoisingImage_checkBox
-            // 
-            this.enableNoisingImage_checkBox.AutoSize = true;
-            this.enableNoisingImage_checkBox.Checked = true;
-            this.enableNoisingImage_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enableNoisingImage_checkBox.Location = new System.Drawing.Point(9, 136);
-            this.enableNoisingImage_checkBox.Name = "enableNoisingImage_checkBox";
-            this.enableNoisingImage_checkBox.Size = new System.Drawing.Size(101, 17);
-            this.enableNoisingImage_checkBox.TabIndex = 5;
-            this.enableNoisingImage_checkBox.Text = "Наложить шум";
-            this.enableNoisingImage_checkBox.UseVisualStyleBackColor = true;
-            this.enableNoisingImage_checkBox.CheckedChanged += new System.EventHandler(this.enableNoisingImage_checkBox_CheckedChanged);
-            // 
-            // Form1
+            // MainWindowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(803, 355);
+            this.ClientSize = new System.Drawing.Size(872, 355);
             this.Controls.Add(this.tabControl1);
-            this.Name = "Form1";
+            this.Name = "MainWindowForm";
             this.Text = "Edge detection";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -947,9 +887,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox sigma_textBox;
-        private System.Windows.Forms.TextBox k_textBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button useCannyMethod_button;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox upperThresholdHaar_textBox;
@@ -961,15 +899,12 @@
         private System.Windows.Forms.Button useHaarInCannyMethod_button;
         private System.Windows.Forms.Button analyze_button;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox upperThresholdCanny_analyze_textBox;
         private System.Windows.Forms.TextBox bottomThresholdCanny_analyze_textBox;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox analyze_sigma_textBox;
-        private System.Windows.Forms.TextBox k_analyze_textBox;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox upperThresholdHaar_analyze_textBox;
         private System.Windows.Forms.Label label16;
@@ -991,9 +926,7 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox analyzeWithPlots_sigma_textBox;
-        private System.Windows.Forms.TextBox k_analyzeWithPlots_textBox;
         private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.TextBox upperThresholdHaar_analyzeWithPlots_textBox;
         private System.Windows.Forms.Label label31;
@@ -1013,6 +946,7 @@
         private System.Windows.Forms.Button analyzeWithPlots_button;
         private System.Windows.Forms.Label varyParameter_label;
         private System.Windows.Forms.CheckBox enableNoisingImage_checkBox;
+        private System.Windows.Forms.Label label10;
     }
 }
 

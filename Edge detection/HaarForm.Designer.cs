@@ -1,6 +1,6 @@
 ﻿namespace Edge_detection
 {
-    partial class Haar
+    partial class HaarForm
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -42,6 +41,7 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.pictureBox3_1 = new System.Windows.Forms.PictureBox();
             this.pictureBox3_2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.Label();
             this.upperThresholdHaar_textBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -49,14 +49,13 @@
             this.waveletLength_textBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.useHaarInCannyMethod_button = new System.Windows.Forms.Button();
+            this.useHaarInsideExternalContour_button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -69,6 +68,7 @@
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3_2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -90,34 +90,34 @@
             this.splitContainer1.Panel2.Controls.Add(this.waveletLength_textBox);
             this.splitContainer1.Panel2.Controls.Add(this.label5);
             this.splitContainer1.Panel2.Controls.Add(this.label6);
-            this.splitContainer1.Panel2.Controls.Add(this.useHaarInCannyMethod_button);
+            this.splitContainer1.Panel2.Controls.Add(this.useHaarInsideExternalContour_button);
             this.splitContainer1.Size = new System.Drawing.Size(1326, 705);
-            this.splitContainer1.SplitterDistance = 1051;
+            this.splitContainer1.SplitterDistance = 1037;
             this.splitContainer1.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.Info;
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FloralWhite;
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pictureBox4, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.label4, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.splitContainer2, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.splitContainer3, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.pictureBox4, 1, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 93.84058F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.15942F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 319F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1051, 705);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 310F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 71F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1037, 705);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
             // pictureBox1
@@ -129,20 +129,11 @@
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Location = new System.Drawing.Point(528, 326);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(482, 298);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox4.TabIndex = 8;
-            this.pictureBox4.TabStop = false;
-            // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(199, 304);
+            this.label1.Location = new System.Drawing.Point(195, 304);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(127, 13);
             this.label1.TabIndex = 9;
@@ -153,18 +144,18 @@
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(698, 304);
+            this.label2.Location = new System.Drawing.Point(665, 304);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(180, 13);
+            this.label2.Size = new System.Drawing.Size(224, 13);
             this.label2.TabIndex = 10;
-            this.label2.Text = "Результат преобразования Хаара";
+            this.label2.Text = "Результат вейвлет-преобразования Хаара";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label3
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(157, 642);
+            this.label3.Location = new System.Drawing.Point(154, 633);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(210, 13);
             this.label3.TabIndex = 11;
@@ -175,7 +166,7 @@
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(717, 642);
+            this.label4.Location = new System.Drawing.Point(707, 633);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(141, 13);
             this.label4.TabIndex = 12;
@@ -184,7 +175,7 @@
             // 
             // splitContainer2
             // 
-            this.splitContainer2.Location = new System.Drawing.Point(528, 3);
+            this.splitContainer2.Location = new System.Drawing.Point(521, 3);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -194,24 +185,24 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.pictureBox2_2);
-            this.splitContainer2.Size = new System.Drawing.Size(482, 298);
-            this.splitContainer2.SplitterDistance = 244;
+            this.splitContainer2.Size = new System.Drawing.Size(513, 298);
+            this.splitContainer2.SplitterDistance = 258;
             this.splitContainer2.TabIndex = 13;
             // 
             // pictureBox2_1
             // 
-            this.pictureBox2_1.Location = new System.Drawing.Point(3, 0);
+            this.pictureBox2_1.Location = new System.Drawing.Point(9, 47);
             this.pictureBox2_1.Name = "pictureBox2_1";
-            this.pictureBox2_1.Size = new System.Drawing.Size(238, 223);
+            this.pictureBox2_1.Size = new System.Drawing.Size(246, 226);
             this.pictureBox2_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2_1.TabIndex = 6;
             this.pictureBox2_1.TabStop = false;
             // 
             // pictureBox2_2
             // 
-            this.pictureBox2_2.Location = new System.Drawing.Point(3, -3);
+            this.pictureBox2_2.Location = new System.Drawing.Point(2, 47);
             this.pictureBox2_2.Name = "pictureBox2_2";
-            this.pictureBox2_2.Size = new System.Drawing.Size(228, 226);
+            this.pictureBox2_2.Size = new System.Drawing.Size(246, 226);
             this.pictureBox2_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2_2.TabIndex = 7;
             this.pictureBox2_2.TabStop = false;
@@ -228,27 +219,36 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.pictureBox3_2);
-            this.splitContainer3.Size = new System.Drawing.Size(481, 298);
-            this.splitContainer3.SplitterDistance = 239;
+            this.splitContainer3.Size = new System.Drawing.Size(512, 298);
+            this.splitContainer3.SplitterDistance = 252;
             this.splitContainer3.TabIndex = 14;
             // 
             // pictureBox3_1
             // 
-            this.pictureBox3_1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox3_1.Location = new System.Drawing.Point(3, 46);
             this.pictureBox3_1.Name = "pictureBox3_1";
-            this.pictureBox3_1.Size = new System.Drawing.Size(233, 204);
+            this.pictureBox3_1.Size = new System.Drawing.Size(246, 226);
             this.pictureBox3_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox3_1.TabIndex = 7;
             this.pictureBox3_1.TabStop = false;
             // 
             // pictureBox3_2
             // 
-            this.pictureBox3_2.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox3_2.Location = new System.Drawing.Point(3, 46);
             this.pictureBox3_2.Name = "pictureBox3_2";
-            this.pictureBox3_2.Size = new System.Drawing.Size(232, 204);
+            this.pictureBox3_2.Size = new System.Drawing.Size(246, 226);
             this.pictureBox3_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox3_2.TabIndex = 8;
             this.pictureBox3_2.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Location = new System.Drawing.Point(521, 326);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(513, 298);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox4.TabIndex = 8;
+            this.pictureBox4.TabStop = false;
             // 
             // label9
             // 
@@ -264,7 +264,7 @@
             this.upperThresholdHaar_textBox.Name = "upperThresholdHaar_textBox";
             this.upperThresholdHaar_textBox.Size = new System.Drawing.Size(52, 20);
             this.upperThresholdHaar_textBox.TabIndex = 14;
-            this.upperThresholdHaar_textBox.Text = "50";
+            this.upperThresholdHaar_textBox.Text = "70";
             // 
             // label7
             // 
@@ -289,7 +289,7 @@
             this.waveletLength_textBox.Name = "waveletLength_textBox";
             this.waveletLength_textBox.Size = new System.Drawing.Size(52, 20);
             this.waveletLength_textBox.TabIndex = 11;
-            this.waveletLength_textBox.Text = "10";
+            this.waveletLength_textBox.Text = "4";
             // 
             // label5
             // 
@@ -308,25 +308,24 @@
             this.label6.TabIndex = 9;
             this.label6.Text = "Длина носителя для вейвлет-преобразования";
             // 
-            // useHaarInCannyMethod_button
+            // useHaarInsideExternalContour_button
             // 
-            this.useHaarInCannyMethod_button.Location = new System.Drawing.Point(64, 465);
-            this.useHaarInCannyMethod_button.Name = "useHaarInCannyMethod_button";
-            this.useHaarInCannyMethod_button.Size = new System.Drawing.Size(110, 23);
-            this.useHaarInCannyMethod_button.TabIndex = 8;
-            this.useHaarInCannyMethod_button.Text = "Выделить контуры";
-            this.useHaarInCannyMethod_button.UseVisualStyleBackColor = true;
-            this.useHaarInCannyMethod_button.Click += new System.EventHandler(this.useHaarInCannyMethod_button_Click);
+            this.useHaarInsideExternalContour_button.Location = new System.Drawing.Point(64, 465);
+            this.useHaarInsideExternalContour_button.Name = "useHaarInsideExternalContour_button";
+            this.useHaarInsideExternalContour_button.Size = new System.Drawing.Size(110, 23);
+            this.useHaarInsideExternalContour_button.TabIndex = 8;
+            this.useHaarInsideExternalContour_button.Text = "Выделить контуры";
+            this.useHaarInsideExternalContour_button.UseVisualStyleBackColor = true;
+            this.useHaarInsideExternalContour_button.Click += new System.EventHandler(this.useHaarInsideExternalContour_button_Click);
             // 
-            // Haar
+            // HaarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1326, 705);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "Haar";
+            this.Name = "HaarForm";
             this.Text = "Метод Канни с использованием вейвлет-преобразования Хаара";
-            this.Load += new System.EventHandler(this.Haar_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
@@ -335,7 +334,6 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
@@ -348,6 +346,7 @@
             this.splitContainer3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3_2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -375,6 +374,6 @@
         private System.Windows.Forms.TextBox waveletLength_textBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button useHaarInCannyMethod_button;
+        private System.Windows.Forms.Button useHaarInsideExternalContour_button;
     }
 }
